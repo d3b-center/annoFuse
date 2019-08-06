@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1564867642490.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EAD39206",
+    "lastKnownWriteTime" : 1565025665,
+    "last_content_update" : 1565096904991,
+    "path" : "~/Documents/star_arriba_convert.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "48,32",
+        "scrollLine" : "26"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

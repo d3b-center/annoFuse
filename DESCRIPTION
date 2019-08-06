@@ -1,0 +1,15 @@
+Package: annofusion
+Type: Package
+Title: Filter and prioritize fusion calls
+Version: 0.1.1
+Author: Krutika Gaonkar
+Maintainer: The package maintainer <gaonkark@email.chop.edu>
+Description: Fusion prioritization
+   All inframe and frameshift fusion calls with 1 or more junction reads and fused genes expressed at TPM >1 were used as true calls.If a fusion call had large number of spanning fragment reads compared to junciton reads ( spanning fragment- junction read > 10) or if either 5` or 3` genes multi-fused more than 5 different genes these were removed as a potential false positive.A list of curated list of fusion calls for each histology was used to capture each occurence of the fusion as a putative driver fusion.  A union of fusion calls which were either detected by both callers, or the same fusion was recurrent in histology(>2 samples )  or the fusion was specific to the broad histology were prioritized as potential true calls. The putative driver fusions and prioritized fusions lists were annotated to identify kinases,oncogenic,tumor suppresor fused genes and known tcga fusions. 
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1.9000
+Imports:reshape2,dplyr,tidyr,ggplot2,RColorBrewer,org.Hs.eg.db
+
+

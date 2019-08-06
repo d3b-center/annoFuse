@@ -1,0 +1,10 @@
+exportPattern("^[[:alpha:]]+")
+import(reshape2)
+import(dplyr)
+import(tidyr)
+import(ggplot2)
+import(RColorBrewer)
+import(org.Hs.eg.db)
+
+
+
