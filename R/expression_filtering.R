@@ -51,7 +51,7 @@ expressionFilterFusion<-function(standardFusioncalls=standardFusioncalls,express
     # unique FusionName-Sample rows
     dplyr::distinct() %>%
     # use this to filter the QC filtered fusion data frame
-    dplyr::inner_join(QCFiltered, by = c("FusionName", "Sample")) %>%
+    dplyr::inner_join(standardFusioncalls, by = c("FusionName", "Sample")) %>%
     # retain the same columns as merge method
     dplyr::select(c('LeftBreakpoint','RightBreakpoint','FusionName' , 'Sample' ,
                     'Caller' ,'Fusion_Type' , 'JunctionReadCount' ,'SpanningFragCount' ,
