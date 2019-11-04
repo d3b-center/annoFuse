@@ -72,6 +72,9 @@ ZscoredAnnotation<-function(standardFusionCalls=standardFusionCalls,zscoreFilter
     # Retain only distinct rows
     dplyr::distinct()
 
+  # check columns for Gene1A,Gene2A,Gene1B and Gene2B
+  cols<-c(Gene1A=NA, Gene1B=NA, Gene2A=NA, Gene2B=NA)
+
   expression_annotated_fusions <- fusion_sample_gene_df %>%
     # join the filtered expression values to the data frame keeping track of symbols
     # for each sample-fusion name pair
@@ -82,7 +85,7 @@ ZscoredAnnotation<-function(standardFusionCalls=standardFusionCalls,zscoreFilter
     # cast to keep zscore and gene position
     reshape2::dcast(FusionName+Sample ~gene_position,value.var = "zscore_value") %>%
     # incase Gene2A/B dont exist like in STARfusion calls
-    add_column(Gene2A=ifelse(length(.$Gene2A)==0,NA,.$Gene2A),Gene2B=ifelse(length(.$Gene2B)==0,NA,.$Gene2B)) %>%
+    add_column(!!!cols[setdiff(names(cols),names(.))]) %>%
     # get annotation from z score
     dplyr::mutate(note_expression_Gene1A = ifelse((Gene1A>zscoreFilter| Gene1A< -zscoreFilter),"differentially expressed","no change"),
                   note_expression_Gene1B = ifelse((Gene1B>zscoreFilter| Gene1B< -zscoreFilter),"differentially expressed","no change"),
