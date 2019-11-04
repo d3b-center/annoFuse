@@ -18,3 +18,13 @@ These instructions will get you a copy of the project up and running on your loc
  
 ## Authors
 Krutika S. Gaonkar, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
+
+## License
+
+This project is licensed under the MIT License 
+
+## Built With
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+
+## Version 
+0.1.0 
