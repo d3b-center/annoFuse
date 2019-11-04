@@ -16,5 +16,5 @@ These instructions will get you a copy of the project up and running on your loc
  - normal expression matrix from GTEx or your own normal cohort if you require zscore annotation using a normal expression matrix
  
  
- ## Authors
+## Authors
 Krutika S. Gaonkar, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
