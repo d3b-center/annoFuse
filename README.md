@@ -4,7 +4,7 @@ Using annoFuse, users can filter out fusions known to be artifactual and retaine
     Finally, users can also determine recurrent fusions across the cohort and recurrently-fused genes within each histology. By providing a standardized filtering and annotation method from multiple callers (STAR-Fusion and Arriba) users are able to merge, filter and prioritize putative oncogenic fusions across the PBTA. 
 
 ## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+These instructions will get you a copy of the project up and running on your local machine. 
 
 ### Prerequisites
  - merge calls from each caller for you cohort and add tumor_id to each file before merging to be able to differentiate between the calls
@@ -13,4 +13,5 @@ These instructions will get you a copy of the project up and running on your loc
  - normal expression matrix from GTEx or your own normal cohort if you require zscore annotation using a normal expression matrix
  
  
-
+ ## Authors
+Krutika S. Gaonkar, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
