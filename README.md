@@ -6,6 +6,9 @@ Using annoFuse, users can filter out fusions known to be artifactual and retaine
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine. 
 
+## Install package
+`devtools::install_github("d3b-center/annoFuse")`
+
 ### Prerequisites
  - merge calls from each caller for you cohort and add tumor_id to each file before merging to be able to differentiate between the calls
  - reference folder <link to box for example> with a gene genelistreference.txt and fusionreference.txt
