@@ -1,4 +1,9 @@
-#' K. S. Gaonkar 2019
+#' Standardizes fusion calls
+#'
+#' Various fusion callers have different formats that make aggregating and filtering data difficult.
+#' By standardizing fusion callers output we capture the required columns which we use for downstream
+#' analysis
+#'
 #' @param fusion_calls A dataframe from star fusion or arriba (more callers to be added)
 #' @param caller string options STARfusion/arriba
 #' @return Standardized fusion calls ready for filtering

@@ -1,15 +1,16 @@
 #' Annotates standardizes fusion calls calls with zscored expression value from either GTEx/cohort
-
+#'
 #' The input should have the following standardized
 #' columns to run through this GTEx/cohort normalization function
 #' "Sample"  Unique SampleIDs used in your RNAseq dataset
 #' "FusionName" GeneA--GeneB ,or if fusion is intergenic then Gene1A/Gene2A--GeneB
-#'  @param standardFusionCalls : Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion
-#'  @param zscoreFilter : Zscore value to use as threshold for annotation of differential expression
-#'  @param normData: normalizing expression dataset to calculate zscore
-#'  @param expressionMatrix: Expression matrix associated with the fusion calls
-#'  @param saveZscoredMatrix: File to save zscored matrix calculated for the normalized data and expression matrix
-#'  @results : expression_annotated_fusions is a standardized fusion call set with standard
+#'
+#' @param standardFusionCalls Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion
+#' @param zscoreFilter  Zscore value to use as threshold for annotation of differential expression
+#' @param normData normalizing expression dataset to calculate zscore
+#' @param expressionMatrix Expression matrix associated with the fusion calls
+#' @param saveZscoredMatrix File to save zscored matrix calculated for the normalized data and expression matrix
+#' @return expression_annotated_fusions is a standardized fusion call set with standard
 #'
 
 ZscoredAnnotation<-function(standardFusionCalls=standardFusionCalls,zscoreFilter=zscoreFilter,saveZscoredMatrix=saveZscoredMatrix,normData=normData,expressionMatrix=expressionMatrix){

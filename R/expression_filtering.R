@@ -57,5 +57,5 @@ expressionFilterFusion<-function(standardFusioncalls=standardFusioncalls,express
                     'Caller' ,'Fusion_Type' , 'JunctionReadCount' ,'SpanningFragCount' ,
                     'Confidence' ,'annots','Gene1A','Gene2A','Gene1B','Gene2B'))
 
-  return(expression_filtered_fusion)
+  return(expression_filtered_fusions)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fusion_standardization.R
 \name{fusion_standardization}
 \alias{fusion_standardization}
-\title{K. S. Gaonkar 2019}
+\title{Standardizes fusion calls}
 \usage{
 fusion_standardization(fusion_calls = fusion_calls, caller = caller)
 }
@@ -15,5 +15,7 @@ fusion_standardization(fusion_calls = fusion_calls, caller = caller)
 Standardized fusion calls ready for filtering
 }
 \description{
-K. S. Gaonkar 2019
+Various fusion callers have different formats that make aggregating and filtering data difficult.
+By standardizing fusion callers output we capture the required columns which we use for downstream
+analysis
 }
