@@ -20,25 +20,25 @@ These instructions will get you a copy of the project up and running on your loc
  Input : Merged fusion calls per caller with additional columns "annots" and "tumor_id"
  Output: Standardized fusion calls with following columns
  
-'LeftBreakpoint' : 5' gene breakpoint
+   LeftBreakpoint : 5' gene breakpoint
 
-'RightBreakpoint': 3' gene breakpoint
+   RightBreakpoint : 3' gene breakpoint
 
-'FusionName' : geneA--geneB
+   FusionName : geneA--geneB
 
-'Sample' : tumor_id used by user in merged samples set
+   Sample : tumor_id used by user in merged samples set
 
-'Caller' : eg StarFusion, Arriba etc
+   Caller : eg StarFusion, Arriba etc
 
-'Fusion_Type': reading frame information
+   Fusion_Type : reading frame information
+    
+   JunctionReadCount : junction supporting reads
 
-'JunctionReadCount' : junction supporting reads
+   SpanningFragCount : fragments spanning the fusion 
 
-'SpanningFragCount' : fragments spanning the fusion 
+   Confidence : Confidence provided from caller if not NA
 
-'Confidence' : Confidence provided from caller if not NA
-
-'annots': Annotation provided by user; recommended FusionAnnotator
+   annots : Annotation provided by user; recommended FusionAnnotator
 
  2) Filter standardized fusion calls to remove false positives with low read support, annotated as read-throughs, found in normal and gene homolog databases and if both fused genes are not expressed above the given threshold.
  Input : Standardized fusion calls from step1
