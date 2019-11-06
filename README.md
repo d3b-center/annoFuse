@@ -15,8 +15,8 @@ These instructions will get you a copy of the project up and running on your loc
  - expression matrix with GeneSymbol per row or should be able to collap to per GeneSymbol
  - normal expression matrix from GTEx or your own normal cohort if you require zscore annotation using a normal expression matrix
  
- The package has the following 4 steps to filter and annotate fusion calls
- 1) Standardize calls from fusion callers to retain information regarding fused genes,breakpoints, reading frame information as well as annotation from FusionAnnotator. 
+ ## The package has the following 4 steps to filter and annotate fusion calls
+ ### 1) Standardize calls from fusion callers to retain information regarding fused genes,breakpoints, reading frame information as well as annotation from FusionAnnotator. 
  
  Input : Merged fusion calls per caller with additional columns "annots" and "tumor_id"
  
@@ -42,13 +42,13 @@ These instructions will get you a copy of the project up and running on your loc
 
    annots : Annotation provided by user; recommended FusionAnnotator
 
- 2) Filter standardized fusion calls to remove false positives with low read support, annotated as read-throughs, found in normal and gene homolog databases and if both fused genes are not expressed above the given threshold.
+ ### 2) Filter standardized fusion calls to remove false positives with low read support, annotated as read-throughs, found in normal and gene homolog databases and if both fused genes are not expressed above the given threshold.
  
  Input : Standardized fusion calls from step1
  
  Output: Standardized fusion calls after filtering readthroughs, artifacts from annotation column and expression filter above threshold (default 1)
  
- 3) a. Annotate genes in standardized and filtered fusion calls with useful biological features of interest eg. Kinase, Tumor suppressor etc. 
+ ### 3) a. Annotate genes in standardized and filtered fusion calls with useful biological features of interest eg. Kinase, Tumor suppressor etc. 
  
  Input: Filtered standardized fusion calls from step2
  
@@ -65,7 +65,7 @@ These instructions will get you a copy of the project up and running on your loc
  
  Fusion_anno : annotation per gene from reference fusion list
  
-   b. (OPTIONAL) Annotation of zscore using a normal expression matrix
+ ###  b. (OPTIONAL) Annotation of zscore using a normal expression matrix
  
  Input : Filtered standardized fusion calls from step2
  
@@ -76,7 +76,7 @@ These instructions will get you a copy of the project up and running on your loc
  
  zscore_[Gene1A |Gene2A |Gene1B|Gene2B] : zscore calculated from using normal expression matrix
  
- 4) Project specific filtering to capture recurrent fused genes or genes with specific biological feature from step 3.
+ ### 4) Project specific filtering to capture recurrent fused genes or genes with specific biological feature from step 3.
  
  Input : Filtered fusion calls annotated with reference gene and/or normal zscore 
  
