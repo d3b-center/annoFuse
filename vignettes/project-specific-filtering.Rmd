@@ -21,7 +21,11 @@ params:
   limitMultiFused:
     label: "Max number of times gene can be fused per sample"
     value: 5
-    input: integer     
+    input: integer  
+  cohort:
+    label: "Boolean for analysis is cohort"
+    value: TRUE
+    input: boolean     
 
 
 vignette: >
@@ -54,6 +58,7 @@ suppressPackageStartupMessages(library("readr"))
 suppressPackageStartupMessages(library("tidyverse"))
 suppressPackageStartupMessages(library("reshape2"))
 suppressPackageStartupMessages(library("qdapRegex"))
+library("annoFuse")
 
 #read filtFusion files
 strandedQCGeneFiltered_filtFusion<-readRDS(system.file("extdata", "standardFusionStrandedExp_QC_expression_GTExComparison_annotated.RDS", package = "annoFuse"))
@@ -85,6 +90,9 @@ numGroup<-params$numGroup
 # Max number of times gene can be fused per sample
 limitMultiFused<-params$limitMultiFused
 
+# TRUE/FALSE if cohort
+cohort<-params$cohort
+
 print("Raw calls from STARfusion and Arriba for PBTA")
 table(fusion_calls$Caller)
 ```
@@ -92,38 +100,16 @@ table(fusion_calls$Caller)
 
 ```{r}
 
-# aggregate caller 
-fusion_caller.summary <- fusion_calls %>%
-  dplyr::filter(Fusion_Type != "other") %>%
-  dplyr::select(Sample,FusionName,Caller) %>%
-  group_by(FusionName, Sample ) %>%
-  unique() %>%
-  dplyr::mutate(CalledBy = toString(Caller), caller.count = n())
-  
-# aggregate by read count
- fusion_read.summary <- fusion_calls %>%
-   dplyr::filter(Fusion_Type != "other") %>%
-   dplyr::select(Sample,FusionName,JunctionReadCount,SpanningFragCount) %>%
-   group_by(FusionName, Sample ) %>%
-   unique() %>%
-   dplyr::mutate(JunctionReadCountSum=sum(JunctionReadCount),SpanningFragCountSum=sum(SpanningFragCount))
+fusion_calls<-aggregate_fusion_calls(fusion_calls)
 
-fusion_summary<-left_join(fusion_caller.summary,fusion_read.summary,by=c("Sample","FusionName"))
- 
-fusion_calls<-fusion_calls %>% 
-  dplyr::filter(Fusion_Type != "other") %>%
-  left_join(fusion_summary,by=(c("Sample","FusionName","Caller","JunctionReadCount","SpanningFragCount")))
-
-#merge with histology file
+# merge with histology file to use "broad_histology as group for cohort level filtering
 fusion_calls<-merge(fusion_calls,clinical,by.x="Sample",by.y="Kids_First_Biospecimen_ID")
 
 
-# remove fusion within local rearrangement
+# remove fusion within local rearrangement if required for your project
 fusion_calls <- fusion_calls %>%
   # remove local rearrangement/adjacent genes
   dplyr::filter(!grepl("LOCAL_REARRANGEMENT|LOCAL_INVERSION",annots))
-
-
 
 
 ```
@@ -134,94 +120,54 @@ fusion_calls <- fusion_calls %>%
 # AND
 #
 # 1. Called by at least n callers
-fusion_calls.summary <- fusion_calls %>%
-  dplyr::filter(caller.count >= numCaller) %>%
-  unique() %>%
-  mutate(note=paste0("Called by",numCaller, "callers")) %>%
-  as.data.frame()
+fusion_calls.summary <- called_by_n_samples(fusion_calls,numCaller)
 
 # OR
 # 2. Found in at least n samples in each group
-sample.count <- fusion_calls %>%
-  dplyr::filter(Fusion_Type != "other") %>%
-  dplyr::select(FusionName, Sample, !!as.name(group),-Fusion_Type) %>%
-  unique() %>%
-  group_by(FusionName, !!as.name(group)) %>%
-  dplyr::mutate(sample.count = n(),Sample = toString(Sample)) %>%
-  dplyr::filter(sample.count > numSample) %>%
-  unique() %>%
-  mutate(note=paste0("Found in atleast ",numSample, " samples in a group")) %>%
-  as.data.frame()
+sample.count <- samplecount_fusion_calls(fusion_calls,numSample,group)
 
 
 ```
 
 
-
 ```{r}
 #filter QCGeneFiltered_filtFusion to keep recurrent fusions from above sample.count and fusion_calls.summary
-
 QCGeneFiltered_recFusion<-fusion_calls %>%
   dplyr::filter(FusionName %in% unique(c(sample.count$FusionName,fusion_calls.summary$FusionName)))
 
 ```
 
 
-
-
-
 ```{r}
-# remove fusions that are in > numGroup
-group.count <- fusion_calls %>%
-  dplyr::select(FusionName, !!as.name(group)) %>%
-  unique() %>%
-  group_by(FusionName) %>%
-  dplyr::mutate(group.ct = n(),Sample = toString(!!(as.name(group)))) %>%
-  dplyr::filter(group.ct >numGroup)
 
+if (cohort){
+# remove fusions that are in > numGroup
+group.count <- groupcount_fusion_calls(fusion_calls ,group,numGroup)
 
 # remove multi-fused genes
-fusion_recurrent5_per_sample <- fusion_calls  %>%
-  # We want to keep track of the gene symbols for each sample-fusion pair
-  dplyr::select(Sample, FusionName, Gene1A, Gene1B, Gene2A, Gene2B) %>%
-  # We want a single column that contains the gene symbols
-  tidyr::gather(Gene1A, Gene1B, Gene2A, Gene2B,
-                key = gene_position, value = GeneSymbol) %>%
-  # Remove columns without gene symbols
-  dplyr::filter(GeneSymbol != "") %>%
-  dplyr::arrange(Sample, FusionName) %>%
-  # Retain only distinct rows
-  dplyr::distinct() %>%
-  group_by(Sample,GeneSymbol) %>% 
-  dplyr::summarise(Gene.ct = n()) %>% 
-  dplyr::filter(Gene.ct>limitMultiFused) %>%
-  mutate(note=paste0("multfused " ,limitMultiFused, " times per sample"))
+fusion_recurrent5_per_sample <- fusionMultifused(fusion_calls ,limitMultiFused)
 
-
-
-```
-
-
-```{r}
-
-# filter QCGeneFiltered_recFusion to remove fusions found in more than 1 group 
-
+# filter QCGeneFiltered_recFusion to remove fusions found in more than 1 group and multifused gene per samples
 QCGeneFiltered_recFusionUniq<-QCGeneFiltered_recFusion %>%
   dplyr::filter(!FusionName %in% group.count$FusionName) %>%
   dplyr::filter(!Gene1A %in% fusion_recurrent5_per_sample$GeneSymbol |
                   !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
                   !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol | 
                   !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol)
+} else {
+# filter QCGeneFiltered_recFusion to remove fusion with multifused gene per samples
+QCGeneFiltered_recFusionUniq<-QCGeneFiltered_recFusion %>%
+  dplyr::filter(!Gene1A %in% fusion_recurrent5_per_sample$GeneSymbol |
+                  !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
+                  !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol | 
+                  !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol)
+
+}
 
 ```
 
 
-
-
-
 ```{r}
-
-
 # filter for putative driver genes and mutifused genes per sample
 putative_driver_fusions <- fusion_calls %>%
   dplyr::filter(!Gene1A %in% fusion_recurrent5_per_sample$GeneSymbol |
@@ -229,6 +175,17 @@ putative_driver_fusions <- fusion_calls %>%
                   !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol | 
                   !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol) %>%
   dplyr::filter(!is.na(Gene1A_anno) | !is.na(Gene1B_anno) | !is.na(Gene2A_anno) | !is.na(Gene2B_anno))
+
+# inframe putative driver fusion list
+putative_driver_inframefusions<-putative_driver_fusions %>%
+  dplyr::filter(Fusion_Type=="in-frame")
+```
+
+
+```{r}
+
+fusion_calls<-rbind(putative_driver_fusions,QCGeneFiltered_recFusionUniq)
+plotSummary(fusion_calls,groupby = "broad_histology")
 
 ```
 

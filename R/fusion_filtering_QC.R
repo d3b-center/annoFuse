@@ -1,5 +1,5 @@
 #' Filters standardized fusion calls to remove artifacts and false positives.
-#
+#'
 #' Events such as polymerase read-throughs, mis-mapping due to gene homology, and fusions occurring in healthy normal
 #' tissue require stringent filtering, making it difficult for researchers and clinicians to discern true underlying
 #' oncogenic drivers of a tumor and in some cases, appropriate therapy
