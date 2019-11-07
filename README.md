@@ -80,7 +80,7 @@ These instructions will get you a copy of the project up and running on your loc
  
  Input : Filtered fusion calls annotated with reference gene and/or normal zscore 
  
- Output : Project specific filtered fusion calls
+ Output : Project specific filtered fusion calls optional [summary plot like ](https://github.com/d3b-center/annoFuse/blob/master/vignettes/output.pdf)
  
 ## Authors
 Krutika S. Gaonkar, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
