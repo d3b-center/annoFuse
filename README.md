@@ -15,6 +15,9 @@ These instructions will get you a copy of the project up and running on your loc
  - expression matrix with GeneSymbol per row or should be able to collap to per GeneSymbol
  - normal expression matrix from GTEx or your own normal cohort if you require zscore annotation using a normal expression matrix
  
+### Application
+Please find detailed information regarding the functionalities [here](https://github.com/d3b-center/annoFuse/wiki)
+
 ## Authors
 Krutika S. Gaonkar, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
 
