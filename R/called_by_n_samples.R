@@ -4,7 +4,7 @@
 #' @param numCaller Least number of callers that have the fusion
 #' @return Fusions called by n callers
 
-called_by_n_samples<-function(standardFusioncalls=standardFusioncalls,numCaller=numCaller){
+called_by_n_callers<-function(standardFusioncalls=standardFusioncalls,numCaller=numCaller){
 
 # aggregate caller
 fusion_caller.summary <- standardFusioncalls %>%

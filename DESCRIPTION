@@ -1,7 +1,7 @@
 Package: annoFuse
 Type: Package
 Title: Annotation And Filtering Analysis For Fusion Calls
-Version: 0.1.0
+Version: 0.1.6
 Author: Krutika Gaonkark
 Maintainer: Krutika Gaonkark <gaonkark@chop.email.edu>
 Description: Using annoFuse, users can filter out fusions known to be artifactual and retained high-quality fusion calls using support of at least one junction read and remove false calls if there is disproportionate spanning fragment support of more than 10 reads compared to the junction read count. For prioritization, users can capture known as well as putative driver fusions reported in TCGA, or fusions containing gene partners that are known oncogenes, tumor suppressor genes, or COSMIC genes. 
@@ -10,6 +10,8 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1.9000
-Imports:reshape2,dplyr,tidyr,ggplot2,qdapRegex,ggpubr,ensembldb
+Imports: reshape2,dplyr,tidyr,ggplot2,qdapRegex,ggpubr,ensembldb
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2019-11-08 19:15:15 UTC; gaonkark

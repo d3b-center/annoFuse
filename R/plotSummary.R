@@ -1,12 +1,13 @@
 #' Function to annotate fusion calls
 
-#' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
+#' @param standardFusionCalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param outputpdffile Filename to plot image
 #' @param groupby column name with grouping variables
 #' @return summary pdf
 
 
 plotSummary<-function(standardFusionCalls=standardFusionCalls,outputpdffile=outputpdffile,groupby=groupby){
+
   theme_Publication <- function(base_size=15, base_family="Helvetica") {
     library(grid)
     library(ggthemes)
@@ -40,6 +41,9 @@ plotSummary<-function(standardFusionCalls=standardFusionCalls,outputpdffile=outp
 
   }
 
+if(missing(groupby)){
+  groupby="FusionCalls"
+}
   # Inter and intrachromosomal plot
 fusion_calls_interchromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTERCHROMOSOMAL",annots))
 fusion_calls_intrachromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTRACHROMOSOMAL",annots))
@@ -110,12 +114,13 @@ fusion_type_gene_df <- standardFusionCalls %>%
   # We want a single column that contains the gene symbols
   tidyr::gather(Gene1A_anno, Gene1B_anno, Gene2A_anno, Gene2B_anno,
                 key = gene_position, value = Annot) %>%
+  mutate(gene_position=gsub("_anno","",gene_position)) %>%
   # Remove columns without gene symbols
   dplyr::filter(Annot != "") %>%
   mutate(Annotation=gsub(" ","",.$Annot)) %>%
   mutate(Annotation = strsplit(as.character(Annotation), ",")) %>%
   unnest(Annotation)  %>%
-  group_by(!!as.name(groupby),Annotation) %>%
+  group_by(!!as.name(groupby),Annotation,gene_position) %>%
   dplyr::summarise(Annot.ct = n()) %>%
   # To only plot the broader transcription factor annotation
   dplyr::filter(!Annotation %in% c("curatedTF","predictedTF"))
@@ -125,12 +130,12 @@ fusion_type_gene_df$Annotation[grep("onco",fusion_type_gene_df$Annotation)]<-"On
 fusion_type_gene_df$Annotation[grep("tsgs",fusion_type_gene_df$Annotation)]<-"TumorSuppressorGene"
 fusion_type_gene_df$Annotation[grep("kinase",fusion_type_gene_df$Annotation)]<-"Kinase"
 
-p5<-ggplot(fusion_type_gene_df,aes(x=!!as.name(groupby),y=Annot.ct,size=Annot.ct,fill=Annotation,color=Annotation,alpha=0.75))+geom_point(shape=21)+scale_color_brewer(palette="Pastel1")+scale_fill_brewer(palette="Pastel1")+guides( size = FALSE,alpha=FALSE)+scale_size_continuous(range = c(1,12))+ylab("Count")+xlab(groupby)+theme_Publication()+theme(legend.position = "right")+theme(axis.text.x  = element_text(angle = 45,hjust = 1,size=12),axis.text.y = element_text(angle=0,vjust =2,size=12))+theme(plot.margin=unit(c(0,10,0,15),"mm"))
+p5<-ggplot(fusion_type_gene_df,aes(x=!!as.name(groupby),y=Annot.ct,size=Annot.ct,fill=Annotation,color=Annotation,alpha=0.75))+geom_point(shape=21)+scale_color_brewer(palette="Pastel1")+scale_fill_brewer(palette="Pastel1")+guides( size = FALSE,alpha=FALSE)+scale_size_continuous(range = c(1,12))+ylab("Count")+xlab(groupby)+theme_Publication()+theme(legend.position = "top")+theme(axis.text.x  = element_text(angle = 45,hjust = 1,size=12),axis.text.y = element_text(angle=0,vjust =2,size=12))+theme(plot.margin=unit(c(0,10,0,15),"mm"))+facet_wrap(~gene_position)
 
 if (!missing(outputpdffile)){
 ggarrange(p1,p2,p3,p4,p5,labels = c("A","B","C","D","E"),heights=c(5,5,6),widths=c(2,1) ,nrow=3,ncol=2,font.label = list(size=30)) %>% ggexport(filename = outputpdffile,width = 20,height = 20)
 } else {
-  summary<-ggarrange(p1,p2,p3,p4,p5,labels = c("A","B","C","D","E"),heights=c(5,5,6),widths=c(2,1) ,nrow=3,ncol=2,font.label = list(size=30))
+  summary<-ggarrange(p1,p2,p3,p4,p5,heights=c(5,5,6,6,6),widths=4,ncol=1)
 }
 
 return (summary)

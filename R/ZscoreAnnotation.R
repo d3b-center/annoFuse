@@ -19,7 +19,7 @@ ZscoredAnnotation<-function(standardFusionCalls=standardFusionCalls,zscoreFilter
   expressionMatrixMatched <- expressionMatrix %>%
     unique() %>%
     # means for each row per each gene_id
-    dplyr::mutate(means = rowMeans(select(.,-GeneSymbol,-gene_id,-EnsembleID))) %>%
+    dplyr::mutate(means = rowMeans(dplyr::select(.,-GeneSymbol,-gene_id,-EnsembleID))) %>%
     # arrange descending mean
     arrange(desc(means)) %>%
     # to keep only first occurence ie. max rowMean per GeneSymbol

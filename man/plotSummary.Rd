@@ -8,11 +8,11 @@ plotSummary(standardFusionCalls = standardFusionCalls,
   outputpdffile = outputpdffile, groupby = groupby)
 }
 \arguments{
+\item{standardFusionCalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
+
 \item{outputpdffile}{Filename to plot image}
 
 \item{groupby}{column name with grouping variables}
-
-\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
 }
 \value{
 summary pdf

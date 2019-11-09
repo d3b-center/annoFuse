@@ -6,26 +6,44 @@
 #
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param expressionMatrix A rds with expression data (RSEM/TPM counts) for the same cohort/GTEX
-#' @param readingFramFilter A regex to capture readingframe (eg. in-frame|frameshift|other)
-#' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column: "annots"
+#' @param readingFrameFilter A regex to capture readingframe (eg. in-frame|frameshift|other)
+#' @param readthroughFilter Boolean for filtering readthroughs
+#' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"
 #' @param junctionReadCountFilter An integer threshold for JunctionReadCount
 #' @param spanningFragCountFilter An integer threshold for (SpanningFragCount - JunctionReadCount)
 #' @param expressionFilter An integer threshold for TPM/FPKM filter
 #' @return Standardized fusion calls filtered to pass QC and remove calls with insufficient read-support and annotation red-flags
 
-############# artifactFiltering #############
 
 
-fusion_filtering_QC<-function(standardFusioncalls=standardFusioncalls,readingFrameFilter=readingFrameFilter,artifactFilter=artifactFilter,junctionReadCountFilter=junctionReadCountFilter,spanningFragCountFilter=spanningFragCountFilter,reathroughFilter=TRUE){
+fusion_filtering_QC<-function(standardFusioncalls=standardFusioncalls,readingFrameFilter=readingFrameFilter,artifactFilter=artifactFilter,junctionReadCountFilter=junctionReadCountFilter,spanningFragCountFilter=spanningFragCountFilter,readthroughFilter=TRUE){
 
-  if( reathroughFilter & any(grepl('read.*through|NEIGHBORS',standardFusioncalls$annots,ignore.case = TRUE))){
+  #formatting dataframe for filtering
+  standardFusioncalls<-standardFusioncalls %>%
+    # to obtain geneA and geneB for gene search below
+    bind_cols(colsplit(standardFusioncalls$FusionName, pattern = '--', names = c("GeneA","GeneB"))) %>%
+    # Intergenic fusion will have Gene1A,Gene2A,Gene1B,Gene2B
+    separate(GeneA,sep = "/",into =c("Gene1A","Gene2A"),remove=FALSE) %>%
+    separate(GeneB,sep = "/",into =c("Gene1B","Gene2B"),remove=FALSE) %>%
+    #remove distance to fusion breakpoint from gene names in intergenic fusion
+    mutate(Gene1A=gsub("[(].*","",Gene1A),
+           Gene2A=gsub("[(].*","",Gene2A),
+           Gene1B=gsub("[(].*","",Gene1B),
+           Gene2B=gsub("[(].*","",Gene2B)) %>%
+    as.data.frame()
+
+  # filter readthroughs
+  if( readthroughFilter & any(grepl('read.*through|NEIGHBORS',standardFusioncalls$annots,ignore.case = TRUE))){
     # Gather read throughs from standardized fusion calls
     rts <- standardFusioncalls[grep('read.*through|NEIGHBORS',standardFusioncalls$annots,ignore.case = TRUE),"FusionName"]
     # Reverse of read throughs to capture
     rts.rev <- unique(unlist(lapply(strsplit(rts, '--'), FUN = function(x) paste0(x[2],'--',x[1]))))
     # Combine read through and reverse fusion genes
     rts <- unique(c(rts, rts.rev))
-    standardFusioncalls <- standardFusioncalls[-which(standardFusioncalls$FusionName %in% rts),]
+    # remove read throughs even if distance is not same in intergenic fusions
+    rts<-unlist(lapply(rts,function(x) rm_between(x, "(", ")", extract = F)))
+    rts<-data.frame("readThroughs"=rts)
+    standardFusioncalls<-standardFusioncalls[-which(unlist(lapply(standardFusioncalls$FusionName,function(x) rm_between(x, "(", ")", extract = F))) %in% rts$readThroughs),]
   }
 
   if( !missing(readingFrameFilter ) ){
@@ -61,7 +79,7 @@ fusion_filtering_QC<-function(standardFusioncalls=standardFusioncalls,readingFra
 }
 
 
-############################################
+
 
 
 

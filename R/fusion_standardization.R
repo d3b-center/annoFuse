@@ -19,6 +19,9 @@ fusion_standardization <- function(fusion_calls=fusion_calls,caller=caller) {
           # remove chr notation from breakpoint columns
           LeftBreakpoint = gsub('^chr', '', LeftBreakpoint),
           RightBreakpoint = gsub('^chr', '', RightBreakpoint),
+          # remove strand information to match breakpoint locations
+          LeftBreakpoint = gsub(':-$', '', LeftBreakpoint),
+          RightBreakpoint = gsub(':-$', '', RightBreakpoint),
           # STARFusion does not return confidence information
           Confidence = NA,
           # standardize fusion types
@@ -39,6 +42,8 @@ fusion_standardization <- function(fusion_calls=fusion_calls,caller=caller) {
         dplyr::mutate(
           LeftBreakpoint = gsub('^chr', '', breakpoint1),
           RightBreakpoint = gsub('^chr', '', breakpoint2),
+          #readthrough information from arriba
+          annots = paste(annots,type,sep=","),
           # Intergenic gene fusion breakpoints in arriba are annotated as
           # "gene1A,gene1B". As comma is used as a common delimiter in files changing
           # it to "/"

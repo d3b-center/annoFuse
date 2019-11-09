@@ -99,18 +99,11 @@ table(fusion_calls$Caller)
 
 
 ```{r}
-
-fusion_calls<-aggregate_fusion_calls(fusion_calls)
+# aggregate caller and remove any fusion with LOCAL_REARRANGEMENT|LOCAL_INVERSION in annots column
+fusion_calls<-aggregate_fusion_calls(fusion_calls,removeother=TRUE,filterAnnots="LOCAL_REARRANGEMENT|LOCAL_INVERSION")
 
 # merge with histology file to use "broad_histology as group for cohort level filtering
 fusion_calls<-merge(fusion_calls,clinical,by.x="Sample",by.y="Kids_First_Biospecimen_ID")
-
-
-# remove fusion within local rearrangement if required for your project
-fusion_calls <- fusion_calls %>%
-  # remove local rearrangement/adjacent genes
-  dplyr::filter(!grepl("LOCAL_REARRANGEMENT|LOCAL_INVERSION",annots))
-
 
 ```
 
@@ -120,7 +113,7 @@ fusion_calls <- fusion_calls %>%
 # AND
 #
 # 1. Called by at least n callers
-fusion_calls.summary <- called_by_n_samples(fusion_calls,numCaller)
+fusion_calls.summary <- called_by_n_callers(fusion_calls,numCaller)
 
 # OR
 # 2. Found in at least n samples in each group
@@ -145,7 +138,7 @@ if (cohort){
 group.count <- groupcount_fusion_calls(fusion_calls ,group,numGroup)
 
 # remove multi-fused genes
-fusion_recurrent5_per_sample <- fusionMultifused(fusion_calls ,limitMultiFused)
+fusion_recurrent5_per_sample <- fusion_multifused(fusion_calls ,limitMultiFused)
 
 # filter QCGeneFiltered_recFusion to remove fusions found in more than 1 group and multifused gene per samples
 QCGeneFiltered_recFusionUniq<-QCGeneFiltered_recFusion %>%
@@ -169,12 +162,7 @@ QCGeneFiltered_recFusionUniq<-QCGeneFiltered_recFusion %>%
 
 ```{r}
 # filter for putative driver genes and mutifused genes per sample
-putative_driver_fusions <- fusion_calls %>%
-  dplyr::filter(!Gene1A %in% fusion_recurrent5_per_sample$GeneSymbol |
-                  !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
-                  !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol | 
-                  !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol) %>%
-  dplyr::filter(!is.na(Gene1A_anno) | !is.na(Gene1B_anno) | !is.na(Gene2A_anno) | !is.na(Gene2B_anno))
+putative_driver_fusions <-fusion_driver(standardFusioncalls=fusion_calls,annotated=TRUE)
 
 # inframe putative driver fusion list
 putative_driver_inframefusions<-putative_driver_fusions %>%
@@ -185,7 +173,7 @@ putative_driver_inframefusions<-putative_driver_fusions %>%
 ```{r}
 
 fusion_calls<-rbind(putative_driver_fusions,QCGeneFiltered_recFusionUniq)
-plotSummary(fusion_calls,groupby = "broad_histology")
+plotSummary(fusion_calls,groupby = "broad_histology",outputpdffile = "output.pdf")
 
 ```
 

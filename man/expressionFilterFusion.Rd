@@ -12,6 +12,8 @@ expressionFilterFusion(standardFusioncalls = standardFusioncalls,
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
 
 \item{expressionMatrix}{Expression matrix for samples used in cohort for fusion calls}
+
+\item{expressionFilter}{FPKM/TPM threshold for not expressed}
 }
 \value{
 Standardized fusion calls annotated with gene list and fusion list provided in reference folder
