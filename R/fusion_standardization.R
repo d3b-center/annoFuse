@@ -20,8 +20,8 @@ fusion_standardization <- function(fusion_calls=fusion_calls,caller=caller) {
           LeftBreakpoint = gsub('^chr', '', LeftBreakpoint),
           RightBreakpoint = gsub('^chr', '', RightBreakpoint),
           # remove strand information to match breakpoint locations
-          LeftBreakpoint = gsub(':-$', '', LeftBreakpoint),
-          RightBreakpoint = gsub(':-$', '', RightBreakpoint),
+          LeftBreakpoint = gsub(':[-|+]$', '', LeftBreakpoint),
+          RightBreakpoint = gsub(':[-|+]$', '', RightBreakpoint),
           # STARFusion does not return confidence information
           Confidence = NA,
           # standardize fusion types

@@ -43,7 +43,7 @@ plotRecurrentFusions<-function(standardFusioncalls=standardFusioncalls,groupby=g
   }
 
 # in-frame fusions only  
-  standardFusioncalls<-unique(fusion_calls) %>% dplyr::filter(Fusion_Type=="in-frame")  
+  standardFusioncalls<-unique(standardFusioncalls) %>% dplyr::filter(Fusion_Type=="in-frame")  
 # remove geneA==geneB or intergenic
   standardFusioncalls<-standardFusioncalls[-which(standardFusioncalls$Gene1A==standardFusioncalls$Gene2A|standardFusioncalls$Gene1A==standardFusioncalls$Gene2B|standardFusioncalls$Gene2A==standardFusioncalls$Gene1B|standardFusioncalls$Gene1A==standardFusioncalls$Gene1B|standardFusioncalls$Gene2B==standardFusioncalls$Gene2A),]
   

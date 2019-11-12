@@ -50,10 +50,10 @@ fusion_calls_intrachromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTR
 
 fusion_chrom<-rbind(data.frame(cbind(fusion_calls_interchromosomal,"Distance"=rep("Interchromosomal",nrow(fusion_calls_interchromosomal)))),cbind(fusion_calls_intrachromosomal,"Distance"=rep("Intrachromosomal",nrow(fusion_calls_intrachromosomal)))) %>% unique()
 
-p1<-ggplot(fusion_chrom,aes(x=!!as.name(groupby),fill=Distance,alpha=0.75))+geom_bar()+theme_Publication()+theme(legend.position = "top")+xlab(as.name(group))+ylab("Count")+guides(alpha=FALSE)+theme(axis.text.x  = element_text(angle = 45))
+p1<-ggplot(fusion_chrom,aes(x=!!as.name(groupby),fill=Distance,alpha=0.75))+geom_bar()+theme_Publication()+theme(legend.position = "top")+xlab(as.name(groupby))+ylab("Count")+guides(alpha=FALSE)+theme(axis.text.x  = element_text(angle = 45))
 
   # frame information
-p2<-ggplot(standardFusionCalls,aes(fill=Fusion_Type,x=CalledBy,alpha = 0.75))+geom_bar(aes(y=log2(..count..)))+rotate()+xlab("CalledBy")+ylab("Count (log2)")+theme_Publication()+theme(legend.position = "top")+guides(alpha=FALSE)+theme(axis.text.x  = element_text(angle = 0,hjust = 1,size=12),axis.text.y = element_text(angle=0,vjust =2,size=12))+labs(fill = "Frame")
+p2<-ggplot(standardFusionCalls,aes(fill=Fusion_Type,x=Caller,alpha = 0.75))+geom_bar(aes(y=log2(..count..)))+rotate()+xlab("Caller")+ylab("Count (log2)")+theme_Publication()+theme(legend.position = "top")+guides(alpha=FALSE)+theme(axis.text.x  = element_text(angle = 0,hjust = 1,size=12),axis.text.y = element_text(angle=0,vjust =2,size=12))+labs(fill = "Frame")
 
 
 # keep fusion if atleast 1 is protein-coding
@@ -80,7 +80,7 @@ fusion_protein_coding_gene_df <- standardFusionCalls %>%
 # bubble plot for genes in biotype fromensemble
 fusion_type_gene_df <- fusion_protein_coding_gene_df %>%
   # We want to keep track of the gene symbols for each sample-fusion pair
-  dplyr::select(Sample, FusionName, gene_position, gene_biotype,!!(as.name(group))) %>%
+  dplyr::select(Sample, FusionName, gene_position, gene_biotype,!!(as.name(groupby))) %>%
   unique() %>%
   group_by(!!(as.name(groupby)),gene_biotype,gene_position) %>%
   dplyr::summarise(Type.ct = n())
