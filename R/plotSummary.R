@@ -8,47 +8,29 @@
 
 plotSummary<-function(standardFusionCalls=standardFusionCalls,outputpdffile=outputpdffile,groupby=groupby){
 
-  theme_Publication <- function(base_size=15, base_family="Helvetica") {
-    library(grid)
-    library(ggthemes)
-    (theme_foundation(base_size=base_size, base_family=base_family)
-      + theme(plot.title = element_text(face = "bold",
-                                        size = 15, hjust = 0.5),
-              text = element_text(family="Helvetica"),
-              panel.background = element_rect(colour = NA),
-              plot.background = element_rect(colour = NA),
-              panel.border = element_rect(colour = NA),
-              axis.title = element_text(face = "bold",size = 12),
-              axis.title.y = element_text(angle=90,vjust =2,size=12),
-              axis.title.x = element_text(size=12),
-              axis.text.x = element_text(size=12,color="black",face="bold",hjust = 1),
-              axis.text.y = element_text(size=12,color="black",face="bold",hjust = 1),
-              axis.line = element_line(colour="black",size=1),
-              axis.ticks = element_line(),
-              panel.grid.major = element_line(colour="#f0f0f0"),
-              panel.grid.minor = element_blank(),
-              legend.text = element_text(size=12),
-              legend.key = element_rect(colour = NA),
-              legend.position = "right",
-              legend.direction = "vertical",
-              legend.key.size= unit(0.5, "cm"),
-              legend.spacing  = unit(1, "mm"),
-              legend.title = element_text(family="Helvetica",face="italic",size=rel(0.7)),
-              plot.margin=unit(c(10,10,1,10),"mm"),
-              strip.background=element_rect(colour="#f0f0f0",fill="#f0f0f0"),
-              strip.text = element_text(face="bold")
-      ))
-
-  }
-
 if(missing(groupby)){
   groupby="FusionCalls"
 }
-  # Inter and intrachromosomal plot
-fusion_calls_interchromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTERCHROMOSOMAL",annots))
-fusion_calls_intrachromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTRACHROMOSOMAL",annots))
-
-fusion_chrom<-rbind(data.frame(cbind(fusion_calls_interchromosomal,"Distance"=rep("Interchromosomal",nrow(fusion_calls_interchromosomal)))),cbind(fusion_calls_intrachromosomal,"Distance"=rep("Intrachromosomal",nrow(fusion_calls_intrachromosomal)))) %>% unique()
+  
+# fusion_calls_interchromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTERCHROMOSOMAL",annots))
+# fusion_calls_intrachromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTRACHROMOSOMAL",annots))
+# 
+# fusion_chrom<-rbind(data.frame(cbind(fusion_calls_interchromosomal,"Distance"=rep("Interchromosomal",nrow(fusion_calls_interchromosomal)))),cbind(fusion_calls_intrachromosomal,"Distance"=rep("Intrachromosomal",nrow(fusion_calls_intrachromosomal)))) %>% unique()
+ 
+  # Inter and intrachromosomal plot   
+  fusion_chrom<-standardFusionCalls %>% 
+    # get left breakpoints
+    group_by(LeftBreakpoint) %>% 
+    # get left chromosome
+    mutate(Leftchr=strsplit(LeftBreakpoint,":")[[1]][1]) %>% 
+    # get right breakpoint
+    unnest() %>% group_by(RightBreakpoint)  %>% 
+    # get right chr
+    mutate(Rightchr=strsplit(RightBreakpoint,":")[[1]][1]) %>% 
+    unnest() %>%
+    mutate(Distance=ifelse(Leftchr==Rightchr,"INTRACHROMOSOMAL","INTERCHROMOSOMAL")) %>%
+    dplyr::select(Distance,LeftBreakpoint,RightBreakpoint,Sample,!!as.name(groupby)) %>%
+    unique()
 
 p1<-ggplot(fusion_chrom,aes(x=!!as.name(groupby),fill=Distance,alpha=0.75))+geom_bar()+theme_Publication()+theme(legend.position = "top")+xlab(as.name(groupby))+ylab("Count")+guides(alpha=FALSE)+theme(axis.text.x  = element_text(angle = 45))
 
@@ -58,7 +40,6 @@ p2<-ggplot(standardFusionCalls,aes(fill=Fusion_Type,x=Caller,alpha = 0.75))+geom
 
 # keep fusion if atleast 1 is protein-coding
 #BiocManager::install("EnsDb.Hsapiens.v86")
-library(EnsDb.Hsapiens.v86)
 edb <- EnsDb.Hsapiens.v86
 
 genes<-as.data.frame(genes(edb))

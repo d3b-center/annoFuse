@@ -23,10 +23,6 @@ fusion_filtering_QC(standardFusioncalls = standardFusioncalls,
 \item{spanningFragCountFilter}{An integer threshold for (SpanningFragCount - JunctionReadCount)}
 
 \item{readthroughFilter}{Boolean for filtering readthroughs}
-
-\item{expressionMatrix}{A rds with expression data (RSEM/TPM counts) for the same cohort/GTEX}
-
-\item{expressionFilter}{An integer threshold for TPM/FPKM filter}
 }
 \value{
 Standardized fusion calls filtered to pass QC and remove calls with insufficient read-support and annotation red-flags

@@ -29,7 +29,7 @@ This project is licensed under the MIT License
 R version 3.5.1 (2018-07-02) -- "Feather Spray"
 
 ## Version 
-0.1.0
+0.1.8
 
 ## Vignette
 To browse vignettes use:

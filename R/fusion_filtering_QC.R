@@ -5,13 +5,11 @@
 #' oncogenic drivers of a tumor and in some cases, appropriate therapy
 #
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
-#' @param expressionMatrix A rds with expression data (RSEM/TPM counts) for the same cohort/GTEX
 #' @param readingFrameFilter A regex to capture readingframe (eg. in-frame|frameshift|other)
 #' @param readthroughFilter Boolean for filtering readthroughs
 #' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"
 #' @param junctionReadCountFilter An integer threshold for JunctionReadCount
 #' @param spanningFragCountFilter An integer threshold for (SpanningFragCount - JunctionReadCount)
-#' @param expressionFilter An integer threshold for TPM/FPKM filter
 #' @return Standardized fusion calls filtered to pass QC and remove calls with insufficient read-support and annotation red-flags
 
 

@@ -9,38 +9,7 @@
 
 
 plotRecurrentGenes<-function(standardFusioncalls=standardFusioncalls,groupby=groupby,plotn=plotn,countID=countID){
-  theme_Publication <- function(base_size=15, base_family="Helvetica") {
-    library(grid)
-    library(ggthemes)
-    (theme_foundation(base_size=base_size, base_family=base_family)
-      + theme(plot.title = element_text(face = "bold",
-                                        size = 15, hjust = 0.5),
-              text = element_text(family="Helvetica"),
-              panel.background = element_rect(colour = NA),
-              plot.background = element_rect(colour = NA),
-              panel.border = element_rect(colour = NA),
-              axis.title = element_text(face = "bold",size = 12),
-              axis.title.y = element_text(angle=90,vjust =2,size=12),
-              axis.title.x = element_text(size=12),
-              axis.text.x = element_text(size=12,color="black",face="bold",hjust = 1),
-              axis.text.y = element_text(size=12,color="black",face="bold",hjust = 1),
-              axis.line = element_line(colour="black",size=1),
-              axis.ticks = element_line(),
-              panel.grid.major = element_line(colour="#f0f0f0"),
-              panel.grid.minor = element_blank(),
-              legend.text = element_text(size=12),
-              legend.key = element_rect(colour = NA),
-              legend.position = "right",
-              legend.direction = "vertical",
-              legend.key.size= unit(0.5, "cm"),
-              legend.spacing  = unit(1, "mm"),
-              legend.title = element_text(family="Helvetica",face="italic",size=rel(0.7)),
-              plot.margin=unit(c(10,10,1,10),"mm"),
-              strip.background=element_rect(colour="#f0f0f0",fill="#f0f0f0"),
-              strip.text = element_text(face="bold")
-      ))
-
-  }
+  
 
 # inframe fusions only
   standardFusioncalls<-unique(standardFusioncalls) %>% dplyr::filter(Fusion_Type=="in-frame")
@@ -71,6 +40,12 @@ rec_gene<-rbind(rec_gene1A,rec_gene1B)
 
 rec_gene<-head(rec_gene[order(rec_gene$count,decreasing = TRUE),],plotn)
 rec_gene$Gene<-factor(rec_gene$Gene,levels = unique(rec_gene$Gene),ordered = TRUE)
+
+#pallet to match recurrent fusion and recurrent fused genes
+n <- length(levels(as.factor(standardFusioncalls[,groupby])))
+palette <- rainbow(n)
+names(palette)<-levels(as.factor(standardFusioncalls[,groupby]))
+colScale <- scale_colour_manual(name = as.name(groupby),values = palette)
 
 # to match with recurrent fusion
 palette_2<-palette[which(names(palette) %in% rec_gene[,groupby] )]

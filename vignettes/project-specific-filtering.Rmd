@@ -35,19 +35,19 @@ vignette: >
 ---
     
 ---
-
+# annoFuse project specific filtering for OpenPBTA
 K S Gaonkar
 
-Filtered Fusions:
+#### Putative Driver:
+Filtering for general cancer specific genes
+
+Scavenged back putative oncogenic fusions:
 1. In-frame fusions is called in atleast 2 samples per histology OR
 2. In-frame fusions is called in atleast 2 callers 
 AND
 Filtered-fusions found in more than 1 histology OR
 Filtered-fusion doesn't have multi-fused gene (more than 5 times in sample)
 
-Putative Driver:
-Filtering for general cancer specific genes
-Fusions with genes in either onco
 
 This notebook assumes you are in OpenPBTA-analysis project folder structure.
 
@@ -70,7 +70,6 @@ QCGeneFiltered_filtFusion<-rbind(strandedQCGeneFiltered_filtFusion,polyaQCGeneFi
 fusion_calls<-unique(QCGeneFiltered_filtFusion)
 # remove distance from intergenic fusions
 fusion_calls$FusionName<-unlist(lapply(fusion_calls$FusionName,function(x) rm_between(x, "(", ")", extract = F)))
-
 
 # get grouping column id
 group<-params$group
@@ -98,6 +97,7 @@ table(fusion_calls$Caller)
 ```
 
 
+
 ```{r}
 # aggregate caller and remove any fusion with LOCAL_REARRANGEMENT|LOCAL_INVERSION in annots column
 fusion_calls<-aggregate_fusion_calls(fusion_calls,removeother=TRUE,filterAnnots="LOCAL_REARRANGEMENT|LOCAL_INVERSION")
@@ -109,9 +109,7 @@ fusion_calls<-merge(fusion_calls,clinical,by.x="Sample",by.y="Kids_First_Biospec
 
 
 ```{r}
-# Gene fusion should be in-frame
-# AND
-#
+# Gene fusion should be in-frame/frameshift
 # 1. Called by at least n callers
 fusion_calls.summary <- called_by_n_callers(fusion_calls,numCaller)
 
