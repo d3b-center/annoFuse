@@ -20,6 +20,7 @@ annotate_fusion_calls<-function(standardFusioncalls=standardFusioncalls,geneList
     # annotate FusionName
     dplyr::left_join(fusionReferenceDataTab,by=c("FusionName"="FusionName")) %>% dplyr::rename(Fusion_anno=type) %>%
     as.data.frame()
+    annotated_filtered_fusions<-unique(annotated_filtered_fusions)
   return(annotated_filtered_fusions)
 }
 
