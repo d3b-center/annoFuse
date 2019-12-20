@@ -6,8 +6,8 @@
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
 annotate_fusion_calls<-function(standardFusioncalls=standardFusioncalls,geneListReferenceDataTab=geneListReferenceDataTab,fusionReferenceDataTab=fusionReferenceDataTab){
-    geneListReferenceDataTab<-geneListReferenceDataTab %>% select(-file)
-    fusionReferenceDataTab<-fusionReferenceDataTab %>% select(-file)
+    geneListReferenceDataTab<-geneListReferenceDataTab %>% dplyr::select(-file)
+    fusionReferenceDataTab<-fusionReferenceDataTab %>% dplyr::select(-file)
     annotated_filtered_fusions<-standardFusioncalls %>%
     # annotate Gene1A
     dplyr::left_join(geneListReferenceDataTab,by=c("Gene1A"="Gene_Symbol")) %>% dplyr::rename(Gene1A_anno=type) %>%
