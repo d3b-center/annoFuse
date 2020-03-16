@@ -5,12 +5,12 @@
 \title{Function to aggregate Caller and read support per fusions calls}
 \usage{
 aggregate_fusion_calls(standardFusioncalls = standardFusioncalls,
-  removeother = TRUE, filterAnnots = filterAnnots)
+  removeother = FALSE, filterAnnots = filterAnnots)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
 
-\item{removeother}{TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift}
+\item{removeother}{TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift Default: FALSE}
 
 \item{filterAnnots}{regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION}
 }

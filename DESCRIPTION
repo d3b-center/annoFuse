@@ -1,16 +1,16 @@
 Package: annoFuse
 Type: Package
 Title: Annotation And Filtering Analysis For Fusion Calls
-Version: 0.1.8
+Version: 0.2
 Author: Krutika Gaonkark
 Maintainer: Krutika Gaonkark <gaonkark@chop.email.edu>
 Description: Using annoFuse, users can filter out fusions known to be artifactual and retained high-quality fusion calls using support of at least one junction read and remove false calls if there is disproportionate spanning fragment support of more than 10 reads compared to the junction read count. For prioritization, users can capture known as well as putative driver fusions reported in TCGA, or fusions containing gene partners that are known oncogenes, tumor suppressor genes, or COSMIC genes. 
     Finally, users can also determine recurrent fusions across the cohort and recurrently-fused genes within each histology. By providing a standardized filtering and annotation method from multiple callers (STAR-Fusion and Arriba) users are able to merge, filter and prioritize putative oncogenic fusions across the PBTA. 
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1.9000
-Imports: reshape2,dplyr,tidyr,ggplot2,qdapRegex,ggpubr,ensembldb,tibble,ggthemes,EnsDb.Hsapiens.v86,grid,tidyverse,readr
+Imports: reshape2,dplyr,tidyr,ggplot2,qdapRegex,ggpubr,ensembldb,tibble,ggthemes,EnsDb.Hsapiens.v86,grid,tidyverse,readr,grDevices,stats,utils,stringr
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no

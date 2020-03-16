@@ -10,15 +10,15 @@ annotate_fusion_calls<-function(standardFusioncalls=standardFusioncalls,geneList
     fusionReferenceDataTab<-fusionReferenceDataTab %>% dplyr::select(-file)
     annotated_filtered_fusions<-standardFusioncalls %>%
     # annotate Gene1A
-    dplyr::left_join(geneListReferenceDataTab,by=c("Gene1A"="Gene_Symbol")) %>% dplyr::rename(Gene1A_anno=type) %>%
+    dplyr::left_join(geneListReferenceDataTab,by=c("Gene1A"="Gene_Symbol")) %>% dplyr::rename(Gene1A_anno=.data$type) %>%
     # annotate Gene1B
-    dplyr::left_join(geneListReferenceDataTab,by=c("Gene1B"="Gene_Symbol")) %>% dplyr::rename(Gene1B_anno=type) %>%
+    dplyr::left_join(geneListReferenceDataTab,by=c("Gene1B"="Gene_Symbol")) %>% dplyr::rename(Gene1B_anno=.data$type) %>%
     # annotate Gene2A
-    dplyr::left_join(geneListReferenceDataTab,by=c("Gene2A"="Gene_Symbol")) %>% dplyr::rename(Gene2A_anno=type) %>%
+    dplyr::left_join(geneListReferenceDataTab,by=c("Gene2A"="Gene_Symbol")) %>% dplyr::rename(Gene2A_anno=.data$type) %>%
     # annotate Gene2B
-    dplyr::left_join(geneListReferenceDataTab,by=c("Gene2B"="Gene_Symbol")) %>% dplyr::rename(Gene2B_anno=type) %>%
+    dplyr::left_join(geneListReferenceDataTab,by=c("Gene2B"="Gene_Symbol")) %>% dplyr::rename(Gene2B_anno=.data$type) %>%
     # annotate FusionName
-    dplyr::left_join(fusionReferenceDataTab,by=c("FusionName"="FusionName")) %>% dplyr::rename(Fusion_anno=type) %>%
+    dplyr::left_join(fusionReferenceDataTab,by=c("FusionName"="FusionName")) %>% dplyr::rename(Fusion_anno=.data$type) %>%
     as.data.frame()
     annotated_filtered_fusions<-unique(annotated_filtered_fusions)
   return(annotated_filtered_fusions)

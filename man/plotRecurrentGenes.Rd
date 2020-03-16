@@ -5,7 +5,8 @@
 \title{Function to plot recurrent fused genes}
 \usage{
 plotRecurrentGenes(standardFusioncalls = standardFusioncalls,
-  groupby = groupby, plotn = plotn, countID = countID)
+  groupby = groupby, plotn = plotn, countID = countID,
+  palette_rec = NULL)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -15,6 +16,8 @@ plotRecurrentGenes(standardFusioncalls = standardFusioncalls,
 \item{plotn}{top n recurrent fusions to plot}
 
 \item{countID}{column name to count recurrent fusions SampleID/ParticipantID/tumorID}
+
+\item{palette_rec}{colors for grouping variables}
 }
 \value{
 recurrent fused genes

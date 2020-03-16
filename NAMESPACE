@@ -14,4 +14,7 @@ import(tibble)
 import(EnsDb.Hsapiens.v86)
 import(ggthemes)
 import(grid)
-
+importFrom("stringr","str_detect")
+importFrom("grDevices", "rainbow")
+importFrom("stats", "median", "na.omit")
+importFrom("utils", "head")
