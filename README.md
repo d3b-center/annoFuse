@@ -20,12 +20,20 @@ Please find detailed information regarding the functionalities [here](https://gi
 
 ** Single Sample run **
 
-`# Run annoFuse for Single sample with default expression filter and FusionAnnotator red flag artifact filter` 
-`standardFusioncalls<-annoFuseSingleSample(fusionfileArriba = "~/path/to/fusionfileArriba/Sample1_arriba_annotated.tsv",fusionfileStarFusion = "~/path/to/fusionfileStarFusion/Sample1_starfusion.tsv",expressionFile = "~/path/to/expressionFile/Sample1.rsem.genes.results.gz",tumorID = "Sample1")`
+```
+# Load required packages
+suppressPackageStartupMessages(library("annoFuse"))
+suppressPackageStartupMessages(library("tidyverse"))
+suppressPackageStartupMessages(library("reshape2"))
 
-`# Add domain level information for fusion`
-`bioMartDataPfam<-readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))`
-`annDomain<-annoFuse::getPfamDomain(standardFusioncalls  = res,bioMartDataPfam = bioMartDataPfam,keepPartialAnno = TRUE)`
+# Run annoFuse for Single sample with default expression filter and FusionAnnotator red flag artifact filter 
+standardFusioncalls<-annoFuseSingleSample(fusionfileArriba = "~/path/to/fusionfileArriba/Sample1_arriba_annotated.tsv",fusionfileStarFusion = "~/path/to/fusionfileStarFusion/Sample1_starfusion.tsv",expressionFile = "~/path/to/expressionFile/Sample1.rsem.genes.results.gz",tumorID = "Sample1")
+
+# Add domain level information for fusion
+bioMartDataPfam<-readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
+annDomain<-annoFuse::getPfamDomain(standardFusioncalls  = res,bioMartDataPfam = bioMartDataPfam,keepPartialAnno = TRUE)
+
+```
 
 
 ## Authors
