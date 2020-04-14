@@ -15,11 +15,21 @@
 #' @param spanningFragCountFilter An integer threshold for (SpanningFragCount - JunctionReadCount)
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
-annoFuseSingleSample<-function(fusionfileArriba=fusionfileArriba,fusionfileStarFusion=fusionfileStarFusion,expressionFile=expressionFile,expressionFilter=1,tumorID="tumorID",artifactFilter="GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",readingFrameFilter="in-frame|frameshift|other",junctionReadCountFilter=1,spanningFragCountFilter=10,readthroughFilter=FALSE){
+annoFuseSingleSample<-function(fusionfileArriba=fusionfileArriba,fusionfileStarFusion=fusionfileStarFusion,expressionFile=NULL,expressionFilter=1,tumorID="tumorID",artifactFilter="GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",readingFrameFilter="in-frame|frameshift|other",junctionReadCountFilter=1,spanningFragCountFilter=10,readthroughFilter=FALSE){
   
   # read files
   STARFusioninputfile<-read_tsv(fusionfileStarFusion)
   Arribainputfile<-read_tsv(fusionfileArriba)
+  
+  # read in gene and fusion reference tab
+  geneListReferenceDataTab<-read.delim(system.file("extdata","genelistreference.txt", package="annoFuse"),stringsAsFactors = FALSE)
+  geneListReferenceDataTab<-geneListReferenceDataTab %>% dplyr::group_by(Gene_Symbol) %>% dplyr::mutate(type = toString(type)) %>%
+    dplyr::distinct(Gene_Symbol, type,file) %>% as.data.frame()
+  
+  # column 1 as FusionName 2 source file 3 type; collapse to summarize type
+  fusionReferenceDataTab<-read.delim(system.file("extdata","fusionreference.txt", package="annoFuse"),stringsAsFactors = FALSE)
+  fusionReferenceDataTab<-fusionReferenceDataTab %>%
+    dplyr::distinct(FusionName,type,file) %>% as.data.frame()
   
   # if StarFusion and Arriba files empty execution stops
   if(is_empty(STARFusioninputfile$FusionName) & is_empty(Arribainputfile$"gene1--gene2")){
@@ -79,6 +89,7 @@ annoFuseSingleSample<-function(fusionfileArriba=fusionfileArriba,fusionfileStarF
   # General fusion QC for read support and red flags
   fusionQCFiltered<-fusion_filtering_QC(standardFusioncalls=standardFusioncalls,readingFrameFilter=readingFrameFilter,artifactFilter=artifactFilter,junctionReadCountFilter=junctionReadCountFilter,spanningFragCountFilter=spanningFragCountFilter,readthroughFilter=readthroughFilter)
   
+  if (!is.null(expressionFile)){
   expressionMatrix<-read_tsv(expressionFile)
   
   # split gene id and symbol
@@ -103,18 +114,13 @@ annoFuseSingleSample<-function(fusionfileArriba=fusionfileArriba,fusionfileStarF
   
   expressionFiltered<-annoFuse::expressionFilterFusion(standardFusioncalls = fusionQCFiltered,expressionFilter = expressionFilter,expressionMatrix = expressionMatrix.collapsed)
   
-  # read in gene and fusion reference tab
-  geneListReferenceDataTab<-read.delim(system.file("extdata","genelistreference.txt", package="annoFuse"),stringsAsFactors = FALSE)
-  geneListReferenceDataTab<-geneListReferenceDataTab %>% dplyr::group_by(Gene_Symbol) %>% dplyr::mutate(type = toString(type)) %>%
-    dplyr::distinct(Gene_Symbol, type,file) %>% as.data.frame()
-  
-  # column 1 as FusionName 2 source file 3 type; collapse to summarize type
-  fusionReferenceDataTab<-read.delim(system.file("extdata","fusionreference.txt", package="annoFuse"),stringsAsFactors = FALSE)
-  fusionReferenceDataTab<-fusionReferenceDataTab %>%
-    dplyr::distinct(FusionName,type,file) %>% as.data.frame()
-  
-  # annotated filtered fusion calls
+  # annotated QC and expression filtered fusion calls
   filteredFusionAnnotated<-annotate_fusion_calls(standardFusioncalls=expressionFiltered,geneListReferenceDataTab=geneListReferenceDataTab,fusionReferenceDataTab=fusionReferenceDataTab)
+  } else{
+    # annotated QC filtered fusion calls
+    filteredFusionAnnotated<-annotate_fusion_calls(standardFusioncalls=fusionQCFiltered,geneListReferenceDataTab=geneListReferenceDataTab,fusionReferenceDataTab=fusionReferenceDataTab)
+    
+  }
   
   
   # return filtered and annotated dataframe

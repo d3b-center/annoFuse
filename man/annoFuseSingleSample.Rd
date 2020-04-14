@@ -6,9 +6,8 @@
 Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold}
 \usage{
 annoFuseSingleSample(fusionfileArriba = fusionfileArriba,
-  fusionfileStarFusion = fusionfileStarFusion,
-  expressionFile = expressionFile, expressionFilter = 1,
-  tumorID = "tumorID",
+  fusionfileStarFusion = fusionfileStarFusion, expressionFile = NULL,
+  expressionFilter = 1, tumorID = "tumorID",
   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
   readingFrameFilter = "in-frame|frameshift|other",
   junctionReadCountFilter = 1, spanningFragCountFilter = 10,
