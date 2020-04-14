@@ -2,8 +2,7 @@
 % Please edit documentation in R/annoFuseSingleSample.R
 \name{annoFuseSingleSample}
 \alias{annoFuseSingleSample}
-\title{Single Sample use for annoFuse
-Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold}
+\title{Single Sample use for annoFuse}
 \usage{
 annoFuseSingleSample(fusionfileArriba = fusionfileArriba,
   fusionfileStarFusion = fusionfileStarFusion, expressionFile = NULL,
@@ -38,6 +37,5 @@ annoFuseSingleSample(fusionfileArriba = fusionfileArriba,
 Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 }
 \description{
-Single Sample use for annoFuse
 Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold
 }
