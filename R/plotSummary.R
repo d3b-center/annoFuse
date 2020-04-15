@@ -79,14 +79,14 @@ p3<-ggplot(fusion_type_gene_df,aes(x=gene_biotype,y=gene_position,size=Type.ct,f
 
 # Kinase groups
 annDomain<-getPfamDomain(standardFusioncalls = standardFusionCalls,bioMartDataPfam = bioMartDataPfam,keepPartialAnno = TRUE)
-gene1AKinaseDomain<-annDomain$Gene1A %>% dplyr::filter(Gene1A_DOMAIN_RETAINED_IN_FUSION=="Yes" & grepl("kinase",NAME)) %>% dplyr::select("Gene1A","NAME",!!(as.name(groupby))) %>% dplyr::rename("GeneSymbol"="Gene1A","Domain"="NAME") %>% dplyr::mutate("gene_position"="Gene1A")
-gene1BKinaseDomain<-annDomain$Gene1B %>% dplyr::filter(Gene1B_DOMAIN_RETAINED_IN_FUSION=="Yes" & grepl("kinase",NAME)) %>% dplyr::select("Gene1B","NAME",!!(as.name(groupby))) %>% dplyr::rename("GeneSymbol"="Gene1B","Domain"="NAME") %>% dplyr::mutate("gene_position"="Gene1B") 
+gene1AKinaseDomain<-annDomain$Gene1A %>% dplyr::filter(Gene1A_DOMAIN_RETAINED_IN_FUSION=="Yes" & grepl("kinase",NAME)) %>% dplyr::select("Gene1A","NAME",!!(as.name(groupby)),Sample) %>% dplyr::rename("GeneSymbol"="Gene1A","Domain"="NAME") %>% dplyr::mutate("gene_position"="Gene1A")
+gene1BKinaseDomain<-annDomain$Gene1B %>% dplyr::filter(Gene1B_DOMAIN_RETAINED_IN_FUSION=="Yes" & grepl("kinase",NAME)) %>% dplyr::select("Gene1B","NAME",!!(as.name(groupby)),Sample) %>% dplyr::rename("GeneSymbol"="Gene1B","Domain"="NAME") %>% dplyr::mutate("gene_position"="Gene1B") 
 
 fusion_kinase_protein_df<-rbind(gene1AKinaseDomain,gene1BKinaseDomain)
 
 if (!is_empty(fusion_kinase_protein_df$GeneSymbol)){
 kinase_fusion<-fusion_kinase_protein_df %>%
-  dplyr::select("gene_position","Domain",!!(as.name(groupby)),GeneSymbol) %>%
+  dplyr::select("gene_position","Domain",!!(as.name(groupby)),GeneSymbol,Sample) %>%
   unique() %>%
   group_by(.data$Domain,.data$gene_position) %>%
   dplyr::summarise(Type.ct = n()) %>%
