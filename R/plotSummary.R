@@ -86,7 +86,7 @@ fusion_kinase_protein_df<-rbind(gene1AKinaseDomain,gene1BKinaseDomain)
 
 if (!is_empty(fusion_kinase_protein_df$GeneSymbol)){
 kinase_fusion<-fusion_kinase_protein_df %>%
-  dplyr::select("gene_position","Domain",!!(as.name(groupby))) %>%
+  dplyr::select("gene_position","Domain",!!(as.name(groupby)),GeneSymbol) %>%
   unique() %>%
   group_by(.data$Domain,.data$gene_position) %>%
   dplyr::summarise(Type.ct = n()) %>%
