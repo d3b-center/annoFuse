@@ -21,7 +21,9 @@ These instructions will get you a copy of the package up and running on your loc
 
 ## Vignette
 To browse vignette to see example of ** Single Sample run ** 
+
 `devtools::install_github("d3b-center/annoFuse", build_vignettes=TRUE)`
+
 `browseVignettes("annoFuse")`
 
 Please find detailed information regarding the functionalities [here](https://github.com/d3b-center/annoFuse/wiki)
