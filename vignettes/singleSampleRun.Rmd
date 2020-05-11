@@ -83,8 +83,8 @@ exons<-readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
 
 ## Plot breakpoint
 
-```{r}
-plotBreakpoints(domainDataFrame = kiaabraf,exons = exons,geneposition = "Right")+theme_Publication(base_size = 12)
+```{r , fig.width=6, fig.height=3}
+plotBreakpoints(domainDataFrame = kiaabraf,exons = exons,geneposition = "Right")+theme_Publication(base_size = 20)
 ```
 
 
