@@ -78,6 +78,7 @@ p3<-ggplot(fusion_type_gene_df,aes(x=gene_biotype,y=gene_position,size=Type.ct,f
 
 
 # Kinase groups
+bioMartDataPfam<-readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
 annDomain<-getPfamDomain(standardFusioncalls = standardFusionCalls,bioMartDataPfam = bioMartDataPfam,keepPartialAnno = TRUE)
 gene1AKinaseDomain<-annDomain$Gene1A %>% dplyr::filter(Gene1A_DOMAIN_RETAINED_IN_FUSION=="Yes" & grepl("kinase",NAME)) %>% dplyr::select("Gene1A","NAME",!!(as.name(groupby)),Sample) %>% dplyr::rename("GeneSymbol"="Gene1A","Domain"="NAME") %>% dplyr::mutate("gene_position"="Gene1A")
 gene1BKinaseDomain<-annDomain$Gene1B %>% dplyr::filter(Gene1B_DOMAIN_RETAINED_IN_FUSION=="Yes" & grepl("kinase",NAME)) %>% dplyr::select("Gene1B","NAME",!!(as.name(groupby)),Sample) %>% dplyr::rename("GeneSymbol"="Gene1B","Domain"="NAME") %>% dplyr::mutate("gene_position"="Gene1B") 
@@ -130,13 +131,29 @@ fusion_type_bubblegene_df$gene_position[grep("Gene1A",fusion_type_bubblegene_df$
 fusion_type_bubblegene_df$gene_position[grep("Gene1B",fusion_type_bubblegene_df$gene_position)]<-"3'-Gene"
 fusion_type_bubblegene_df$gene_position<-factor(fusion_type_bubblegene_df$gene_position ,levels = c("5'-Gene","3'-Gene"),ordered = TRUE)
 
-p5<-ggplot(fusion_type_bubblegene_df,aes(x=!!as.name(groupby),y=Annot.ct,size=Annot.ct,fill=Annotation,color=Annotation,alpha=0.75,width=5,height=5))+geom_point(shape=21)+guides( size = FALSE,alpha=FALSE)+scale_size_continuous(range = c(1,12))+ylab("Count")+xlab(as.name(groupby))+theme_Publication()+theme(axis.text.x  = element_text(angle = 45,hjust = 1,size=12),axis.text.y = element_text(angle=0,vjust =2,size=12),legend.text = element_text(size=12),legend.position = "left")+theme(plot.margin=unit(c(0,10,0,15),"mm"))+facet_wrap(~gene_position)
+p5<-ggplot(fusion_type_bubblegene_df,aes(x=!!as.name(groupby),y=Annot.ct,size=Annot.ct,fill=Annotation,color=Annotation,alpha=0.75,width=5,height=5))+geom_point(shape=21)+guides( size = FALSE,alpha=FALSE)+scale_size_continuous(range = c(1,12))+ylab("Count")+xlab(as.name(groupby))+theme_Publication(base_size = 12)+theme(axis.text.x  = element_text(angle = 45,hjust = 1,size=12),axis.text.y = element_text(angle=0,vjust =2,size=12),legend.text = element_text(size=12),legend.position = "left")+theme(plot.margin=unit(c(0,10,0,15),"mm"))+facet_wrap(~gene_position)
 
 
 if (!missing(outputpdffile)){
   ggarrange(p1,p2,p3,p4,p5,labels = c("A","B","C","D","E"),heights=c(5,5,6),widths=c(2,1) ,nrow=3,ncol=2,font.label = list(size=30)) %>% ggexport(filename = outputpdffile,width = 20,height = 20)
 } else {
-  ggarrange(p1,p2,p3,p4,p5,heights=c(5,5,6,6,6),widths=4,ncol=1)
+  p1<-ggplot(fusion_chrom,aes(x=!!as.name(groupby),fill=fusion_chrom$Distance,alpha=0.75))+geom_bar()+theme_Publication(base_size = 24)+theme(legend.position = "top")+xlab(as.name(groupby))+ylab("Count")+guides(alpha=FALSE)+theme(axis.text.x  = element_text(angle = 45,size=6),plot.margin=unit(c(1,1,0,10),"mm"))+labs(fill = "Distance")
+  
+  # frame information
+  p2<-ggplot(standardFusionCalls,aes(fill=standardFusionCalls$Fusion_Type,x=standardFusionCalls$Caller,alpha = 0.75))+geom_bar(aes(y=log2(stat(count))))+rotate()+xlab("Caller")+ylab("Count (log2)")+theme_Publication(base_size = 24)+theme(legend.position = "top")+guides(alpha=FALSE)+theme(axis.text.x  = element_text(angle = 0,hjust = 1,size=6),axis.text.y = element_text(angle=0,vjust =2,size=6),plot.margin=unit(c(1,10,10,1),"mm"))+labs(fill = "Frame")
+  
+  p3<-ggplot(fusion_type_gene_df,aes(x=gene_biotype,y=gene_position,size=Type.ct,fill=gene_position,color=gene_position,alpha=0.75,width=2.5,height=5))+geom_point(shape=21)+guides( size = FALSE,color=FALSE,alpha=FALSE)+scale_size_continuous(range = c(0.1,3))+xlab("Gene Biotype")+ylab("Gene Position")+theme_Publication(base_size = 24)+theme(axis.text.x  = element_text(angle = 45,hjust = 1,size=6),axis.text.y = element_text(angle=0,vjust =2,size=6),legend.text = element_text(size=6),legend.position = "left",plot.margin=unit(c(1,1,1,10),"mm"))+guides( fill = FALSE)
+  
+  if (!is_empty(fusion_kinase_protein_df$GeneSymbol)){
+    p4<-ggplot(kinase_fusion,aes(x=Domain,y=Type.ct,fill=gene_position,alpha=0.95))+geom_col()+theme_Publication(base_size = 24)+ylab( "Count")+xlab("Kinase domain retained")+guides(alpha=FALSE)+theme(axis.text.x  = element_text(angle = 45,hjust = 1,size=6),axis.text.y = element_text(angle=0,vjust =2,size=6),plot.margin=unit(c(1,1,1,1),"mm"))+labs(fill = "Gene Position")
+  } else {
+    p4<-ggplot()+theme_void()
+  }
+  
+  p5<-ggplot(fusion_type_bubblegene_df,aes(x=!!as.name(groupby),y=Annot.ct,size=Annot.ct,fill=Annotation,color=Annotation,alpha=0.75,width=2,height=3))+geom_point(shape=21)+guides( size = FALSE,alpha=FALSE)+scale_size_continuous(range = c(0.1,3))+ylab("Count")+xlab(as.name(groupby))+theme_Publication(base_size = 24)+theme(axis.text.x  = element_text(angle = 45,hjust = 1,size=6),axis.text.y = element_text(angle=0,vjust =2,size=6),legend.text = element_text(size=6),legend.position = "left")+theme(plot.margin=unit(c(1,1,1,10),"mm"))+facet_wrap(~gene_position)
+  
+  p<-ggarrange(p1,p2,p3,p4,p5,labels = c("A","B","C","D","E"),heights=c(3,2,3),widths=c(2,1) ,nrow=3,ncol=2,font.label = list(size=12))
+  return(p)
 }
 
 

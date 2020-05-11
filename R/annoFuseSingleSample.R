@@ -1,6 +1,6 @@
 #' Single Sample use for annoFuse
-
-
+#'
+#' 
 #' Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold
 
 #' @param fusionfileArriba A dataframe from arriba fusion caller
@@ -19,7 +19,7 @@ annoFuseSingleSample<-function(fusionfileArriba=fusionfileArriba,fusionfileStarF
   
   # read files
   STARFusioninputfile<-read_tsv(fusionfileStarFusion)
-  Arribainputfile<-read_tsv(fusionfileArriba)
+  Arribainputfile<-read_tsv(fusionfileArriba,col_types = readr::cols(breakpoint1 = readr::col_character(),breakpoint2 = readr::col_character()))
   
   # read in gene and fusion reference tab
   geneListReferenceDataTab<-read.delim(system.file("extdata","genelistreference.txt", package="annoFuse"),stringsAsFactors = FALSE)
