@@ -6,17 +6,16 @@
 
 called_by_n_callers<-function(standardFusioncalls=standardFusioncalls,numCaller=numCaller){
 
-# aggregate caller
+# aggregate caller per Sample,FusionName and Fusion_Type
 fusion_caller.summary <- standardFusioncalls %>%
-    dplyr::filter(Fusion_Type != "other") %>%
-    dplyr::select(Sample,FusionName,Caller) %>%
-    group_by(FusionName, Sample ) %>%
+    dplyr::select(.data$Sample,.data$FusionName,.data$Caller,.data$Fusion_Type) %>%
+    group_by(.data$FusionName, .data$Sample,.data$Fusion_Type ) %>%
     unique() %>%
-    dplyr::mutate(CalledBy = toString(Caller), caller.count = n())
+    dplyr::mutate(CalledBy = toString(.data$Caller), caller.count = n())
 
 # Called by at least n callers
 fusion_calls.summary <- fusion_caller.summary %>%
-  dplyr::filter(caller.count >= numCaller) %>%
+  dplyr::filter(.data$caller.count >= numCaller) %>%
   unique() %>%
   mutate(note=paste0("Called by",numCaller, "callers")) %>%
   as.data.frame()

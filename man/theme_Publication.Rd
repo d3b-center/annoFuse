@@ -4,7 +4,7 @@
 \alias{theme_Publication}
 \title{theme_publication for plots}
 \usage{
-theme_Publication(base_size = 15, base_family = "Helvetica")
+theme_Publication(base_size = 12, base_family = "Helvetica")
 }
 \arguments{
 \item{base_size}{size of font for plot default "15"}

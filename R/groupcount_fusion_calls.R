@@ -9,11 +9,11 @@ groupcount_fusion_calls<-function(standardFusioncalls=standardFusioncalls,group=
 
 # remove fusions that are in > numGroup
 group.count <- standardFusioncalls %>%
-  dplyr::select(FusionName, !!as.name(group)) %>%
+  dplyr::select(.data$FusionName, !!as.name(group)) %>%
   unique() %>%
-  group_by(FusionName) %>%
+  group_by(.data$FusionName) %>%
   dplyr::mutate(group.ct = n(),Sample = toString(!!(as.name(group)))) %>%
-  dplyr::filter(group.ct >numGroup)
+  dplyr::filter(.data$group.ct >numGroup)
 
 return(group.count)
 

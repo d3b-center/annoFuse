@@ -9,18 +9,18 @@ fusion_multifused<-function(standardFusioncalls=standardFusioncalls,limitMultiFu
 # remove multi-fused genes
 fusion_multifused_per_sample <- standardFusioncalls  %>%
   # We want to keep track of the gene symbols for each sample-fusion pair
-  dplyr::select(Sample, FusionName, Gene1A, Gene1B, Gene2A, Gene2B) %>%
+  dplyr::select(.data$Sample, .data$FusionName, .data$Gene1A, .data$Gene1B, .data$Gene2A, .data$Gene2B) %>%
   # We want a single column that contains the gene symbols
   tidyr::gather(Gene1A, Gene1B, Gene2A, Gene2B,
                 key = gene_position, value = GeneSymbol) %>%
   # Remove columns without gene symbols
-  dplyr::filter(GeneSymbol != "") %>%
-  dplyr::arrange(Sample, FusionName) %>%
+  dplyr::filter(.data$GeneSymbol != "") %>%
+  dplyr::arrange(.data$Sample, .data$FusionName) %>%
   # Retain only distinct rows
   dplyr::distinct() %>%
-  group_by(Sample,GeneSymbol) %>%
+  group_by(.data$Sample,.data$GeneSymbol) %>%
   dplyr::summarise(Gene.ct = n()) %>%
-  dplyr::filter(Gene.ct>limitMultiFused) %>%
+  dplyr::filter(.data$Gene.ct>limitMultiFused) %>%
   mutate(note=paste0("multfused " ,limitMultiFused, " times per sample"))
 
 return(fusion_multifused_per_sample)

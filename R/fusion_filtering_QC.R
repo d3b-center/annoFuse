@@ -21,13 +21,13 @@ fusion_filtering_QC<-function(standardFusioncalls=standardFusioncalls,readingFra
     # to obtain geneA and geneB for gene search below
     bind_cols(colsplit(standardFusioncalls$FusionName, pattern = '--', names = c("GeneA","GeneB"))) %>%
     # Intergenic fusion will have Gene1A,Gene2A,Gene1B,Gene2B
-    separate(GeneA,sep = "/",into =c("Gene1A","Gene2A"),remove=FALSE) %>%
-    separate(GeneB,sep = "/",into =c("Gene1B","Gene2B"),remove=FALSE) %>%
+    separate(.data$GeneA,sep = "/",into =c("Gene1A","Gene2A"),remove=FALSE) %>%
+    separate(.data$GeneB,sep = "/",into =c("Gene1B","Gene2B"),remove=FALSE) %>%
     #remove distance to fusion breakpoint from gene names in intergenic fusion
-    mutate(Gene1A=gsub("[(].*","",Gene1A),
-           Gene2A=gsub("[(].*","",Gene2A),
-           Gene1B=gsub("[(].*","",Gene1B),
-           Gene2B=gsub("[(].*","",Gene2B)) %>%
+    mutate(Gene1A=gsub("[(].*","",.data$Gene1A),
+           Gene2A=gsub("[(].*","",.data$Gene2A),
+           Gene1B=gsub("[(].*","",.data$Gene1B),
+           Gene2B=gsub("[(].*","",.data$Gene2B)) %>%
     as.data.frame()
 
   # filter readthroughs

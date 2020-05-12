@@ -18,7 +18,7 @@ putative_driver_fusions <- standardFusioncalls %>%
 #                  !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
 #                  !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol |
 #                  !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol) %>%
-  dplyr::filter(!is.na(Gene1A_anno) | !is.na(Gene1B_anno) | !is.na(Gene2A_anno) | !is.na(Gene2B_anno))
+  dplyr::filter(!is.na(.data$Gene1A_anno) | !is.na(.data$Gene1B_anno) | !is.na(.data$Gene2A_anno) | !is.na(.data$Gene2B_anno))
 } else{
   standardFusioncalls<-annotate_fusion_calls(standardFusioncalls=standardFusioncalls,geneListReferenceDataTab=geneListReferenceDataTab,fusionReferenceDataTab=fusionReferenceDataTab)
   putative_driver_fusions <- standardFusioncalls %>%
@@ -26,7 +26,7 @@ putative_driver_fusions <- standardFusioncalls %>%
 #                    !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
 #                    !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol |
 #                    !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol) %>%
-    dplyr::filter(!is.na(Gene1A_anno) | !is.na(Gene1B_anno) | !is.na(Gene2A_anno) | !is.na(Gene2B_anno))
+    dplyr::filter(!is.na(.data$Gene1A_anno) | !is.na(.data$Gene1B_anno) | !is.na(.data$Gene2A_anno) | !is.na(.data$Gene2B_anno))
 }
 return(putative_driver_fusions)
 }

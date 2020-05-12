@@ -4,18 +4,28 @@ Using annoFuse, users can filter out fusions known to be artifactual and retaine
     Finally, users can also determine recurrent fusions across the cohort and recurrently-fused genes within each histology. By providing a standardized filtering and annotation method from multiple callers (STAR-Fusion and Arriba) users are able to merge, filter and prioritize putative oncogenic fusions across the PBTA. 
 
 ## Getting Started
-These instructions will get you a copy of the project up and running on your local machine. 
+These instructions will get you a copy of the package up and running on your local machine. 
 
 ## Install package
 `devtools::install_github("d3b-center/annoFuse")`
 
-### Prerequisites
+### Prerequisites for cohort level analysis
  - merge calls from each caller for you cohort and add tumor_id to each file before merging to be able to differentiate between the calls and a column annots with additional annotation (eg from FusionAnnotator or caller specific annotation)
- - reference folder <link to box for example> with a gene genelistreference.txt and fusionreference.txt
- - expression matrix with GeneSymbol per row or should be able to collap to per GeneSymbol
- - normal expression matrix from GTEx or your own normal cohort if you require zscore annotation using a normal expression matrix
+ - reference folder  with a gene [genelistreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/genelistreference.txt) and [fusionreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/fusionreference.txt)
+ - expression matrix with GeneSymbol per row and samples as columns
  
-### Application
+### Prerequisites for single sample analysis
+ - [STAR-Fusion star-fusion.fusion_predictions.tsv ](https://github.com/STAR-Fusion/STAR-Fusion/wiki#output-from-star-fusion)
+ - [Arriba fusions.tsv](https://arriba.readthedocs.io/en/latest/output-files/)
+ - RSEM genes.results.gz
+
+## Vignette
+To browse vignette to see example of ** Single Sample run ** 
+
+`devtools::install_github("d3b-center/annoFuse", build_vignettes=TRUE)`
+
+`browseVignettes("annoFuse")`
+
 Please find detailed information regarding the functionalities [here](https://github.com/d3b-center/annoFuse/wiki)
 
 ## Authors
@@ -29,8 +39,5 @@ This project is licensed under the MIT License
 R version 3.5.1 (2018-07-02) -- "Feather Spray"
 
 ## Version 
-0.1.8
+0.2
 
-## Vignette
-To browse vignettes use:
-`browseVignettes("annoFuse")` 

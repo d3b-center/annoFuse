@@ -9,16 +9,16 @@ expressionFilterFusion<-function(standardFusioncalls=standardFusioncalls,express
 
   fusion_sample_gene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair
-    dplyr::select(Sample, FusionName, Gene1A, Gene1B, Gene2A, Gene2B) %>%
+    dplyr::select(.data$Sample, .data$FusionName, .data$Gene1A, .data$Gene1B, .data$Gene2A, .data$Gene2B) %>%
     # We want a single column that contains the gene symbols
     tidyr::gather(Gene1A, Gene1B, Gene2A, Gene2B,
                   key = gene_position, value = GeneSymbol) %>%
     # Get rid of the Gene1A, Gene1B, Gene2A, Gene2B information
-    dplyr::select(-gene_position) %>%
+    dplyr::select(-.data$gene_position) %>%
     # Remove columns without gene symbols
-    dplyr::filter(GeneSymbol != "") %>%
+    dplyr::filter(.data$GeneSymbol != "") %>%
     # This is for illustrations sake, only
-    dplyr::arrange(Sample, FusionName) %>%
+    dplyr::arrange(.data$Sample, .data$FusionName) %>%
     # Retain only distinct rows
     dplyr::distinct()
 
@@ -28,14 +28,27 @@ expressionFilterFusion<-function(standardFusioncalls=standardFusioncalls,express
     dplyr::select(-one_of("gene_id","EnsembleID")) %>%
     # Get the data into long format
     reshape2::melt(variable.name = "Sample",
-                   value.name = "expression_value") %>%
-    # Remove rows with expression that is too low
-    dplyr::filter(expression_value > expressionFilter)
-
+                   value.name = "expression_value")
+  
+  
   # Error handling
   if (!all(fusion_sample_gene_df$Sample %in% expression_long_df$Sample)) {
     warning("Not all samples in expression file. Only returning fusions for samples in expressionMatrix.")
   }
+  if (length(unique(setdiff(fusion_sample_gene_df$GeneSymbol,expression_long_df$GeneSymbol))) >0 ) {
+    warning("Not all genes in expression file. Adding genes unique to fusion in output.")
+    # expression_long_df_add<-unique(fusion_sample_gene_df[which(fusion_sample_gene_df$GeneSymbol %in% unique(setdiff(fusion_sample_gene_df$GeneSymbol,expression_long_df$GeneSymbol))),c("Sample","GeneSymbol")])
+    # expression_long_df_add$expression_value<--Inf
+  }
+  
+  expression_long_df<-expression_long_df %>%
+    # Remove rows with expression that is too low
+    dplyr::filter(.data$expression_value > expressionFilter)
+  
+  
+  #expression_long_df<-rbind(expression_long_df,expression_long_df_add)
+  
+  
 
   expression_filtered_fusions <- fusion_sample_gene_df %>%
     # join the filtered expression values to the data frame keeping track of symbols
@@ -43,12 +56,12 @@ expressionFilterFusion<-function(standardFusioncalls=standardFusioncalls,express
     dplyr::left_join(expression_long_df, by = c("Sample", "GeneSymbol"))  %>%
     # for each sample-fusion name pair, are all genes under the expression threshold?
     # keep track in `all_low_expression` column
-    dplyr::group_by(FusionName, Sample) %>%
-    dplyr::mutate(all_low_expression = all(is.na(expression_value))) %>%
+    dplyr::group_by(.data$FusionName, .data$Sample) %>%
+    dplyr::mutate(all_low_expression = all(is.na(.data$expression_value))) %>%
     # only keep the rows that *don't* have all below threshold
-    dplyr::filter(!all_low_expression) %>%
+    dplyr::filter(!.data$all_low_expression) %>%
     # we only need the FusionName and Sample to filter the entire fusion data.frame
-    dplyr::select(FusionName, Sample) %>%
+    dplyr::select(.data$FusionName, .data$Sample) %>%
     # unique FusionName-Sample rows
     dplyr::distinct() %>%
     # use this to filter the QC filtered fusion data frame
@@ -58,5 +71,8 @@ expressionFilterFusion<-function(standardFusioncalls=standardFusioncalls,express
                     'Caller' ,'Fusion_Type' , 'JunctionReadCount' ,'SpanningFragCount' ,
                     'Confidence' ,'annots','Gene1A','Gene2A','Gene1B','Gene2B'))
 
+  
+  
+  
   return(expression_filtered_fusions)
 }
