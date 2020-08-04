@@ -59,7 +59,7 @@ if (!is.null(palette_rec)){
 }
 
 rec_genes<-ggplot(rec_gene)+geom_col(aes(x=rec_gene$Gene,y=rec_gene$count,fill=!!as.name(groupby)),alpha=0.75)+ylab('Number of patients') +
-  guides(color = F,alpha=FALSE) + xlab(NULL)+
+  guides(color = FALSE, alpha=FALSE) + xlab(NULL)+
   scale_y_continuous(breaks = seq(0, 150, by =10))+rotate()+theme_Publication()+theme(legend.title = element_blank(),axis.text.y  = element_text(face="italic",angle = 0,hjust = 1,size = 12))+scale_fill_manual(name = as.name(groupby),values = palette_2)+scale_x_discrete(limits = rev(levels(rec_gene$Gene)))
 
 return(rec_genes)

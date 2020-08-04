@@ -48,7 +48,7 @@ plotRecurrentFusions<-function(standardFusioncalls=standardFusioncalls,groupby=g
   rec_fusions$FusionName<-factor(rec_fusions$FusionName,levels=unique(rec_fusions$FusionName),ordered = TRUE)
   rec_fusions_plot<-ggplot(rec_fusions)+geom_col(aes(x=rec_fusions$FusionName,y=rec_fusions$count,fill=!!as.name(groupby)),alpha=0.75)+
     guides(alpha = FALSE) + ylab('Number of patients')+ xlab(NULL)+
-    guides(color = F,alpha=FALSE)+
+    guides(color = FALSE, alpha=FALSE)+
     scale_y_continuous(breaks = seq(0, 200, by = 20))+ggpubr::rotate()+scale_fill_manual(name = as.name(groupby),values = palette_1)+theme_Publication()+theme(legend.title = element_blank(),axis.text.y  = element_text(face="italic",angle = 0,hjust = 1,size = 12),legend.position = "bottom")+scale_x_discrete(limits = rev(levels(rec_fusions$FusionName)))
 
   return(rec_fusions_plot)
