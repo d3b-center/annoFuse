@@ -3,6 +3,9 @@
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param geneListReferenceDataTab A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type
 #' @param fusionReferenceDataTab A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type
+#' 
+#' @export
+#' 
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
 annotate_fusion_calls<-function(standardFusioncalls=standardFusioncalls,geneListReferenceDataTab=geneListReferenceDataTab,fusionReferenceDataTab=fusionReferenceDataTab){

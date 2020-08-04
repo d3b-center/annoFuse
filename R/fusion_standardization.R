@@ -6,6 +6,9 @@
 #'
 #' @param fusion_calls A dataframe from star fusion or arriba (more callers to be added)
 #' @param caller string options STARfusion/arriba
+#' 
+#' @export
+#' 
 #' @return Standardized fusion calls ready for filtering
 
 fusion_standardization <- function(fusion_calls=fusion_calls,caller=caller) {

@@ -2,16 +2,17 @@
 % Please edit documentation in R/theme_publication.R
 \name{theme_Publication}
 \alias{theme_Publication}
-\title{theme_publication for plots}
+\title{theme_publication for plots
+Publication quality images for summary plots}
 \usage{
 theme_Publication(base_size = 12, base_family = "Helvetica")
 }
 \arguments{
 \item{base_size}{size of font for plot default "15"}
 
-\item{base_family}{font to be used default "Helvetica"
-Publication quality images for summary plots}
+\item{base_family}{font to be used default "Helvetica"}
 }
 \description{
 theme_publication for plots
+Publication quality images for summary plots
 }

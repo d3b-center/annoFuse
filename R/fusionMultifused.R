@@ -2,6 +2,9 @@
 
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param limitMultiFused Integer to identify a limit of times a gene can be fused per sample
+#' 
+#' @export
+#' 
 #' @return Fusions where gene partner(s) is multifused per sample
 
 fusion_multifused<-function(standardFusioncalls=standardFusioncalls,limitMultiFused=limitMultiFused){

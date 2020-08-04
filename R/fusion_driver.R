@@ -7,6 +7,9 @@
 #' @param geneListReferenceDataTab A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type
 #' @param fusionReferenceDataTab A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type
 #' @param annotated Boolean if annotated
+#' 
+#' @export
+#' 
 #' @return Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
 fusion_driver<-function(standardFusioncalls=standardFusioncalls,annotated=TRUE,geneListReferenceDataTab=geneListReferenceDataTab,fusionReferenceDataTab=fusionReferenceDataTab){

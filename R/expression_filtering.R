@@ -3,6 +3,9 @@
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param expressionMatrix Expression matrix for samples used in cohort for fusion calls
 #' @param expressionFilter FPKM/TPM threshold for not expressed
+#' 
+#' @export
+#' 
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
 expressionFilterFusion<-function(standardFusioncalls=standardFusioncalls,expressionMatrix=expressionMatrix,expressionFilter=expressionFilter){

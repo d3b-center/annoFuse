@@ -3,6 +3,9 @@
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param removeother TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift Default: FALSE
 #' @param filterAnnots regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION
+#' 
+#' @export
+#' 
 #' @return Standardized fusion calls with aggregated Caller and read support
 
 aggregate_fusion_calls<-function(standardFusioncalls=standardFusioncalls,removeother=FALSE,filterAnnots=filterAnnots){

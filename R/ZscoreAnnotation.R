@@ -10,6 +10,9 @@
 #' @param normData normalizing expression dataset to calculate zscore
 #' @param expressionMatrix Expression matrix associated with the fusion calls
 #' @param saveZscoredMatrix File to save zscored matrix calculated for the normalized data and expression matrix
+#' 
+#' @export
+#' 
 #' @return expression_annotated_fusions is a standardized fusion call set with standard
 #'
 

@@ -5,6 +5,9 @@
 #' @param plotn top n recurrent fusions to plot
 #' @param countID column name to count recurrent fusions SampleID/ParticipantID/tumorID
 #' @param palette_rec colors for grouping variables
+#' 
+#' @export
+#' 
 #' @return recurrent fused genes
 #'
 

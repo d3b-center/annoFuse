@@ -10,6 +10,9 @@
 #' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"
 #' @param junctionReadCountFilter An integer threshold for JunctionReadCount
 #' @param spanningFragCountFilter An integer threshold for (SpanningFragCount - JunctionReadCount)
+#' 
+#' @export
+#' 
 #' @return Standardized fusion calls filtered to pass QC and remove calls with insufficient read-support and annotation red-flags
 
 

@@ -3,6 +3,9 @@
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param numSample Least number of samples per group that have the fusion
 #' @param group column name for grouping variable
+#' 
+#' @export
+#' 
 #' @return Fusions found in atleast n samples
 
 samplecount_fusion_calls<-function(standardFusioncalls=standardFusioncalls,numSample=numSample,group=group){

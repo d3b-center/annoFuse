@@ -2,6 +2,9 @@
 
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param numCaller Least number of callers that have the fusion
+#' 
+#' @export
+#' 
 #' @return Fusions called by n callers
 
 called_by_n_callers<-function(standardFusioncalls=standardFusioncalls,numCaller=numCaller){

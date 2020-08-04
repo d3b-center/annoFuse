@@ -3,6 +3,9 @@
 #' @param domainDataFrame A dataframe from star fusion or arriba standardized to run through the filtering steps and getPfamDomain() function to get pfam domain annotation per gene
 #' @param exons exon level information from gtf
 #' @param geneposition Left/Right position of gene
+#' 
+#' @export
+#' 
 #' @return ggplot of gene and breakpoints
 
 

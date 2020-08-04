@@ -1,8 +1,12 @@
 #' theme_publication for plots
 
+#' Publication quality images for summary plots
+#' 
 #' @param base_size size of font for plot default "15"
 #' @param base_family font to be used default "Helvetica"
-#' Publication quality images for summary plots
+#' 
+#' @export
+#' 
 
 theme_Publication <- function(base_size=12, base_family="Helvetica") {
   (theme_foundation(base_size=base_size, base_family=base_family)

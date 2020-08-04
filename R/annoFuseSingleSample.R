@@ -13,6 +13,9 @@
 #' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"
 #' @param junctionReadCountFilter An integer threshold for JunctionReadCount
 #' @param spanningFragCountFilter An integer threshold for (SpanningFragCount - JunctionReadCount)
+#' 
+#' @export
+#' 
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
 annoFuseSingleSample<-function(fusionfileArriba=fusionfileArriba,fusionfileStarFusion=fusionfileStarFusion,expressionFile=NULL,expressionFilter=1,tumorID="tumorID",artifactFilter="GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",readingFrameFilter="in-frame|frameshift|other",junctionReadCountFilter=1,spanningFragCountFilter=10,readthroughFilter=FALSE){

@@ -3,6 +3,9 @@
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param bioMartDataPfam A dataframe with gene and domain coordinate information with chromosome_name,gene_start,gene_end,domain_chr,domain_start,domain_end,hgnc_symbol
 #' @param keepPartialAnno TRUE or FALSE to keep partial status
+#' 
+#' @export
+#' 
 #' @return Standardized fusion calls annotated with domain terms and chromosome location; retained and not retained,optionally partially retained 
 
 getPfamDomain <- function(standardFusioncalls=standardFusioncalls,bioMartDataPfam=bioMartDataPfam,keepPartialAnno=FALSE)

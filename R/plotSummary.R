@@ -3,6 +3,9 @@
 #' @param standardFusionCalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param outputpdffile Filename to plot image
 #' @param groupby column name with grouping variables
+#' 
+#' @export
+#' 
 #' @return summary pdf
 
 
