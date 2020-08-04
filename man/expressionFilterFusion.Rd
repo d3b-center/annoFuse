@@ -4,9 +4,11 @@
 \alias{expressionFilterFusion}
 \title{Expression filtering with user provided expression Matrix and standard fusion calls}
 \usage{
-expressionFilterFusion(standardFusioncalls = standardFusioncalls,
+expressionFilterFusion(
+  standardFusioncalls = standardFusioncalls,
   expressionMatrix = expressionMatrix,
-  expressionFilter = expressionFilter)
+  expressionFilter = expressionFilter
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}

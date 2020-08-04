@@ -4,9 +4,13 @@
 \alias{ZscoredAnnotation}
 \title{Annotates standardizes fusion calls calls with zscored expression value from either GTEx/cohort}
 \usage{
-ZscoredAnnotation(standardFusionCalls = standardFusionCalls,
-  zscoreFilter = zscoreFilter, saveZscoredMatrix = saveZscoredMatrix,
-  normData = normData, expressionMatrix = expressionMatrix)
+ZscoredAnnotation(
+  standardFusionCalls = standardFusionCalls,
+  zscoreFilter = zscoreFilter,
+  saveZscoredMatrix = saveZscoredMatrix,
+  normData = normData,
+  expressionMatrix = expressionMatrix
+)
 }
 \arguments{
 \item{standardFusionCalls}{Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion}

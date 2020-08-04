@@ -4,9 +4,13 @@
 \alias{plotRecurrentGenes}
 \title{Function to plot recurrent fused genes}
 \usage{
-plotRecurrentGenes(standardFusioncalls = standardFusioncalls,
-  groupby = groupby, plotn = plotn, countID = countID,
-  palette_rec = NULL)
+plotRecurrentGenes(
+  standardFusioncalls = standardFusioncalls,
+  groupby = groupby,
+  plotn = plotn,
+  countID = countID,
+  palette_rec = NULL
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}

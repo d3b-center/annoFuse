@@ -4,10 +4,12 @@
 \alias{fusion_driver}
 \title{Filter standardized fusion calls for driver fusions}
 \usage{
-fusion_driver(standardFusioncalls = standardFusioncalls,
+fusion_driver(
+  standardFusioncalls = standardFusioncalls,
   annotated = TRUE,
   geneListReferenceDataTab = geneListReferenceDataTab,
-  fusionReferenceDataTab = fusionReferenceDataTab)
+  fusionReferenceDataTab = fusionReferenceDataTab
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba (more callers to be added)}

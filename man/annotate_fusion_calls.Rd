@@ -4,9 +4,11 @@
 \alias{annotate_fusion_calls}
 \title{Function to annotate fusion calls}
 \usage{
-annotate_fusion_calls(standardFusioncalls = standardFusioncalls,
+annotate_fusion_calls(
+  standardFusioncalls = standardFusioncalls,
   geneListReferenceDataTab = geneListReferenceDataTab,
-  fusionReferenceDataTab = fusionReferenceDataTab)
+  fusionReferenceDataTab = fusionReferenceDataTab
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}

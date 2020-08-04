@@ -4,8 +4,11 @@
 \alias{plotBreakpoints}
 \title{Function to plot breakpoints of a gene in a sample/cohort}
 \usage{
-plotBreakpoints(domainDataFrame = domainDataFrame, exons = exons,
-  geneposition = geneposition)
+plotBreakpoints(
+  domainDataFrame = domainDataFrame,
+  exons = exons,
+  geneposition = geneposition
+)
 }
 \arguments{
 \item{domainDataFrame}{A dataframe from star fusion or arriba standardized to run through the filtering steps and getPfamDomain() function to get pfam domain annotation per gene}

@@ -4,12 +4,14 @@
 \alias{fusion_filtering_QC}
 \title{Filters standardized fusion calls to remove artifacts and false positives.}
 \usage{
-fusion_filtering_QC(standardFusioncalls = standardFusioncalls,
+fusion_filtering_QC(
+  standardFusioncalls = standardFusioncalls,
   readingFrameFilter = readingFrameFilter,
   artifactFilter = artifactFilter,
   junctionReadCountFilter = junctionReadCountFilter,
   spanningFragCountFilter = spanningFragCountFilter,
-  readthroughFilter = TRUE)
+  readthroughFilter = TRUE
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}

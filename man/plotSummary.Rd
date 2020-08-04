@@ -4,8 +4,11 @@
 \alias{plotSummary}
 \title{Function to annotate fusion calls}
 \usage{
-plotSummary(standardFusionCalls = standardFusionCalls,
-  outputpdffile = outputpdffile, groupby = groupby)
+plotSummary(
+  standardFusionCalls = standardFusionCalls,
+  outputpdffile = outputpdffile,
+  groupby = groupby
+)
 }
 \arguments{
 \item{standardFusionCalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}

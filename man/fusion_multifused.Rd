@@ -4,8 +4,10 @@
 \alias{fusion_multifused}
 \title{Function to identify fusions called by at least n callers}
 \usage{
-fusion_multifused(standardFusioncalls = standardFusioncalls,
-  limitMultiFused = limitMultiFused)
+fusion_multifused(
+  standardFusioncalls = standardFusioncalls,
+  limitMultiFused = limitMultiFused
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}

@@ -4,13 +4,18 @@
 \alias{annoFuseSingleSample}
 \title{Single Sample use for annoFuse}
 \usage{
-annoFuseSingleSample(fusionfileArriba = fusionfileArriba,
-  fusionfileStarFusion = fusionfileStarFusion, expressionFile = NULL,
-  expressionFilter = 1, tumorID = "tumorID",
+annoFuseSingleSample(
+  fusionfileArriba = fusionfileArriba,
+  fusionfileStarFusion = fusionfileStarFusion,
+  expressionFile = NULL,
+  expressionFilter = 1,
+  tumorID = "tumorID",
   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
   readingFrameFilter = "in-frame|frameshift|other",
-  junctionReadCountFilter = 1, spanningFragCountFilter = 10,
-  readthroughFilter = FALSE)
+  junctionReadCountFilter = 1,
+  spanningFragCountFilter = 10,
+  readthroughFilter = FALSE
+)
 }
 \arguments{
 \item{fusionfileArriba}{A dataframe from arriba fusion caller}

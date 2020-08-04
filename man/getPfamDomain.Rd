@@ -4,8 +4,11 @@
 \alias{getPfamDomain}
 \title{Function to annotate fusion calls with domain terms}
 \usage{
-getPfamDomain(standardFusioncalls = standardFusioncalls,
-  bioMartDataPfam = bioMartDataPfam, keepPartialAnno = FALSE)
+getPfamDomain(
+  standardFusioncalls = standardFusioncalls,
+  bioMartDataPfam = bioMartDataPfam,
+  keepPartialAnno = FALSE
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
