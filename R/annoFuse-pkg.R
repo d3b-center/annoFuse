@@ -18,8 +18,10 @@
 #' @importFrom stats na.omit
 #' @importFrom stringr str_detect str_replace
 #' @importFrom tibble add_column column_to_rownames remove_rownames
-#' @importFrom tidyr gather separate unnest
+#' @importFrom tidyr gather separate unnest one_of
 #' @importFrom utils head read.delim
+#' @importFrom EnsDb.Hsapiens.v86 EnsDb.Hsapiens.v86
+#' @importFrom purrr is_empty
 #'
 #' @name annoFuse-pkg
 #' @docType package
