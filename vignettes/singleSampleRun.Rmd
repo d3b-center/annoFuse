@@ -43,7 +43,7 @@ Additionally, in the vignette we annotate filtered fusion with pfam domains per 
 
 ```{r}
 suppressPackageStartupMessages(library("annoFuse"))
-suppressPackageStartupMessages(library("tidyverse"))
+suppressPackageStartupMessages(library("dplyr"))
 suppressPackageStartupMessages(library("reshape2"))
 
 # Run annoFuse for Single sample with default expression filter and FusionAnnotator red flag artifact filter 
