@@ -9,9 +9,28 @@ Description: Using annoFuse, users can filter out fusions known to be artifactua
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1.9000
-Imports: reshape2,dplyr,tidyr,ggplot2,qdapRegex,ggpubr,ensembldb,tibble,ggthemes,EnsDb.Hsapiens.v86,grid,tidyverse,readr,grDevices,stats,utils,stringr
-Suggests: knitr, rmarkdown
+RoxygenNote: 7.1.1
+Imports: 
+    reshape2,
+    dplyr,
+    tidyr,
+    ggplot2,
+    qdapRegex,
+    ggpubr,
+    ensembldb,
+    tibble,
+    ggthemes,
+    EnsDb.Hsapiens.v86,
+    grid,
+    tidyverse,
+    readr,
+    grDevices,
+    stats,
+    utils,
+    stringr
+Suggests: 
+    knitr, 
+    rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
 Packaged: 2019-11-08 19:15:15 UTC; gaonkark
