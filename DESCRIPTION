@@ -29,10 +29,14 @@ Imports:
     grDevices,
     stats,
     utils,
-    stringr
+    stringr,
+    shiny,
+    shinydashboard,
+    rintrojs,
+    shinythemes,
+    DT
 Suggests: 
     knitr, 
     rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-11-08 19:15:15 UTC; gaonkark
