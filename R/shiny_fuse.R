@@ -165,3 +165,78 @@ shiny_fuse <- function() {
   shinyApp(ui = shinyfuse_ui, server = shinyfuse_server)     
 }       
 
+
+
+.actionbutton_biocstyle <- "color: #ffffff; background-color: #0092AC"
+
+
+## TODO: should be able to handle the case where 
+
+## ENSEMBL? needs species info
+
+
+
+#' Link to NCBI database
+.link2ncbi <- function(val) {
+  sprintf('<a href = "http://www.ncbi.nlm.nih.gov/gene/?term=%s[sym]" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-database"></i>%s</a>',
+          val,
+          .actionbutton_biocstyle,
+          val)
+}
+
+#' Link to the GTEx Portal
+.link2gtex <- function(val) {
+  sprintf('<a href = "https://www.gtexportal.org/home/gene/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-dna"></i>%s</a>',
+          val,
+          .actionbutton_biocstyle,
+          val)
+}
+
+#' Link to the Uniprot Portal
+.link2uniprot <- function(val) {
+  sprintf('<a href = "https://www.uniprot.org/uniprot/?query=%s&sort=score" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-spinner"></i>%s</a>',
+          val,
+          .actionbutton_biocstyle,
+          val)
+}
+
+#' Link to the human protein atlas Portal
+.link2hpa <- function(val) {
+  sprintf('<a href = "https://www.proteinatlas.org/search/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-cubes"></i>%s</a>',
+          val,
+          .actionbutton_biocstyle,
+          val)
+}
+
+.multilink <- function(val) {
+  b1 <- sprintf('<a href = "http://www.ncbi.nlm.nih.gov/gene/?term=%s[sym]" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-database"></i>%s</a>',
+          val,
+          .actionbutton_biocstyle,
+          val)
+  b2 <- sprintf('<a href = "https://www.gtexportal.org/home/gene/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-dna"></i>%s</a>',
+                val,
+                .actionbutton_biocstyle,
+                val)
+  return(paste(b1, b2))
+}
+
+
+geneinfo_2_html <- function(gene_id) {
+  gene_ncbi_button <- .link2ncbi(gene_id)
+  gene_gtex_button <- .link2gtex(gene_id)
+  gene_uniprot_button <- .link2uniprot(gene_id)
+  gene_hpa_button <- .link2hpa(gene_id)
+  
+  mycontent <- paste0(
+    shiny::tags$b(gene_id), shiny::tags$br(),
+    "Link to the NCBI Gene database: ", gene_ncbi_button, shiny::tags$br(),
+    "Link to the GTEx Portal: ", gene_gtex_button, shiny::tags$br(),
+    "Link to the Uniprot Portal: ", gene_uniprot_button, shiny::tags$br(),
+    "Link to the Human Protein Atlas: ", gene_hpa_button, shiny::tags$br()
+  )
+  
+  return(HTML(mycontent))
+}
+
+
+## TODO? these functions can be directly used also to simply create a report, whose content is just the table with the nicely enhanced many buttons and co.!
