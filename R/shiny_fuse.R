@@ -4,6 +4,8 @@
 #'
 #' TODO
 #' 
+#' @param out_annofuse 
+#'
 #' @return TODO
 #' @export
 #' 
@@ -14,8 +16,10 @@
 #' @importFrom DT datatable renderDataTable dataTableOutput
 #'
 #' @examples
-#' # TODO
-shiny_fuse <- function() {
+#' out_annofuse <- "/Users/fede/Development/annoFuse/PutativeDriverAnnoFuse_test_v14.tsv"
+#' if(interactive())
+#'   shiny_fuse(out_annofuse)
+shiny_fuse <- function(out_annofuse) {
   
   # checks on the objects provided
   #?
@@ -26,7 +30,7 @@ shiny_fuse <- function() {
     
     # header definition -------------------------------------------------------
     header = shinydashboard::dashboardHeader(
-      title = "TODOtitle",
+      title = "ShinyFuse",
       titleWidth = 350,
       shinydashboard::dropdownMenu(
         type = "tasks",
@@ -47,6 +51,7 @@ shiny_fuse <- function() {
     # sidebar definition ------------------------------------------------------
     sidebar = shinydashboard::dashboardSidebar(
       width = 250,
+      collapsed = TRUE,
       shinydashboard::menuItem(
         text = "SomeSettings", icon = icon("cog"),
         startExpanded = TRUE,
@@ -72,25 +77,28 @@ shiny_fuse <- function() {
           tabPanel(
             title = "panel1", icon = icon("file-alt"),
             fluidPage(
-              h1("welcome - panel1"),
-              h2("shinyfuse - version TODO"),
-              h3("Motivation"),
-              p("test to that"),
+              h1("welcome to shinyfuse - version TODO"),
               h3("General info on annofuse"),
-              p("a plot and tables"),
-              h3("Need help?"),
-              h3("Behind the curtain"),
-              p("linking to source code"),
-              h3("Authors"),
-              p("yeah well")
+              p("test to that"),
+              p("yeah well"),
+              fluidRow(
+                column(
+                  width = 8,
+                  DT::dataTableOutput("table_annofuse")
+                ),
+                column(
+                  width = 4,
+                  h4("Some content, for example linked to the selected row"),
+                  uiOutput("geneinfo_ui")
+                )
+              )
             )
           ),
           tabPanel(
             title = "panel2", icon = icon("vials"),
             fluidPage(
               h1("welcome - panel2"),
-              h3("The datasets!"),
-              DT::dataTableOutput("table_annofuse")
+              h3("The datasets!")
             )
           )
         ),
@@ -138,18 +146,39 @@ shiny_fuse <- function() {
   # Server definition -------------------------------------------------------
   shinyfuse_server <- function(input, output, session) {
     
-    annofuse_out <- read.delim("/Users/fede/Development/annoFuse/PutativeDriverAnnoFuse_test_v14.tsv")
+    annofuse_tbl <- read.delim(out_annofuse)
+    
+    # enhancing the content of the table
+    
+    enhanced_annofuse_tbl <- annofuse_tbl
+    enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
+    enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
+    
+    
+    # TODO? link to the DB where the info was taken from
+    
+    output$geneinfo_ui <- renderUI({
+      row_id <- input$table_annofuse_rows_selected
+      message(row_id)
+      gene_for_content <- annofuse_tbl[row_id, "Gene1A"]
+      
+      geneinfo_2_html(gene_for_content)
+    })
+    
     
     output$table_annofuse <- DT::renderDataTable({
-      DT::datatable(annofuse_out,
-                    style = 'bootstrap', 
-                    rownames = FALSE, 
-                    filter = 'top',
-                    options = list(
-                      scrollX = TRUE,
-                      pageLength = 10,
-                      lengthMenu = c(5, 10, 25, 50, 100, nrow(annofuse_out))
-                    )
+      DT::datatable(
+        enhanced_annofuse_tbl,
+        style = "bootstrap", 
+        rownames = FALSE, 
+        filter = "top",
+        selection = "single",
+        escape = FALSE,
+        options = list(
+          scrollX = TRUE,
+          pageLength = 25,
+          lengthMenu = c(5, 10, 25, 50, 100, nrow(enhanced_annofuse_tbl))
+        )
       )
     })
     
