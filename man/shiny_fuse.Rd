@@ -17,6 +17,7 @@ TODO
 }
 \examples{
 out_annofuse <- "/Users/fede/Development/annoFuse/PutativeDriverAnnoFuse_test_v14.tsv"
-if(interactive())
+if (interactive()) {
   shiny_fuse(out_annofuse)
+}
 }
