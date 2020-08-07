@@ -28,7 +28,7 @@
 NULL
 
 globalVariables(c(
-  "Gene1A", "Gene1B", "Gene2A", "Gene2B", "GeneSymbol",
+  "Gene1A", "Gene1B", "Gene2A", "Gene2B", "GeneSymbol", "Gene_Symbol",
   "gene_position", "type", "FusionName", "gene_id", "FPKM",
   "gene_biotype", "Type.ct", "NAME", "Sample", "Domain",
   "Gene1A_DOMAIN_RETAINED_IN_FUSION", "Gene1B_DOMAIN_RETAINED_IN_FUSION",
