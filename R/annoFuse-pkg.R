@@ -1,7 +1,7 @@
 #' annoFuse
 #'
 #' annoFuse is an R package for ...
-#' 
+#'
 #' @importFrom dplyr arrange bind_cols case_when count desc distinct filter
 #' group_by inner_join left_join mutate n rename select summarise ungroup %>%
 #' @importFrom ggplot2 aes coord_flip element_blank element_line element_rect
@@ -26,3 +26,11 @@
 #' @name annoFuse-pkg
 #' @docType package
 NULL
+
+globalVariables(c(
+  "Gene1A", "Gene1B", "Gene2A", "Gene2B", "GeneSymbol",
+  "gene_position", "type", "FusionName", "gene_id", "FPKM",
+  "gene_biotype", "Type.ct", "NAME", "Sample", "Domain",
+  "Gene1A_DOMAIN_RETAINED_IN_FUSION", "Gene1B_DOMAIN_RETAINED_IN_FUSION",
+  "Gene1A_anno", "Gene1B_anno", "Annot", "Annot.ct", "Annotation"
+))
