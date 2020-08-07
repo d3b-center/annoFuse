@@ -4,7 +4,10 @@
 \alias{shiny_fuse}
 \title{shiny_fuse}
 \usage{
-shiny_fuse()
+shiny_fuse(out_annofuse)
+}
+\arguments{
+\item{out_annofuse}{TODO}
 }
 \value{
 TODO
@@ -13,5 +16,7 @@ TODO
 TODO
 }
 \examples{
-# TODO
+out_annofuse <- "/Users/fede/Development/annoFuse/PutativeDriverAnnoFuse_test_v14.tsv"
+if(interactive())
+  shiny_fuse(out_annofuse)
 }
