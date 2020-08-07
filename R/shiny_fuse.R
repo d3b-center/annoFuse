@@ -3,12 +3,12 @@
 #' shiny_fuse
 #'
 #' TODO
-#' 
-#' @param out_annofuse 
+#'
+#' @param out_annofuse TODO
 #'
 #' @return TODO
 #' @export
-#' 
+#'
 #' @rawNamespace import(shiny, except = c(renderDataTable, dataTableOutput))
 #' @import shinydashboard
 #' @import rintrojs
@@ -17,17 +17,18 @@
 #'
 #' @examples
 #' out_annofuse <- "/Users/fede/Development/annoFuse/PutativeDriverAnnoFuse_test_v14.tsv"
-#' if(interactive())
+#' if (interactive()) {
 #'   shiny_fuse(out_annofuse)
+#' }
 shiny_fuse <- function(out_annofuse) {
-  
+
   # checks on the objects provided
-  #?
-  
+  # ?
+
   # UI definition -----------------------------------------------------------
   shinyfuse_ui <- shinydashboard::dashboardPage(
     skin = "black",
-    
+
     # header definition -------------------------------------------------------
     header = shinydashboard::dashboardHeader(
       title = "ShinyFuse",
@@ -47,7 +48,7 @@ shiny_fuse <- function(out_annofuse) {
         )
       )
     ),
-    
+
     # sidebar definition ------------------------------------------------------
     sidebar = shinydashboard::dashboardSidebar(
       width = 250,
@@ -55,12 +56,14 @@ shiny_fuse <- function(out_annofuse) {
       shinydashboard::menuItem(
         text = "SomeSettings", icon = icon("cog"),
         startExpanded = TRUE,
-        numericInput(inputId = "whatevs",
-                     label = "number of genesets",
-                     value = 15, min = 1, max = 50)
+        numericInput(
+          inputId = "whatevs",
+          label = "number of genesets",
+          value = 15, min = 1, max = 50
+        )
       )
     ),
-    
+
     # body definition ---------------------------------------------------------
     body = shinydashboard::dashboardBody(
       rintrojs::introjsUI(),
@@ -69,7 +72,7 @@ shiny_fuse <- function(out_annofuse) {
       navbarPage(
         title = div(),
         windowTitle = "shinyfuse",
-        footer= "", 
+        footer = "",
         theme = shinytheme("cosmo"),
         selected = "panel1",
         navbarMenu(
@@ -141,36 +144,38 @@ shiny_fuse <- function(out_annofuse) {
       )
     )
   )
-  
-  
+
+
   # Server definition -------------------------------------------------------
   shinyfuse_server <- function(input, output, session) {
-    
     annofuse_tbl <- read.delim(out_annofuse)
-    
+
     # enhancing the content of the table
-    
+
     enhanced_annofuse_tbl <- annofuse_tbl
     enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
     enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
-    
-    
+
+
     # TODO? link to the DB where the info was taken from
-    
+
     output$geneinfo_ui <- renderUI({
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
       gene_for_content <- annofuse_tbl[row_id, "Gene1A"]
-      
-      geneinfo_2_html(gene_for_content)
+      gene_for_content_2 <- annofuse_tbl[row_id, "Gene1B"]
+
+
+      doublegeneinfo_2_html(gene_for_content, gene_for_content_2)
+      # geneinfo_2_html(gene_for_content)
     })
-    
-    
+
+
     output$table_annofuse <- DT::renderDataTable({
       DT::datatable(
         enhanced_annofuse_tbl,
-        style = "bootstrap", 
-        rownames = FALSE, 
+        style = "bootstrap",
+        rownames = FALSE,
         filter = "top",
         selection = "single",
         escape = FALSE,
@@ -181,7 +186,7 @@ shiny_fuse <- function(out_annofuse) {
         )
       )
     })
-    
+
     # observeEvent(input$interface_overview, {
     #   tour <- read.delim(system.file("extdata", "interface_overview.txt",
     #                                  package = "GeneTonic"),
@@ -189,63 +194,95 @@ shiny_fuse <- function(out_annofuse) {
     #                      row.names = NULL, quote = "")
     #   rintrojs::introjs(session, options = list(steps = tour))
     # })
-  }  
-  
-  shinyApp(ui = shinyfuse_ui, server = shinyfuse_server)     
-}       
+  }
+
+  shinyApp(ui = shinyfuse_ui, server = shinyfuse_server)
+}
 
 
 
 .actionbutton_biocstyle <- "color: #ffffff; background-color: #0092AC"
 
 
-## TODO: should be able to handle the case where 
+## TODO: should be able to handle the case where
 
 ## ENSEMBL? needs species info
 
 
 
 #' Link to NCBI database
+#'
+#' @param val Character, the gene symbol
+#'
+#' @return HTML for an action button
+#' @noRd
 .link2ncbi <- function(val) {
-  sprintf('<a href = "http://www.ncbi.nlm.nih.gov/gene/?term=%s[sym]" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-database"></i>%s</a>',
-          val,
-          .actionbutton_biocstyle,
-          val)
+  sprintf(
+    '<a href = "http://www.ncbi.nlm.nih.gov/gene/?term=%s[sym]" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-database"></i>%s</a>',
+    val,
+    .actionbutton_biocstyle,
+    val
+  )
 }
 
 #' Link to the GTEx Portal
+#'
+#' @param val Character, the gene symbol
+#'
+#' @return HTML for an action button
+#' @noRd
 .link2gtex <- function(val) {
-  sprintf('<a href = "https://www.gtexportal.org/home/gene/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-dna"></i>%s</a>',
-          val,
-          .actionbutton_biocstyle,
-          val)
+  sprintf(
+    '<a href = "https://www.gtexportal.org/home/gene/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-dna"></i>%s</a>',
+    val,
+    .actionbutton_biocstyle,
+    val
+  )
 }
 
 #' Link to the Uniprot Portal
+#'
+#' @param val Character, the gene symbol
+#'
+#' @return HTML for an action button
+#' @noRd
 .link2uniprot <- function(val) {
-  sprintf('<a href = "https://www.uniprot.org/uniprot/?query=%s&sort=score" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-spinner"></i>%s</a>',
-          val,
-          .actionbutton_biocstyle,
-          val)
+  sprintf(
+    '<a href = "https://www.uniprot.org/uniprot/?query=%s&sort=score" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-spinner"></i>%s</a>',
+    val,
+    .actionbutton_biocstyle,
+    val
+  )
 }
 
-#' Link to the human protein atlas Portal
+#' Link to human protein atlas Portal
+#'
+#' @param val Character, the gene symbol
+#'
+#' @return HTML for an action button
+#' @noRd
 .link2hpa <- function(val) {
-  sprintf('<a href = "https://www.proteinatlas.org/search/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-cubes"></i>%s</a>',
-          val,
-          .actionbutton_biocstyle,
-          val)
+  sprintf(
+    '<a href = "https://www.proteinatlas.org/search/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-cubes"></i>%s</a>',
+    val,
+    .actionbutton_biocstyle,
+    val
+  )
 }
 
 .multilink <- function(val) {
-  b1 <- sprintf('<a href = "http://www.ncbi.nlm.nih.gov/gene/?term=%s[sym]" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-database"></i>%s</a>',
-          val,
-          .actionbutton_biocstyle,
-          val)
-  b2 <- sprintf('<a href = "https://www.gtexportal.org/home/gene/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-dna"></i>%s</a>',
-                val,
-                .actionbutton_biocstyle,
-                val)
+  b1 <- sprintf(
+    '<a href = "http://www.ncbi.nlm.nih.gov/gene/?term=%s[sym]" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-database"></i>%s</a>',
+    val,
+    .actionbutton_biocstyle,
+    val
+  )
+  b2 <- sprintf(
+    '<a href = "https://www.gtexportal.org/home/gene/%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-dna"></i>%s</a>',
+    val,
+    .actionbutton_biocstyle,
+    val
+  )
   return(paste(b1, b2))
 }
 
@@ -255,7 +292,7 @@ geneinfo_2_html <- function(gene_id) {
   gene_gtex_button <- .link2gtex(gene_id)
   gene_uniprot_button <- .link2uniprot(gene_id)
   gene_hpa_button <- .link2hpa(gene_id)
-  
+
   mycontent <- paste0(
     shiny::tags$b(gene_id), shiny::tags$br(),
     "Link to the NCBI Gene database: ", gene_ncbi_button, shiny::tags$br(),
@@ -263,7 +300,90 @@ geneinfo_2_html <- function(gene_id) {
     "Link to the Uniprot Portal: ", gene_uniprot_button, shiny::tags$br(),
     "Link to the Human Protein Atlas: ", gene_hpa_button, shiny::tags$br()
   )
-  
+
+  return(HTML(mycontent))
+}
+
+
+
+doublegeneinfo_2_html <- function(gene_id1, gene_id2) {
+  gene_ncbi_button_1 <- .link2ncbi(gene_id1)
+  gene_gtex_button_1 <- .link2gtex(gene_id1)
+  gene_uniprot_button_1 <- .link2uniprot(gene_id1)
+  gene_hpa_button_1 <- .link2hpa(gene_id1)
+
+  gene_ncbi_button_2 <- .link2ncbi(gene_id2)
+  gene_gtex_button_2 <- .link2gtex(gene_id2)
+  gene_uniprot_button_2 <- .link2uniprot(gene_id2)
+  gene_hpa_button_2 <- .link2hpa(gene_id2)
+
+  # mycontent <- paste0(
+  #   shiny::tags$table(
+  #     shiny::tags$tr(
+  #       shiny::tags$td(width = "50%", gene_ncbi_button_1),
+  #       shiny::tags$td(width = "50%", gene_ncbi_button_2)
+  #     ),
+  #     shiny::tags$tr(
+  #       shiny::tags$td(width = "50%", gene_gtex_button_1),
+  #       shiny::tags$td(width = "50%", gene_gtex_button_2)
+  #     ),
+  #     shiny::tags$tr(
+  #       shiny::tags$td(width = "50%", gene_uniprot_button_1),
+  #       shiny::tags$td(width = "50%", gene_uniprot_button_2)
+  #     ),
+  #     shiny::tags$tr(
+  #       shiny::tags$td(width = "50%", gene_hpa_button_1),
+  #       shiny::tags$td(width = "50%", gene_hpa_button_2)
+  #     )
+  #   )
+  # )
+
+  mycontent <- paste0(
+    "<table><tr>",
+    '<td width="33%">', "NCBI", "</td>",
+    '<td width="33%">', gene_ncbi_button_1, "</td>",
+    '<td width="33%">', gene_ncbi_button_2, "</td>",
+    "</tr></table>",
+
+    "<table><tr>",
+    '<td width="33%">', "GTEx", "</td>",
+    '<td width="33%">', gene_gtex_button_1, "</td>",
+    '<td width="33%">', gene_gtex_button_2, "</td>",
+    "</tr></table>",
+
+    "<table><tr>",
+    '<td width="33%">', "UniProt", "</td>",
+    '<td width="33%">', gene_uniprot_button_1, "</td>",
+    '<td width="33%">', gene_uniprot_button_2, "</td>",
+    "</tr></table>",
+
+    "<table><tr>",
+    '<td width="33%">', "HPA", "</td>",
+    '<td width="33%">', gene_hpa_button_1, "</td>",
+    '<td width="33%">', gene_hpa_button_2, "</td>",
+    "</tr></table>"
+  )
+
+  #     shiny::tags$tr(
+  #       shiny::tags$td(width = "50%", gene_ncbi_button_1),
+  #       shiny::tags$td(width = "50%", gene_ncbi_button_2)
+  #     ),
+  #     shiny::tags$tr(
+  #       shiny::tags$td(width = "50%", gene_gtex_button_1),
+  #       shiny::tags$td(width = "50%", gene_gtex_button_2)
+  #     ),
+  #     shiny::tags$tr(
+  #       shiny::tags$td(width = "50%", gene_uniprot_button_1),
+  #       shiny::tags$td(width = "50%", gene_uniprot_button_2)
+  #     ),
+  #     shiny::tags$tr(
+  #       shiny::tags$td(width = "50%", gene_hpa_button_1),
+  #       shiny::tags$td(width = "50%", gene_hpa_button_2)
+  #     )
+  #   )
+  # )
+
+
   return(HTML(mycontent))
 }
 
