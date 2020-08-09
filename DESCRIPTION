@@ -34,9 +34,9 @@ Imports:
     shinydashboard,
     rintrojs,
     shinythemes,
-    DT
-Suggests: 
-    knitr, 
+    DT,
     rmarkdown
+Suggests: 
+    knitr
 VignetteBuilder: knitr
 NeedsCompilation: no
