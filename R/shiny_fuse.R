@@ -202,6 +202,9 @@ shiny_fuse <- function(out_annofuse) {
       
       # currently needs some things to replicate the use case situation:
       # 
+      ### TODO: these objects below need to be in the R session - in the final
+      ### implementation, this should happen seamlessly, and ideally the app could check 
+      ### upon starting that these are available
       
       ### These need to be prepped in advance... (e.g. upon starting the app, or
       # in advance before launching it)
