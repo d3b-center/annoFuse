@@ -10,11 +10,11 @@ annoFuseSingleSample(
   expressionFile = NULL,
   expressionFilter = 1,
   tumorID = "tumorID",
-  artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
   readingFrameFilter = "in-frame|frameshift|other",
+  readthroughFilter = FALSE,
+  artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
   junctionReadCountFilter = 1,
-  spanningFragCountFilter = 10,
-  readthroughFilter = FALSE
+  spanningFragCountFilter = 10
 )
 }
 \arguments{
@@ -28,15 +28,15 @@ annoFuseSingleSample(
 
 \item{tumorID}{Sample name to be used}
 
-\item{artifactFilter}{A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"}
-
 \item{readingFrameFilter}{A regex to capture readingframe (eg. in-frame|frameshift|other)}
+
+\item{readthroughFilter}{Boolean for filtering readthroughs}
+
+\item{artifactFilter}{A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"}
 
 \item{junctionReadCountFilter}{An integer threshold for JunctionReadCount}
 
 \item{spanningFragCountFilter}{An integer threshold for (SpanningFragCount - JunctionReadCount)}
-
-\item{readthroughFilter}{Boolean for filtering readthroughs}
 }
 \value{
 Standardized fusion calls annotated with gene list and fusion list provided in reference folder
