@@ -34,9 +34,13 @@ Imports:
     shinydashboard,
     rintrojs,
     shinythemes,
-    DT
-Suggests: 
-    knitr, 
+    DT,
     rmarkdown
+Suggests: 
+    knitr
 VignetteBuilder: knitr
 NeedsCompilation: no
+biocViews:
+    Software, Transcription, Visualization, GeneExpression, Annotation,
+    GeneFusionDetection
+    
