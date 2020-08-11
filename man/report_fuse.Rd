@@ -69,7 +69,6 @@ edit and customize.
 \examples{
 
 out_annofuse <- "PutativeDriverAnnoFuse_test_v14.tsv"
-
 \dontrun{
 report_fuse(out_annofuse = out_annofuse)
 }

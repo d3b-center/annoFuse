@@ -92,7 +92,9 @@ shiny_fuse <- function(out_annofuse) {
                 column(
                   width = 4,
                   h4("Some content, for example linked to the selected row"),
-                  uiOutput("geneinfo_ui")
+                  uiOutput("geneinfo_ui"),
+                  h4("Expanding more on this..."),
+                  uiOutput("geneplots_ui")
                 )
               )
             )
@@ -168,6 +170,80 @@ shiny_fuse <- function(out_annofuse) {
 
       doublegeneinfo_2_html(gene_for_content, gene_for_content_2)
       # geneinfo_2_html(gene_for_content)
+    })
+    
+    output$geneplots_ui <- renderUI({
+      validate(
+        need(
+          length(input$table_annofuse_rows_selected) > 0,
+          message = "Select a row in the table"
+        )
+      )
+      
+      tagList(
+        h4("Some general info"),
+        tabsetPanel(
+          tabPanel("Plot left",
+                   plotOutput("geneplots_left")),
+          tabPanel("Plot right",
+                   plotOutput("geneplots_right"))
+          
+        )
+      )
+    })
+    
+    output$geneplots_right <- renderPlot({
+      row_id <- input$table_annofuse_rows_selected
+      message(row_id)
+      # gene_for_content <- annofuse_tbl[row_id, "Gene1A"]
+      
+      fusion_for_content <- annofuse_tbl[row_id, "FusionName"]
+      rightfused_for_content <- annofuse_tbl[row_id, "Gene1B"]
+      
+      # currently needs some things to replicate the use case situation:
+      # 
+      
+      ### These need to be prepped in advance... (e.g. upon starting the app, or
+      # in advance before launching it)
+      ###### bioMartDataPfam<-readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
+      ###### standardFusioncalls <- annofuse_tbl
+      ###### annDomain<-annoFuse::getPfamDomain(
+      ######   standardFusioncalls  = standardFusioncalls,
+      ######   bioMartDataPfam = bioMartDataPfam,
+      ######   # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE; 
+      ######   # if keepPartialAnno=FALSE then domain retained status == "No"
+      ######   keepPartialAnno = TRUE)
+      ###### # read in exonsToPlot with exon and gene boundaries from gencode.v27.primary_assembly.annotation.gtf.gz
+      ###### exons<-readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
+      
+
+      
+            # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
+      breakpoints_info <- annDomain$Gene1B[which(annDomain$Gene1B$FusionName==fusion_for_content & annDomain$Gene1B$Gene1B==rightfused_for_content),] %>% dplyr::filter(!is.na(DESC))
+      ## Plot breakpoint
+      
+      plotBreakpoints(domainDataFrame = breakpoints_info,
+                      exons = exons,
+                      geneposition = "Right") + 
+        theme_Publication(base_size = 12)
+    })
+    
+    output$geneplots_left <- renderPlot({
+      row_id <- input$table_annofuse_rows_selected
+      message(row_id)
+      # gene_for_content <- annofuse_tbl[row_id, "Gene1A"]
+      
+      fusion_for_content <- annofuse_tbl[row_id, "FusionName"]
+      leftfused_for_content <- annofuse_tbl[row_id, "Gene1A"]
+      
+      # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
+      breakpoints_info <- annDomain$Gene1A[which(annDomain$Gene1A$FusionName==fusion_for_content & annDomain$Gene1A$Gene1A==leftfused_for_content),] %>% dplyr::filter(!is.na(DESC))
+      ## Plot breakpoint
+      
+      plotBreakpoints(domainDataFrame = breakpoints_info,
+                      exons = exons,
+                      geneposition = "Left") + 
+        theme_Publication(base_size = 12)
     })
 
 
