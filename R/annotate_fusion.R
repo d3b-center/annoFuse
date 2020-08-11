@@ -8,8 +8,8 @@
 #'
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
-annotate_fusion_calls <- function(standardFusioncalls = standardFusioncalls, 
-                                  geneListReferenceDataTab = geneListReferenceDataTab, 
+annotate_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
+                                  geneListReferenceDataTab = geneListReferenceDataTab,
                                   fusionReferenceDataTab = fusionReferenceDataTab) {
   geneListReferenceDataTab <- geneListReferenceDataTab %>% dplyr::select(-file)
   fusionReferenceDataTab <- fusionReferenceDataTab %>% dplyr::select(-file)
@@ -31,6 +31,6 @@ annotate_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
     dplyr::rename(Fusion_anno = .data$type) %>%
     as.data.frame()
   annotated_filtered_fusions <- unique(annotated_filtered_fusions)
-  
+
   return(annotated_filtered_fusions)
 }

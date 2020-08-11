@@ -7,7 +7,7 @@
 #'
 #' @return Fusions called by n callers
 
-called_by_n_callers <- function(standardFusioncalls = standardFusioncalls, 
+called_by_n_callers <- function(standardFusioncalls = standardFusioncalls,
                                 numCaller = numCaller) {
 
   # aggregate caller per Sample,FusionName and Fusion_Type

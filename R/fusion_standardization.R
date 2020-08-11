@@ -11,7 +11,7 @@
 #'
 #' @return Standardized fusion calls ready for filtering
 
-fusion_standardization <- function(fusion_calls = fusion_calls, 
+fusion_standardization <- function(fusion_calls = fusion_calls,
                                    caller = caller) {
   if (caller == "STARFUSION") {
     fusion_calls <- fusion_calls %>%
@@ -68,6 +68,6 @@ fusion_standardization <- function(fusion_calls = fusion_calls,
 
   # Get standard columns for filtering
   standard_calls <- unique(fusion_calls[, c("LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample", "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", "annots")])
-  
+
   return(standard_calls)
 }

@@ -8,8 +8,8 @@
 #'
 #' @return ggplot of gene and breakpoints
 
-plotBreakpoints <- function(domainDataFrame = domainDataFrame, 
-                            exons = exons, 
+plotBreakpoints <- function(domainDataFrame = domainDataFrame,
+                            exons = exons,
                             geneposition = geneposition) {
 
   # find unique

@@ -12,10 +12,10 @@
 #'
 
 
-plotRecurrentFusions <- function(standardFusioncalls = standardFusioncalls, 
-                                 groupby = groupby, 
-                                 plotn = plotn, 
-                                 countID = countID, 
+plotRecurrentFusions <- function(standardFusioncalls = standardFusioncalls,
+                                 groupby = groupby,
+                                 plotn = plotn,
+                                 countID = countID,
                                  palette_rec = NULL) {
 
   # in-frame fusions only

@@ -7,7 +7,7 @@
 #'
 #' @return Fusions where gene partner(s) is multifused per sample
 
-fusion_multifused <- function(standardFusioncalls = standardFusioncalls, 
+fusion_multifused <- function(standardFusioncalls = standardFusioncalls,
                               limitMultiFused = limitMultiFused) {
 
   # remove multi-fused genes

@@ -9,8 +9,8 @@
 #' @return summary pdf
 
 
-plotSummary <- function(standardFusionCalls = standardFusionCalls, 
-                        outputpdffile = outputpdffile, 
+plotSummary <- function(standardFusionCalls = standardFusionCalls,
+                        outputpdffile = outputpdffile,
                         groupby = groupby) {
   if (missing(groupby)) {
     # per sample
@@ -253,7 +253,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
       facet_wrap(~gene_position)
 
     p <- ggarrange(p1, p2, p3, p4, p5, labels = c("A", "B", "C", "D", "E"), heights = c(3, 2, 3), widths = c(2, 1), nrow = 3, ncol = 2, font.label = list(size = 12))
-    
+
     return(p)
   }
 }

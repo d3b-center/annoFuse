@@ -38,9 +38,8 @@
 #' @export
 #'
 #' @examples
-#' 
+#'
 #' out_annofuse <- "PutativeDriverAnnoFuse_test_v14.tsv"
-#' 
 #' \dontrun{
 #' report_fuse(out_annofuse = out_annofuse)
 #' }
@@ -55,7 +54,7 @@ report_fuse <- function(out_annofuse,
                         open_after_creating = TRUE,
                         ...) {
   # generates a nice number of outputs, plots, and so on, placed in a report. Boom :)
-  
+
   # If possible, set output format based on the extension of output_file, if the output format is not provided
   if (is.null(output_format)) {
     if (tools::file_ext(output_file) == "pdf") {
@@ -64,53 +63,61 @@ report_fuse <- function(out_annofuse,
       output_format <- "html_document"
     }
   }
-  
+
   # Raise an error if output_format is not one of the allowed
   if (!(output_format %in% c("pdf_document", "html_document"))) {
     stop("The provided output_format is currently not supported. Please ",
-         "use either 'html_document' or 'pdf_document'.", call. = FALSE)
+      "use either 'html_document' or 'pdf_document'.",
+      call. = FALSE
+    )
   }
-  
+
   # Raise an error if the output format and file name extension don't match
   if (output_format != paste0(tools::file_ext(output_file), "_document")) {
     stop("File name extension of output_file (.",
-         tools::file_ext(output_file),
-         ") doesn't agree with the ",
-         "output_format, should be .",
-         gsub("_document$", "", output_format), call. = FALSE)
+      tools::file_ext(output_file),
+      ") doesn't agree with the ",
+      "output_format, should be .",
+      gsub("_document$", "", output_format),
+      call. = FALSE
+    )
   }
-  
+
   # output files
   output_report <- file.path(output_dir, basename(output_file)) # no need of normalizePath?
   output_rmd <- file.path(
     output_dir,
     paste0(tools::file_path_sans_ext(basename(output_file)), ".Rmd")
   )
-  
+
   # report
   if (file.exists(output_report)) {
     if (!force_overwrite) {
       stop("The file ", output_report,
-           " already exists. Please remove or rename the file, provide ",
-           "another value of output_file, or set force_overwrite = TRUE.",
-           call. = FALSE)
+        " already exists. Please remove or rename the file, provide ",
+        "another value of output_file, or set force_overwrite = TRUE.",
+        call. = FALSE
+      )
     } else {
       warning("The file ", output_report,
-              " already exists and will be overwritten, since ",
-              "force_overwrite = TRUE.", immediate. = TRUE,
-              call. = FALSE)
+        " already exists and will be overwritten, since ",
+        "force_overwrite = TRUE.",
+        immediate. = TRUE,
+        call. = FALSE
+      )
     }
   }
-  
+
   # Rmd template
   if (is.null(input_rmd)) {
     template_rmd <- system.file("extdata",
-                                "report_template_annoFuse.Rmd",
-                                package = "annoFuse")
+      "report_template_annoFuse.Rmd",
+      package = "annoFuse"
+    )
   } else {
     template_rmd <- input_rmd
   }
-  
+
   if (file.exists(template_rmd)) {
     if (file.exists(output_rmd)) {
       # stop("There is already an .Rmd file called ", output_rmd,
@@ -122,30 +129,32 @@ report_fuse <- function(out_annofuse,
     }
   } else {
     stop("The Rmd template file ", template_rmd, " does not exist.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
-  
+
   # annofuse_tbl is then used in the Rmd report
   annofuse_tbl <- read.delim(normalizePath(out_annofuse))
-  
+
   # Process the arguments
   args <- list(...)
   args$input <- output_rmd
   args$output_format <- output_format
   args$output_file <- output_file
   args$quiet <- !knitr_show_progress
-  
-  
-  
+
+
+
   # Render the report
   output_file <- do.call("render", args = args)
-  
+
   # Remove temporary file
   file.remove(output_rmd)
-  
+
   # Open up in a browser
-  if (open_after_creating)
+  if (open_after_creating) {
     browseURL(output_file)
-  
+  }
+
   invisible(output_file)
 }

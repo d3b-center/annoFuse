@@ -8,8 +8,8 @@
 #'
 #' @return Fusions found in more than n groups in cohort
 
-groupcount_fusion_calls <- function(standardFusioncalls = standardFusioncalls, 
-                                    group = group, 
+groupcount_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
+                                    group = group,
                                     numGroup = numGroup) {
 
   # remove fusions that are in > numGroup

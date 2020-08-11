@@ -8,8 +8,8 @@
 #'
 #' @return Fusions found in atleast n samples
 
-samplecount_fusion_calls <- function(standardFusioncalls = standardFusioncalls, 
-                                     numSample = numSample, 
+samplecount_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
+                                     numSample = numSample,
                                      group = group) {
 
   # Found in at least n samples in each group

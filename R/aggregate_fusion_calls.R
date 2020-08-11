@@ -8,8 +8,8 @@
 #'
 #' @return Standardized fusion calls with aggregated Caller and read support
 
-aggregate_fusion_calls <- function(standardFusioncalls = standardFusioncalls, 
-                                   removeother = FALSE, 
+aggregate_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
+                                   removeother = FALSE,
                                    filterAnnots = filterAnnots) {
   if (removeother) {
     # aggregate caller per FusionName, Sample and Fusion_Type

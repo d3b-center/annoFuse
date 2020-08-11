@@ -12,10 +12,10 @@
 #'
 
 
-plotRecurrentGenes <- function(standardFusioncalls = standardFusioncalls, 
-                               groupby = groupby, 
-                               plotn = plotn, 
-                               countID = countID, 
+plotRecurrentGenes <- function(standardFusioncalls = standardFusioncalls,
+                               groupby = groupby,
+                               plotn = plotn,
+                               countID = countID,
                                palette_rec = NULL) {
 
   # inframe fusions only

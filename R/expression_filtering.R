@@ -8,8 +8,8 @@
 #'
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
-expressionFilterFusion <- function(standardFusioncalls = standardFusioncalls, 
-                                   expressionMatrix = expressionMatrix, 
+expressionFilterFusion <- function(standardFusioncalls = standardFusioncalls,
+                                   expressionMatrix = expressionMatrix,
                                    expressionFilter = expressionFilter) {
   fusion_sample_gene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair

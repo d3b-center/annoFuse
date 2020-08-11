@@ -16,10 +16,10 @@
 #' @return expression_annotated_fusions is a standardized fusion call set with standard
 #'
 
-ZscoredAnnotation <- function(standardFusionCalls = standardFusionCalls, 
-                              zscoreFilter = zscoreFilter, 
-                              saveZscoredMatrix = saveZscoredMatrix, 
-                              normData = normData, 
+ZscoredAnnotation <- function(standardFusionCalls = standardFusionCalls,
+                              zscoreFilter = zscoreFilter,
+                              saveZscoredMatrix = saveZscoredMatrix,
+                              normData = normData,
                               expressionMatrix = expressionMatrix) {
 
   # expressionMatrix collapsed at gene level like Gtex max rowMean

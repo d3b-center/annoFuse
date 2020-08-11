@@ -18,15 +18,15 @@
 #'
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
-annoFuseSingleSample <- function(fusionfileArriba = fusionfileArriba, 
-                                 fusionfileStarFusion = fusionfileStarFusion, 
-                                 expressionFile = NULL, 
-                                 expressionFilter = 1, 
+annoFuseSingleSample <- function(fusionfileArriba = fusionfileArriba,
+                                 fusionfileStarFusion = fusionfileStarFusion,
+                                 expressionFile = NULL,
+                                 expressionFilter = 1,
                                  tumorID = "tumorID",
                                  readingFrameFilter = "in-frame|frameshift|other",
                                  readthroughFilter = FALSE,
-                                 artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", 
-                                 junctionReadCountFilter = 1, 
+                                 artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+                                 junctionReadCountFilter = 1,
                                  spanningFragCountFilter = 10) {
 
   # read files

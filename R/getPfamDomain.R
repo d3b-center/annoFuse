@@ -8,8 +8,8 @@
 #'
 #' @return Standardized fusion calls annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
 
-getPfamDomain <- function(standardFusioncalls = standardFusioncalls, 
-                          bioMartDataPfam = bioMartDataPfam, 
+getPfamDomain <- function(standardFusioncalls = standardFusioncalls,
+                          bioMartDataPfam = bioMartDataPfam,
                           keepPartialAnno = FALSE) {
   # get loci and chromosome as different columns
   standardFusioncalls$RightBreakpoint <- gsub("^.*:", "", standardFusioncalls$RightBreakpoint)
@@ -95,6 +95,6 @@ getPfamDomain <- function(standardFusioncalls = standardFusioncalls,
   standardFusioncallsGene1B <- rbind(standardFusioncallsGene1BMapped, standardFusioncallsGene1BNotMapped)
 
   domain <- list("Gene1A" = standardFusioncallsGene1A, "Gene1B" = standardFusioncallsGene1B)
-  
+
   return(domain)
 }

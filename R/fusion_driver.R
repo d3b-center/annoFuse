@@ -12,8 +12,8 @@
 #'
 #' @return Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder
 
-fusion_driver <- function(standardFusioncalls = standardFusioncalls, 
-                          annotated = TRUE, 
+fusion_driver <- function(standardFusioncalls = standardFusioncalls,
+                          annotated = TRUE,
                           geneListReferenceDataTab = geneListReferenceDataTab,
                           fusionReferenceDataTab = fusionReferenceDataTab) {
   # fusion_recurrent5_per_sample <- fusion_multifused(standardFusioncalls,limitMultiFused)
@@ -34,6 +34,6 @@ fusion_driver <- function(standardFusioncalls = standardFusioncalls,
       #                    !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol) %>%
       dplyr::filter(!is.na(.data$Gene1A_anno) | !is.na(.data$Gene1B_anno) | !is.na(.data$Gene2A_anno) | !is.na(.data$Gene2B_anno))
   }
-  
+
   return(putative_driver_fusions)
 }
