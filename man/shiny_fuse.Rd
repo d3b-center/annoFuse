@@ -4,7 +4,7 @@
 \alias{shiny_fuse}
 \title{shiny_fuse}
 \usage{
-shiny_fuse(out_annofuse)
+shiny_fuse(out_annofuse = NULL)
 }
 \arguments{
 \item{out_annofuse}{TODO}
