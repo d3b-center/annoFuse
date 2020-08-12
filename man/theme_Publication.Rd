@@ -12,6 +12,9 @@ theme_Publication(base_size = 12, base_family = "Helvetica")
 
 \item{base_family}{font to be used default "Helvetica"}
 }
+\value{
+An object of class \code{\link{theme}} for styling the plots.
+}
 \description{
 theme_publication for plots
 Publication quality images for summary plots

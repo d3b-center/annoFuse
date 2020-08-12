@@ -41,7 +41,7 @@ plotRecurrentFusions <- function(standardFusioncalls = standardFusioncalls,
     # provided palette is rownames=groupby values and color in column "color"
     palette_1 <- palette_rec
   } else {
-    # pallet to match recurrent fusion and recurrent fused genes
+    # palette to match recurrent fusion and recurrent fused genes
     n <- length(levels(as.factor(standardFusioncalls[, groupby])))
     palette <- grDevices::rainbow(n)
     names(palette) <- levels(as.factor(standardFusioncalls[, groupby]))

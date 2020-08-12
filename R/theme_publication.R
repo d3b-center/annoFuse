@@ -4,6 +4,8 @@
 #'
 #' @param base_size size of font for plot default "15"
 #' @param base_family font to be used default "Helvetica"
+#' 
+#' @return An object of class \code{\link{theme}} for styling the plots.
 #'
 #' @export
 #'
