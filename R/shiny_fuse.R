@@ -20,7 +20,7 @@
 #' if (interactive()) {
 #'   shiny_fuse(out_annofuse)
 #' }
-shiny_fuse <- function(out_annofuse) {
+shiny_fuse <- function(out_annofuse = NULL) {
 
   # checks on the objects provided
   # ?
@@ -53,15 +53,17 @@ shiny_fuse <- function(out_annofuse) {
     sidebar = shinydashboard::dashboardSidebar(
       width = 250,
       collapsed = TRUE,
-      shinydashboard::menuItem(
-        text = "SomeSettings", icon = icon("cog"),
-        startExpanded = TRUE,
-        numericInput(
-          inputId = "whatevs",
-          label = "number of genesets",
-          value = 15, min = 1, max = 50
-        )
-      )
+      
+      uiOutput("choose_annofusedata_file")
+      # shinydashboard::menuItem(
+      #   text = "Input Settings", icon = icon("cog"),
+      #   startExpanded = TRUE,
+      #   numericInput(
+      #     inputId = "whatevs",
+      #     label = "number of genesets",
+      #     value = 15, min = 1, max = 50
+      #   )
+      # )
     ),
 
     # body definition ---------------------------------------------------------
@@ -166,22 +168,52 @@ shiny_fuse <- function(out_annofuse) {
 
   # Server definition -------------------------------------------------------
   shinyfuse_server <- function(input, output, session) {
-    annofuse_tbl <- read.delim(out_annofuse)
-
-    # enhancing the content of the table
-
-    enhanced_annofuse_tbl <- annofuse_tbl
-    enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
-    enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
-
-
+    
+    # Initializing data storage ------------------------------------------------
+    values <- reactiveValues()
+    values$annofuse_tbl <- NULL
+    values$enhanced_annofuse_tbl <- NULL
+    
+    # Define data file if annoFuse data is not provided ------------------------
+    if (is.null(out_annofuse)) {
+      output$choose_annofusedata_file <- renderUI({
+        fileInput(inputId = "annofusedatasel",
+                  label = "Load sample data file (tab-separated)",
+                  accept = c("text/tab-separated-values", "text/plain",
+                             ".tsv", ".tab", ".txt"),
+                  multiple = FALSE)
+      })
+    } else {
+      annofuse_tbl <- read.delim(out_annofuse)
+      values$annofuse_tbl <- annofuse_tbl
+      
+      enhanced_annofuse_tbl <- annofuse_tbl
+      # enhancing the content of the table
+      enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
+      enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
+      values$enhanced_annofuse_tbl <- enhanced_annofuse_tbl
+    }
+    
+    # Load annoFuse data file --------------------------------------------------
+    observeEvent(input$annofusedatasel, {
+      values$annofuse_tbl <- read.delim(input$annofusedatasel$datapath)
+      values$enhanced_annofuse_tbl <- values$annofuse_tbl
+     
+      # enhancing the content of the table
+      values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
+      values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
+    })
+    
+    
+    
+    
     # TODO? link to the DB where the info was taken from
 
     output$geneinfo_ui <- renderUI({
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
-      gene_for_content <- annofuse_tbl[row_id, "Gene1A"]
-      gene_for_content_2 <- annofuse_tbl[row_id, "Gene1B"]
+      gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
+      gene_for_content_2 <- values$annofuse_tbl[row_id, "Gene1B"]
 
 
       doublegeneinfo_2_html(gene_for_content, gene_for_content_2)
@@ -211,10 +243,10 @@ shiny_fuse <- function(out_annofuse) {
     output$geneplots_right <- renderPlot({
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
-      # gene_for_content <- annofuse_tbl[row_id, "Gene1A"]
+      # gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
       
-      fusion_for_content <- annofuse_tbl[row_id, "FusionName"]
-      rightfused_for_content <- annofuse_tbl[row_id, "Gene1B"]
+      fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
+      rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
       
       # currently needs some things to replicate the use case situation:
       # 
@@ -225,7 +257,7 @@ shiny_fuse <- function(out_annofuse) {
       ### These need to be prepped in advance... (e.g. upon starting the app, or
       # in advance before launching it)
       ###### bioMartDataPfam<-readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
-      ###### standardFusioncalls <- annofuse_tbl
+      ###### standardFusioncalls <- values$annofuse_tbl
       ###### annDomain<-annoFuse::getPfamDomain(
       ######   standardFusioncalls  = standardFusioncalls,
       ######   bioMartDataPfam = bioMartDataPfam,
@@ -251,10 +283,10 @@ shiny_fuse <- function(out_annofuse) {
     output$geneplots_left <- renderPlot({
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
-      # gene_for_content <- annofuse_tbl[row_id, "Gene1A"]
+      # gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
       
-      fusion_for_content <- annofuse_tbl[row_id, "FusionName"]
-      leftfused_for_content <- annofuse_tbl[row_id, "Gene1A"]
+      fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
+      leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
       
       # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
       breakpoints_info <- annDomain$Gene1A[which(annDomain$Gene1A$FusionName==fusion_for_content & annDomain$Gene1A$Gene1A==leftfused_for_content),] %>% dplyr::filter(!is.na(DESC))
@@ -269,7 +301,7 @@ shiny_fuse <- function(out_annofuse) {
 
     output$table_annofuse <- DT::renderDataTable({
       DT::datatable(
-        enhanced_annofuse_tbl,
+        values$enhanced_annofuse_tbl,
         style = "bootstrap",
         rownames = FALSE,
         filter = "top",
@@ -278,7 +310,7 @@ shiny_fuse <- function(out_annofuse) {
         options = list(
           scrollX = TRUE,
           pageLength = 25,
-          lengthMenu = c(5, 10, 25, 50, 100, nrow(enhanced_annofuse_tbl))
+          lengthMenu = c(5, 10, 25, 50, 100, nrow(values$enhanced_annofuse_tbl))
         )
       )
     })
@@ -287,7 +319,7 @@ shiny_fuse <- function(out_annofuse) {
     
     output$af_overview <- renderPlot({
       withProgress({
-        plotSummary(annofuse_tbl)
+        plotSummary(values$annofuse_tbl)
       }, message = "Rendering summary...")
     })
     
@@ -301,7 +333,7 @@ shiny_fuse <- function(out_annofuse) {
       plotn_rf <- 30
       cid_rf <- "Sample"
       palette_rf <- c("blue","green","orange") # I had to specify this 
-      plotRecurrentFusions(annofuse_tbl, 
+      plotRecurrentFusions(values$annofuse_tbl, 
                            groupby = gby_rf, 
                            plotn = plotn_rf,
                            countID = cid_rf, 
@@ -316,7 +348,7 @@ shiny_fuse <- function(out_annofuse) {
       plotn_rg <- 30
       cid_rg <- "Sample"
       palette_rg <- c("blue","green","orange") # I had to specify this 
-      plotRecurrentGenes(annofuse_tbl, 
+      plotRecurrentGenes(values$annofuse_tbl, 
                          groupby = gby_rg, 
                          plotn = plotn_rg,
                          countID = cid_rg, 
