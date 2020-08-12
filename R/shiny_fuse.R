@@ -80,10 +80,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
         tabPanel(
           title = "TableExplorer", icon = icon("table"),
           fluidPage(
-            h1("welcome to shinyfuse - version TODO"),
-            h3("General info on annofuse"),
-            p("test to that"),
-            p("yeah well"),
             fluidRow(
               column(
                 width = 8,
@@ -102,8 +98,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
         tabPanel(
           title = "TableSummary", icon = icon("dna"),
           fluidPage(
-            h1("welcome - panel2"),
-            h3("An overview!"),
             fluidRow(
               column(
                 width = 12,
