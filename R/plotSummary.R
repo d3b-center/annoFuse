@@ -29,11 +29,11 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
     # get left chromosome
     mutate(Leftchr = strsplit(.data$LeftBreakpoint, ":")[[1]][1]) %>%
     # get right breakpoint
-    unnest() %>%
+    unnest(cols = c()) %>%
     group_by(.data$RightBreakpoint) %>%
     # get right chr
     mutate(Rightchr = strsplit(.data$RightBreakpoint, ":")[[1]][1]) %>%
-    unnest() %>%
+    unnest(cols = c()) %>%
     mutate(Distance = ifelse(.data$Leftchr == .data$Rightchr, "INTRACHROMOSOMAL", "INTERCHROMOSOMAL")) %>%
     dplyr::select(.data$Distance, .data$LeftBreakpoint, .data$RightBreakpoint, .data$Sample, !!as.name(groupby)) %>%
     unique()
@@ -49,7 +49,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
     labs(fill = "Distance")
 
   # frame information
-  p2 <- ggplot(standardFusionCalls, aes(fill = standardFusionCalls$Fusion_Type, x = standardFusionCalls$Caller, alpha = 0.75)) +
+  p2 <- ggplot(standardFusionCalls, aes(fill = Fusion_Type, x = Caller, alpha = 0.75)) +
     geom_bar(aes(y = log2(stat(count)))) +
     rotate() +
     xlab("Caller") +
@@ -206,7 +206,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
       labs(fill = "Distance")
 
     # frame information
-    p2 <- ggplot(standardFusionCalls, aes(fill = standardFusionCalls$Fusion_Type, x = standardFusionCalls$Caller, alpha = 0.75)) +
+    p2 <- ggplot(standardFusionCalls, aes(fill = Fusion_Type, x = Caller, alpha = 0.75)) +
       geom_bar(aes(y = log2(stat(count)))) +
       rotate() +
       xlab("Caller") +

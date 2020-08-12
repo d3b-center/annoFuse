@@ -51,7 +51,7 @@ plotRecurrentFusions <- function(standardFusioncalls = standardFusioncalls,
 
   rec_fusions$FusionName <- factor(rec_fusions$FusionName, levels = unique(rec_fusions$FusionName), ordered = TRUE)
   rec_fusions_plot <- ggplot(rec_fusions) +
-    geom_col(aes(x = rec_fusions$FusionName, y = rec_fusions$count, fill = !!as.name(groupby)), alpha = 0.75) +
+    geom_col(aes(x = FusionName, y = count, fill = !!as.name(groupby)), alpha = 0.75) +
     guides(alpha = FALSE) +
     ylab("Number of patients") +
     xlab(NULL) +

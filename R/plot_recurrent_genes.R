@@ -66,7 +66,7 @@ plotRecurrentGenes <- function(standardFusioncalls = standardFusioncalls,
   }
 
   rec_genes <- ggplot(rec_gene) +
-    geom_col(aes(x = rec_gene$Gene, y = rec_gene$count, fill = !!as.name(groupby)), alpha = 0.75) +
+    geom_col(aes(x = Gene, y = count, fill = !!as.name(groupby)), alpha = 0.75) +
     ylab("Number of patients") +
     guides(color = FALSE, alpha = FALSE) +
     xlab(NULL) +
