@@ -238,7 +238,8 @@ shiny_fuse <- function(out_annofuse) {
 
       
             # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-      breakpoints_info <- annDomain$Gene1B[which(annDomain$Gene1B$FusionName==fusion_for_content & annDomain$Gene1B$Gene1B==rightfused_for_content),] %>% dplyr::filter(!is.na(DESC))
+      breakpoints_info <- annDomain$Gene1B[which(annDomain$Gene1B$FusionName==fusion_for_content & annDomain$Gene1B$Gene1B==rightfused_for_content),] %>% 
+        dplyr::filter(!is.na(DESC))
       ## Plot breakpoint
       
       plotBreakpoints(domainDataFrame = breakpoints_info,
@@ -281,7 +282,48 @@ shiny_fuse <- function(out_annofuse) {
         )
       )
     })
-
+    
+    
+    
+    output$af_overview <- renderPlot({
+      withProgress({
+        plotSummary(annofuse_tbl)
+      }, message = "Rendering summary...")
+    })
+    
+    # TODO: spinner for when the plot is loading?
+    
+    output$af_recurrentfusions <- renderPlot({
+      ## TODO: ideally we could have the groupby variable even selectable in shiny
+      ## i.e. from an input$ widget
+      ## it would even make it more robust when specifying the columns - plus, examples would be cool!
+      gby_rf <- "Fusion_Type"
+      plotn_rf <- 30
+      cid_rf <- "Sample"
+      palette_rf <- c("blue","green","orange") # I had to specify this 
+      plotRecurrentFusions(annofuse_tbl, 
+                           groupby = gby_rf, 
+                           plotn = plotn_rf,
+                           countID = cid_rf, 
+                           palette_rec = palette_rf)
+    })
+    
+    output$af_recurrentgenes <- renderPlot({
+      ## TODO: ideally we could have the groupby variable even selectable in shiny
+      ## i.e. from an input$ widget
+      ## it would even make it more robust when specifying the columns - plus, examples would be cool!
+      gby_rg <- "Fusion_Type"
+      plotn_rg <- 30
+      cid_rg <- "Sample"
+      palette_rg <- c("blue","green","orange") # I had to specify this 
+      plotRecurrentGenes(annofuse_tbl, 
+                         groupby = gby_rg, 
+                         plotn = plotn_rg,
+                         countID = cid_rg, 
+                         palette_rec = palette_rg)
+    })
+    
+      
     # observeEvent(input$interface_overview, {
     #   tour <- read.delim(system.file("extdata", "interface_overview.txt",
     #                                  package = "GeneTonic"),
