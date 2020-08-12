@@ -52,7 +52,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
     # sidebar definition ------------------------------------------------------
     sidebar = shinydashboard::dashboardSidebar(
       width = 250,
-      collapsed = TRUE,
+      collapsed = !is.null(out_annofuse),
       
       uiOutput("choose_annofusedata_file")
       # shinydashboard::menuItem(
