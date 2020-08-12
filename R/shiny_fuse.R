@@ -77,66 +77,48 @@ shiny_fuse <- function(out_annofuse = NULL) {
         footer = "",
         theme = shinytheme("cosmo"),
         selected = "TableExplorer",
-        navbarMenu(
-          title = "Welcome", icon = icon("home"),
-          tabPanel(
-            title = "TableExplorer", icon = icon("file-alt"),
-            fluidPage(
-              h1("welcome to shinyfuse - version TODO"),
-              h3("General info on annofuse"),
-              p("test to that"),
-              p("yeah well"),
-              fluidRow(
-                column(
-                  width = 8,
-                  DT::dataTableOutput("table_annofuse")
-                ),
-                column(
-                  width = 4,
-                  h4("Some content, for example linked to the selected row"),
-                  uiOutput("geneinfo_ui"),
-                  h4("Expanding more on this..."),
-                  uiOutput("geneplots_ui")
-                )
-              )
-            )
-          ),
-          tabPanel(
-            title = "TableSummary", icon = icon("vials"),
-            fluidPage(
-              h1("welcome - panel2"),
-              h3("An overview!"),
-              fluidRow(
-                column(
-                  width = 12,
-                  plotOutput("af_overview")
-                )
+        tabPanel(
+          title = "TableExplorer", icon = icon("table"),
+          fluidPage(
+            h1("welcome to shinyfuse - version TODO"),
+            h3("General info on annofuse"),
+            p("test to that"),
+            p("yeah well"),
+            fluidRow(
+              column(
+                width = 8,
+                DT::dataTableOutput("table_annofuse")
               ),
-              fluidRow(
-                column(
-                  width = 6,
-                  plotOutput("af_recurrentfusions")
-                ),
-                column(
-                  width = 6,
-                  plotOutput("af_recurrentgenes")
-                )
+              column(
+                width = 4,
+                h4("Some content, for example linked to the selected row"),
+                uiOutput("geneinfo_ui"),
+                h4("Expanding more on this..."),
+                uiOutput("geneplots_ui")
               )
             )
           )
         ),
-        navbarMenu(
-          title = "ee", icon = icon("dna"),
-          tabPanel(
-            title = "epanel1", icon = icon("table"),
-            fluidPage(
-              h1("ee - panel1")
-            )
-          ),
-          tabPanel(
-            title = "epanel2", icon = icon("poll-h"),
-            fluidPage(
-              h1("ee - panel2")
+        tabPanel(
+          title = "TableSummary", icon = icon("dna"),
+          fluidPage(
+            h1("welcome - panel2"),
+            h3("An overview!"),
+            fluidRow(
+              column(
+                width = 12,
+                plotOutput("af_overview")
+              )
+            ),
+            fluidRow(
+              column(
+                width = 6,
+                plotOutput("af_recurrentfusions")
+              ),
+              column(
+                width = 6,
+                plotOutput("af_recurrentgenes")
+              )
             )
           )
         ),
@@ -177,11 +159,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
     # Define data file if annoFuse data is not provided ------------------------
     if (is.null(out_annofuse)) {
       output$choose_annofusedata_file <- renderUI({
-        fileInput(inputId = "annofusedatasel",
-                  label = "Load sample data file (tab-separated)",
-                  accept = c("text/tab-separated-values", "text/plain",
-                             ".tsv", ".tab", ".txt"),
-                  multiple = FALSE)
+        menuItem(
+          icon = icon("file-alt"),
+          fileInput(inputId = "annofusedatasel",
+                    label = "Load sample data file (tab-separated)",
+                    accept = c("text/tab-separated-values", "text/plain",
+                               ".tsv", ".tab", ".txt"),
+                    multiple = FALSE)
+        )
       })
     } else {
       annofuse_tbl <- read.delim(out_annofuse)
