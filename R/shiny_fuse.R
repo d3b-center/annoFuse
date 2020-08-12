@@ -74,11 +74,11 @@ shiny_fuse <- function(out_annofuse) {
         windowTitle = "shinyfuse",
         footer = "",
         theme = shinytheme("cosmo"),
-        selected = "panel1",
+        selected = "TableExplorer",
         navbarMenu(
           title = "Welcome", icon = icon("home"),
           tabPanel(
-            title = "panel1", icon = icon("file-alt"),
+            title = "TableExplorer", icon = icon("file-alt"),
             fluidPage(
               h1("welcome to shinyfuse - version TODO"),
               h3("General info on annofuse"),
@@ -100,10 +100,26 @@ shiny_fuse <- function(out_annofuse) {
             )
           ),
           tabPanel(
-            title = "panel2", icon = icon("vials"),
+            title = "TableSummary", icon = icon("vials"),
             fluidPage(
               h1("welcome - panel2"),
-              h3("The datasets!")
+              h3("An overview!"),
+              fluidRow(
+                column(
+                  width = 12,
+                  plotOutput("af_overview")
+                )
+              ),
+              fluidRow(
+                column(
+                  width = 6,
+                  plotOutput("af_recurrentfusions")
+                ),
+                column(
+                  width = 6,
+                  plotOutput("af_recurrentgenes")
+                )
+              )
             )
           )
         ),
