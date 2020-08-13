@@ -122,7 +122,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
             fluidRow(
               column(
                 width = 12,
-                plotOutput("af_overview")
+                box(
+                  title = "annoFuse summary",
+                  status = "success",
+                  width = 12,
+                  collapsible = TRUE,
+                  collapsed = TRUE,
+                  plotOutput("af_overview")
+                )
               )
             ),
             fluidRow(
