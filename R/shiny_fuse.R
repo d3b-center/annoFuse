@@ -26,15 +26,15 @@ shiny_fuse <- function(out_annofuse = NULL) {
   ### "slight issue": it takes a while to load, so maybe do this in advance? On the server,
   ### it would still need to be done at each session
   ### NOTE: this is not optimal, but it is to give an idea of how it could be ;)
-  if(!exists("bioMartDataPfam")) {
-    message("Loading pfam data...")
-    bioMartDataPfam <- readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
-  }
+  # if(!exists("bioMartDataPfam")) {
+  #   message("Loading pfam data...")
+  #   bioMartDataPfam <- readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
+  # }
   # read in exonsToPlot with exon and gene boundaries from gencode.v27.primary_assembly.annotation.gtf.gz
-  if(!exists("exons")) {
-    message("Loading exons data...")
-    exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
-  }
+  # if(!exists("exons")) {
+  #   message("Loading exons data...")
+  #   exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
+  # }
 
   # UI definition -----------------------------------------------------------
   shinyfuse_ui <- shinydashboard::dashboardPage(
@@ -111,6 +111,17 @@ shiny_fuse <- function(out_annofuse = NULL) {
               ),
               column(
                 width = 4,
+                fluidRow(
+                  column(
+                    width = 4,
+                    offset = 4,
+                    actionButton("btn_load_exonsdata", "load exons")
+                  ),
+                  column(
+                    width = 4,
+                    actionButton("btn_load_pfamdata", "load pfam")
+                  )
+                ),
                 h4("Some content, for example linked to the selected row"),
                 uiOutput("geneinfo_ui"),
                 h4("Expanding more on this..."),
@@ -184,6 +195,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
     values$enhanced_annofuse_tbl <- NULL
     values$ann_domain <- NULL
     
+    values$data_exons <- NULL
+    values$data_pfam <- NULL
     # currently needs some things to replicate the use case situation:
     # 
     ### TODO: these objects below need to be in the R session - in the final
@@ -220,12 +233,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
       values$enhanced_annofuse_tbl <- enhanced_annofuse_tbl
       
-      values$ann_domain <- annoFuse::getPfamDomain(
-        standardFusioncalls  = annofuse_tbl,
-        bioMartDataPfam = bioMartDataPfam, # must be pre-loaded
-        # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
-        # if keepPartialAnno=FALSE then domain retained status == "No"
-        keepPartialAnno = TRUE)
+      
     }
     
     # Controls for plot panels -------------------------------------------------
@@ -260,13 +268,16 @@ shiny_fuse <- function(out_annofuse = NULL) {
       # enhancing the content of the table
       values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
       values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
-      message("Creating ann_domain...")
-      values$ann_domain <- annoFuse::getPfamDomain(
-        standardFusioncalls  = values$annofuse_tbl,
-        bioMartDataPfam = bioMartDataPfam, # must be pre-loaded
-        # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
-        # if keepPartialAnno=FALSE then domain retained status == "No"
-        keepPartialAnno = TRUE)
+
+      if(!is.null(values$data_pfam)) {
+        message("Creating domain information...")
+        values$ann_domain <- annoFuse::getPfamDomain(
+          standardFusioncalls  = values$annofuse_tbl,
+          bioMartDataPfam = values$data_pfam, # must be pre-loaded
+          # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
+          # if keepPartialAnno=FALSE then domain retained status == "No"
+          keepPartialAnno = TRUE)
+      }
     })
     
     
@@ -321,7 +332,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       ## Plot breakpoint
       
       plotBreakpoints(domainDataFrame = breakpoints_info,
-                      exons = exons,
+                      exons = values$data_exons,
                       geneposition = "Right") + 
         theme_Publication(base_size = 12)
     })
@@ -339,7 +350,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       ## Plot breakpoint
       
       plotBreakpoints(domainDataFrame = breakpoints_info,
-                      exons = exons,
+                      exons = values$data_exons,
                       geneposition = "Left") + 
         theme_Publication(base_size = 12)
     })
@@ -408,6 +419,40 @@ shiny_fuse <- function(out_annofuse = NULL) {
                          sep = ";", stringsAsFactors = FALSE,
                          row.names = NULL, quote = "")
       rintrojs::introjs(session, options = list(steps = tour))
+    })
+    
+    
+    # Load data via buttons ----------------------------------------------------
+    observeEvent(input$btn_load_pfamdata, {
+      if(is.null(values$data_pfam)) {
+        message("Loading pfam data...")
+        showNotification("Loading pfam data", type = "message")
+        values$data_pfam <- readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
+        showNotification("Done loading pfam data", type = "message")
+        
+        if(!is.null(values$annofuse_tbl)) {
+          showNotification("Creating domain information", type = "message")
+          values$ann_domain <- annoFuse::getPfamDomain(
+            standardFusioncalls  = values$annofuse_tbl,
+            bioMartDataPfam = values$data_pfam, # must be pre-loaded
+            # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
+            # if keepPartialAnno=FALSE then domain retained status == "No"
+            keepPartialAnno = TRUE)
+        }
+      } else {
+        showNotification("pfam data already loaded", type = "default")
+      }
+    })
+    
+    observeEvent(input$btn_load_exonsdata, {
+      if(is.null(values$data_exons)) {
+        message("Loading exons data...")
+        showNotification("Loading exons data", type = "message", duration = 10)
+        values$data_exons <- readRDS(system.file("extdata","exonsToPlot.RDS", package="annoFuse"))
+        showNotification("Done loading exons data", type = "message")
+      } else {
+        showNotification("exons data already loaded", type = "default")
+      }
     })
   }
 
