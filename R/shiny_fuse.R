@@ -26,12 +26,15 @@ shiny_fuse <- function(out_annofuse = NULL) {
   ### "slight issue": it takes a while to load, so maybe do this in advance? On the server,
   ### it would still need to be done at each session
   ### NOTE: this is not optimal, but it is to give an idea of how it could be ;)
-  if(!exists("bioMartDataPfam"))
+  if(!exists("bioMartDataPfam")) {
+    message("Loading pfam data...")
     bioMartDataPfam <- readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
+  }
   # read in exonsToPlot with exon and gene boundaries from gencode.v27.primary_assembly.annotation.gtf.gz
-  if(!exists("exons"))
+  if(!exists("exons")) {
+    message("Loading exons data...")
     exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
-  
+  }
 
   # UI definition -----------------------------------------------------------
   shinyfuse_ui <- shinydashboard::dashboardPage(
@@ -364,14 +367,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
                          palette_rec = palette_rg)
     })
     
-      
-    # observeEvent(input$interface_overview, {
-    #   tour <- read.delim(system.file("extdata", "interface_overview.txt",
-    #                                  package = "GeneTonic"),
-    #                      sep = ";", stringsAsFactors = FALSE,
-    #                      row.names = NULL, quote = "")
-    #   rintrojs::introjs(session, options = list(steps = tour))
-    # })
+
+    observeEvent(input$interface_overview, {
+      tour <- read.delim(system.file("extdata", "annoFuse_overview.txt",
+                                     package = "annoFuse"),
+                         sep = ";", stringsAsFactors = FALSE,
+                         row.names = NULL, quote = "")
+      rintrojs::introjs(session, options = list(steps = tour))
+    })
   }
 
   shinyApp(ui = shinyfuse_ui, server = shinyfuse_server)
