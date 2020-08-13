@@ -19,3 +19,7 @@ An object of class \code{\link{theme}} for styling the plots.
 theme_publication for plots
 Publication quality images for summary plots
 }
+\examples{
+# TODOTODO
+
+}

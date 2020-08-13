@@ -7,7 +7,10 @@
 #' @export
 #'
 #' @return Fusions found in more than n groups in cohort
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 groupcount_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
                                     group = group,
                                     numGroup = numGroup) {

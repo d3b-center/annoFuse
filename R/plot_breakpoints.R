@@ -7,7 +7,10 @@
 #' @export
 #'
 #' @return ggplot of gene and breakpoints
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 plotBreakpoints <- function(domainDataFrame = domainDataFrame,
                             exons = exons,
                             geneposition = geneposition) {

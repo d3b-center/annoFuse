@@ -17,7 +17,10 @@
 #' @export
 #'
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 annoFuseSingleSample <- function(fusionfileArriba = fusionfileArriba,
                                  fusionfileStarFusion = fusionfileStarFusion,
                                  expressionFile = NULL,

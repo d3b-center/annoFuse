@@ -7,7 +7,10 @@
 #' @export
 #'
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 expressionFilterFusion <- function(standardFusioncalls = standardFusioncalls,
                                    expressionMatrix = expressionMatrix,
                                    expressionFilter = expressionFilter) {

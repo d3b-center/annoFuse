@@ -9,9 +9,10 @@
 #' @export
 #'
 #' @return recurrent fused genes
-#'
-
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 plotRecurrentGenes <- function(standardFusioncalls = standardFusioncalls,
                                groupby = groupby,
                                plotn = plotn,

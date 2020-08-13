@@ -20,3 +20,7 @@ Fusions where gene partner(s) is multifused per sample
 \description{
 Function to identify fusions called by at least n callers
 }
+\examples{
+# TODOTODO
+
+}

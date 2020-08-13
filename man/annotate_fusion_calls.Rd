@@ -23,3 +23,7 @@ Standardized fusion calls annotated with gene list and fusion list provided in r
 \description{
 Function to annotate fusion calls
 }
+\examples{
+# TODOTODO
+
+}

@@ -32,3 +32,7 @@ columns to run through this GTEx/cohort normalization function
 "Sample"  Unique SampleIDs used in your RNAseq dataset
 "FusionName" GeneA--GeneB ,or if fusion is intergenic then Gene1A/Gene2A--GeneB
 }
+\examples{
+# TODOTODO
+
+}

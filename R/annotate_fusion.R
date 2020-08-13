@@ -7,7 +7,10 @@
 #' @export
 #'
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 annotate_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
                                   geneListReferenceDataTab = geneListReferenceDataTab,
                                   fusionReferenceDataTab = fusionReferenceDataTab) {

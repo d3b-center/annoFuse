@@ -7,7 +7,10 @@
 #' @export
 #'
 #' @return Fusions found in atleast n samples
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 samplecount_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
                                      numSample = numSample,
                                      group = group) {

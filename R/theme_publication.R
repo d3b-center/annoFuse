@@ -8,8 +8,10 @@
 #' @return An object of class \code{\link{theme}} for styling the plots.
 #'
 #' @export
-#'
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 theme_Publication <- function(base_size = 12,
                               base_family = "Helvetica") {
   (theme_foundation(base_size = base_size, base_family = base_family) +

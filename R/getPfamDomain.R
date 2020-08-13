@@ -7,7 +7,10 @@
 #' @export
 #'
 #' @return Standardized fusion calls annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 getPfamDomain <- function(standardFusioncalls = standardFusioncalls,
                           bioMartDataPfam = bioMartDataPfam,
                           keepPartialAnno = FALSE) {

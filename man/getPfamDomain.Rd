@@ -23,3 +23,7 @@ Standardized fusion calls annotated with domain terms and chromosome location; r
 \description{
 Function to annotate fusion calls with domain terms
 }
+\examples{
+# TODOTODO
+
+}

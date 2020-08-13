@@ -7,8 +7,10 @@
 #' @export
 #'
 #' @return summary pdf
-
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 plotSummary <- function(standardFusionCalls = standardFusionCalls,
                         outputpdffile = outputpdffile,
                         groupby = groupby) {

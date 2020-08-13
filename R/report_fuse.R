@@ -1,5 +1,3 @@
-
-
 #' report_fuse
 #'
 #' @details When `report_fuse` is called, a RMarkdown template file could be copied

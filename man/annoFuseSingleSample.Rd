@@ -44,3 +44,7 @@ Standardized fusion calls annotated with gene list and fusion list provided in r
 \description{
 Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold
 }
+\examples{
+# TODOTODO
+
+}

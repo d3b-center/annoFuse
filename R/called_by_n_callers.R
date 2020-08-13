@@ -6,7 +6,10 @@
 #' @export
 #'
 #' @return Fusions called by n callers
-
+#' 
+#' @examples
+#' # TODOTODO
+#' 
 called_by_n_callers <- function(standardFusioncalls = standardFusioncalls,
                                 numCaller = numCaller) {
 

@@ -23,3 +23,7 @@ Fusions found in more than n groups in cohort
 \description{
 Function to identify fusions called by at least n callers
 }
+\examples{
+# TODOTODO
+
+}
