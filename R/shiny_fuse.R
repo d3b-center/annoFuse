@@ -223,6 +223,28 @@ shiny_fuse <- function(out_annofuse = NULL) {
         keepPartialAnno = TRUE)
     }
     
+    output$plot_controls <- renderUI({
+      if (is.null(values$annofuse_tbl)) {
+        return(NULL)
+      } else {
+        tagList(
+          selectInput(inputId = "af_cols",
+                      label = "Grouping column",
+                      choices = c("", colnames(values$annofuse_tbl)),
+                      selectize = TRUE, multiple = FALSE, selected = "Fusion_Type"),
+          numericInput(inputId = "af_n_topfusions",
+                       label = "Nr top fusions",
+                       value = 20, min = 1, max = 300, step = 1),
+          selectInput(inputId = "af_countcol",
+                      label = "Counting column",
+                      choices = c("", colnames(values$annofuse_tbl)),
+                      selectize = TRUE, multiple = FALSE, selected = "Sample"),
+          
+          
+        )
+      }
+    })
+    
     # Load annoFuse data file --------------------------------------------------
     observeEvent(input$annofusedatasel, {
       message("Reading in...")
