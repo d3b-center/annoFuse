@@ -77,7 +77,17 @@ shiny_fuse <- function(out_annofuse = NULL) {
     # body definition ---------------------------------------------------------
     body = shinydashboard::dashboardBody(
       rintrojs::introjsUI(),
-      # useShinyjs(),
+      ## Define output size and style of error messages
+      shiny::tags$head(
+        shiny::tags$style(
+          shiny::HTML(".shiny-output-error-validation {
+                 font-size: 15px;
+                 color: forestgreen;
+                 text-align: center;
+                 }
+                 ")
+        )
+      ),
       id = "main-app",
       navbarPage(
         title = div(),
