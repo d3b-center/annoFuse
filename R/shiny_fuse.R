@@ -1,5 +1,3 @@
-
-
 #' shiny_fuse
 #'
 #' TODO
@@ -24,6 +22,16 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
   # checks on the objects provided
   # ?
+  ### TODO: maybe check here that pfam and exons objects are available?
+  ### "slight issue": it takes a while to load, so maybe do this in advance? On the server,
+  ### it would still need to be done at each session
+  ### NOTE: this is not optimal, but it is to give an idea of how it could be ;)
+  if(!exists("bioMartDataPfam"))
+    bioMartDataPfam <- readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
+  # read in exonsToPlot with exon and gene boundaries from gencode.v27.primary_assembly.annotation.gtf.gz
+  if(!exists("exons"))
+    exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
+  
 
   # UI definition -----------------------------------------------------------
   shinyfuse_ui <- shinydashboard::dashboardPage(
@@ -149,6 +157,21 @@ shiny_fuse <- function(out_annofuse = NULL) {
     values <- reactiveValues()
     values$annofuse_tbl <- NULL
     values$enhanced_annofuse_tbl <- NULL
+    values$ann_domain <- NULL
+    
+    # currently needs some things to replicate the use case situation:
+    # 
+    ### TODO: these objects below need to be in the R session - in the final
+    ### implementation, this should happen seamlessly, and ideally the app could check 
+    ### upon starting that these are available
+    
+    ### These need to be prepped in advance... (e.g. upon starting the app, or
+    # in advance before launching it)
+    
+    
+    
+    
+    
     
     # Define data file if annoFuse data is not provided ------------------------
     if (is.null(out_annofuse)) {
@@ -171,6 +194,13 @@ shiny_fuse <- function(out_annofuse = NULL) {
       enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
       enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
       values$enhanced_annofuse_tbl <- enhanced_annofuse_tbl
+      
+      values$ann_domain <- annoFuse::getPfamDomain(
+        standardFusioncalls  = annofuse_tbl,
+        bioMartDataPfam = bioMartDataPfam, # must be pre-loaded
+        # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
+        # if keepPartialAnno=FALSE then domain retained status == "No"
+        keepPartialAnno = TRUE)
     }
     
     # Load annoFuse data file --------------------------------------------------
@@ -181,6 +211,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
       # enhancing the content of the table
       values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
       values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
+      values$ann_domain <- annoFuse::getPfamDomain(
+        standardFusioncalls  = values$annofuse_tbl,
+        bioMartDataPfam = bioMartDataPfam, # must be pre-loaded
+        # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
+        # if keepPartialAnno=FALSE then domain retained status == "No"
+        keepPartialAnno = TRUE)
     })
     
     
@@ -227,29 +263,11 @@ shiny_fuse <- function(out_annofuse = NULL) {
       fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
       rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
       
-      # currently needs some things to replicate the use case situation:
-      # 
-      ### TODO: these objects below need to be in the R session - in the final
-      ### implementation, this should happen seamlessly, and ideally the app could check 
-      ### upon starting that these are available
-      
-      ### These need to be prepped in advance... (e.g. upon starting the app, or
-      # in advance before launching it)
-      ###### bioMartDataPfam<-readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
-      ###### standardFusioncalls <- values$annofuse_tbl
-      ###### annDomain<-annoFuse::getPfamDomain(
-      ######   standardFusioncalls  = standardFusioncalls,
-      ######   bioMartDataPfam = bioMartDataPfam,
-      ######   # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE; 
-      ######   # if keepPartialAnno=FALSE then domain retained status == "No"
-      ######   keepPartialAnno = TRUE)
-      ###### # read in exonsToPlot with exon and gene boundaries from gencode.v27.primary_assembly.annotation.gtf.gz
-      ###### exons<-readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
       
 
       
             # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-      breakpoints_info <- annDomain$Gene1B[which(annDomain$Gene1B$FusionName==fusion_for_content & annDomain$Gene1B$Gene1B==rightfused_for_content),] %>% 
+      breakpoints_info <- values$ann_domain$Gene1B[which(values$ann_domain$Gene1B$FusionName==fusion_for_content & values$ann_domain$Gene1B$Gene1B==rightfused_for_content),] %>% 
         dplyr::filter(!is.na(DESC))
       ## Plot breakpoint
       
@@ -268,7 +286,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
       
       # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-      breakpoints_info <- annDomain$Gene1A[which(annDomain$Gene1A$FusionName==fusion_for_content & annDomain$Gene1A$Gene1A==leftfused_for_content),] %>% dplyr::filter(!is.na(DESC))
+      breakpoints_info <- values$ann_domain$Gene1A[which(values$ann_domain$Gene1A$FusionName==fusion_for_content & values$ann_domain$Gene1A$Gene1A==leftfused_for_content),] %>% dplyr::filter(!is.na(DESC))
       ## Plot breakpoint
       
       plotBreakpoints(domainDataFrame = breakpoints_info,
