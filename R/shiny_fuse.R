@@ -65,7 +65,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       width = 250,
       collapsed = !is.null(out_annofuse),
       
-      uiOutput("choose_annofusedata_file")
+      uiOutput("choose_annofusedata_file"),
       # shinydashboard::menuItem(
       #   text = "Input Settings", icon = icon("cog"),
       #   startExpanded = TRUE,
@@ -75,6 +75,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       #     value = 15, min = 1, max = 50
       #   )
       # )
+      uiOutput("plot_controls")
     ),
 
     # body definition ---------------------------------------------------------
@@ -370,9 +371,9 @@ shiny_fuse <- function(out_annofuse = NULL) {
       ## TODO: ideally we could have the groupby variable even selectable in shiny
       ## i.e. from an input$ widget
       ## it would even make it more robust when specifying the columns - plus, examples would be cool!
-      gby_rf <- "Fusion_Type"
-      plotn_rf <- 30
-      cid_rf <- "Sample"
+      gby_rf <- input$af_cols
+      plotn_rf <- input$af_n_topfusions
+      cid_rf <- input$af_countcol
       palette_rf <- c("blue","green","orange") # I had to specify this 
       plotRecurrentFusions(values$annofuse_tbl, 
                            groupby = gby_rf, 
@@ -385,9 +386,9 @@ shiny_fuse <- function(out_annofuse = NULL) {
       ## TODO: ideally we could have the groupby variable even selectable in shiny
       ## i.e. from an input$ widget
       ## it would even make it more robust when specifying the columns - plus, examples would be cool!
-      gby_rg <- "Fusion_Type"
-      plotn_rg <- 30
-      cid_rg <- "Sample"
+      gby_rg <- input$af_cols
+      plotn_rg <- input$af_n_topfusions
+      cid_rg <- input$af_countcol
       palette_rg <- c("blue","green","orange") # I had to specify this 
       plotRecurrentGenes(values$annofuse_tbl, 
                          groupby = gby_rg, 
