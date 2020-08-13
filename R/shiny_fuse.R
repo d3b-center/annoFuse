@@ -205,12 +205,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
     
     # Load annoFuse data file --------------------------------------------------
     observeEvent(input$annofusedatasel, {
+      message("Reading in...")
       values$annofuse_tbl <- read.delim(input$annofusedatasel$datapath)
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
      
       # enhancing the content of the table
       values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
       values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
+      message("Creating ann_domain...")
       values$ann_domain <- annoFuse::getPfamDomain(
         standardFusioncalls  = values$annofuse_tbl,
         bioMartDataPfam = bioMartDataPfam, # must be pre-loaded
