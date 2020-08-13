@@ -99,6 +99,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
         footer = "",
         theme = shinytheme("cosmo"),
         selected = "TableExplorer",
+
+        # ui TableExplorer -----------------------------------------------------
         tabPanel(
           title = "TableExplorer", icon = icon("table"),
           fluidPage(
@@ -117,6 +119,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
             )
           )
         ),
+        
+        # ui TableSummary -----------------------------------------------------
         tabPanel(
           title = "TableSummary", icon = icon("dna"),
           fluidPage(
@@ -224,6 +228,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
         keepPartialAnno = TRUE)
     }
     
+    # Controls for plot panels -------------------------------------------------
     output$plot_controls <- renderUI({
       if (is.null(values$annofuse_tbl)) {
         return(NULL)
@@ -269,6 +274,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
     
     # TODO? link to the DB where the info was taken from
 
+    # Gene info and plots from TableExplorer
     output$geneinfo_ui <- renderUI({
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
@@ -300,6 +306,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       )
     })
     
+    # Breakpoint plots ---------------------------------------------------------
     output$geneplots_right <- renderPlot({
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
@@ -307,9 +314,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
       
       fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
       rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
-      
-      
-
       
             # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
       breakpoints_info <- values$ann_domain$Gene1B[which(values$ann_domain$Gene1B$FusionName==fusion_for_content & values$ann_domain$Gene1B$Gene1B==rightfused_for_content),] %>% 
@@ -340,7 +344,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
         theme_Publication(base_size = 12)
     })
 
-
+    # Main interactive table for exploration -----------------------------------
     output$table_annofuse <- DT::renderDataTable({
       DT::datatable(
         values$enhanced_annofuse_tbl,
@@ -357,7 +361,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       )
     })
     
-    
+    # Content for TableSummary panel -------------------------------------------
     
     output$af_overview <- renderPlot({
       withProgress({
@@ -397,7 +401,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
                          palette_rec = palette_rg)
     })
     
-
+    # Tour trigger -------------------------------------------------------------
     observeEvent(input$interface_overview, {
       tour <- read.delim(system.file("extdata", "annoFuse_overview.txt",
                                      package = "annoFuse"),
