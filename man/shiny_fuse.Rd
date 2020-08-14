@@ -7,13 +7,19 @@
 shiny_fuse(out_annofuse = NULL)
 }
 \arguments{
-\item{out_annofuse}{TODO}
+\item{out_annofuse}{The character string specifying the location of the file
+output by the annoFuse pipeline. This file needs to be structured with the set 
+of columns required for the later exploration steps in the interactive app.}
 }
 \value{
-TODO
+A Shiny app object
 }
 \description{
-TODO
+Exploring interactively the results of the annoFuse pipeline
+}
+\details{
+The application can also be started without specifying the location of the data,
+which can be provided (via upload) at runtime.
 }
 \examples{
 out_annofuse <- "/Users/fede/Development/annoFuse/PutativeDriverAnnoFuse_test_v14.tsv"

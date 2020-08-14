@@ -1,10 +1,15 @@
 #' shiny_fuse
 #'
-#' TODO
+#' Exploring interactively the results of the annoFuse pipeline
+#' 
+#' The application can also be started without specifying the location of the data,
+#' which can be provided (via upload) at runtime.
 #'
-#' @param out_annofuse TODO
+#' @param out_annofuse The character string specifying the location of the file
+#' output by the annoFuse pipeline. This file needs to be structured with the set 
+#' of columns required for the later exploration steps in the interactive app.
 #'
-#' @return TODO
+#' @return A Shiny app object
 #' @export
 #'
 #' @rawNamespace import(shiny, except = c(renderDataTable, dataTableOutput))
