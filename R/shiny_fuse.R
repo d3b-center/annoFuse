@@ -378,6 +378,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
     # Main interactive table for exploration -----------------------------------
     output$table_annofuse <- DT::renderDataTable({
+      validate(
+        need(
+          !is.null(values$annofuse_tbl),
+          "Please upload the results of annoFuse to start the exploration"
+        )
+      )
+      
+      
       DT::datatable(
         values$enhanced_annofuse_tbl,
         style = "bootstrap",
