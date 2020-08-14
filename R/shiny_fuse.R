@@ -20,8 +20,16 @@
 #' }
 shiny_fuse <- function(out_annofuse = NULL) {
 
-  # checks on the objects provided
-  # ?
+  # Checks on the objects provided ---------------------------------------------
+
+  if (!is.null(out_annofuse)) {
+    if (is(out_annofuse, "character"))
+      stop("'out_annofuse' has to be a character string")
+    if (!file.exists(out_annofuse))
+      stop("File specified by 'out_annofuse' not found")
+  }  
+  
+  
   ### TODO: maybe check here that pfam and exons objects are available?
   ### "slight issue": it takes a while to load, so maybe do this in advance? On the server,
   ### it would still need to be done at each session
@@ -204,8 +212,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
     
     ### These need to be prepped in advance... (e.g. upon starting the app, or
     # in advance before launching it)
-    
-    
     
     
     
