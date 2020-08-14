@@ -326,6 +326,13 @@ shiny_fuse <- function(out_annofuse = NULL) {
     
     # Breakpoint plots ---------------------------------------------------------
     output$geneplots_right <- renderPlot({
+      validate(
+        need(
+          (!is.null(values$data_exons) & !is.null(values$data_pfam)),
+          "Please load the exons and the pfam information via the buttons above to display the plot"
+        )
+      )
+      
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
       # gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
@@ -345,6 +352,13 @@ shiny_fuse <- function(out_annofuse = NULL) {
     })
     
     output$geneplots_left <- renderPlot({
+      validate(
+        need(
+          (!is.null(values$data_exons) & !is.null(values$data_pfam)),
+          "Please load the exons and the pfam information via the buttons above to display the plot"
+        )
+      )
+      
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
       # gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
