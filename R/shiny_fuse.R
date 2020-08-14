@@ -28,7 +28,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
   # Checks on the objects provided ---------------------------------------------
 
   if (!is.null(out_annofuse)) {
-    if (is(out_annofuse, "character"))
+    if (!is(out_annofuse, "character"))
       stop("'out_annofuse' has to be a character string")
     if (!file.exists(out_annofuse))
       stop("File specified by 'out_annofuse' not found")
