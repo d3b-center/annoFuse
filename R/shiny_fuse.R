@@ -279,8 +279,29 @@ shiny_fuse <- function(out_annofuse = NULL) {
       }
     })
     
-    
-    
+    # Main interactive table for exploration -----------------------------------
+    output$table_annofuse <- DT::renderDataTable({
+      validate(
+        need(
+          !is.null(values$annofuse_tbl),
+          "Please upload the results of annoFuse to start the exploration"
+        )
+      )
+      
+      DT::datatable(
+        values$enhanced_annofuse_tbl,
+        style = "bootstrap",
+        rownames = FALSE,
+        filter = "top",
+        selection = "single",
+        escape = FALSE,
+        options = list(
+          scrollX = TRUE,
+          pageLength = 25,
+          lengthMenu = c(5, 10, 25, 50, 100, nrow(values$enhanced_annofuse_tbl))
+        )
+      )
+    })    
     
     # TODO? link to the DB where the info was taken from
 
@@ -375,31 +396,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
         theme_Publication(base_size = 12)
     })
 
-    # Main interactive table for exploration -----------------------------------
-    output$table_annofuse <- DT::renderDataTable({
-      validate(
-        need(
-          !is.null(values$annofuse_tbl),
-          "Please upload the results of annoFuse to start the exploration"
-        )
-      )
-      
-      
-      DT::datatable(
-        values$enhanced_annofuse_tbl,
-        style = "bootstrap",
-        rownames = FALSE,
-        filter = "top",
-        selection = "single",
-        escape = FALSE,
-        options = list(
-          scrollX = TRUE,
-          pageLength = 25,
-          lengthMenu = c(5, 10, 25, 50, 100, nrow(values$enhanced_annofuse_tbl))
-        )
-      )
-    })
-    
     # Content for TableSummary panel -------------------------------------------
     
     output$af_overview <- renderPlot({
