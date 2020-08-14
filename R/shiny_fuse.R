@@ -287,6 +287,13 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
     # Gene info and plots from TableExplorer
     output$geneinfo_ui <- renderUI({
+      validate(
+        need(
+          length(input$table_annofuse_rows_selected) > 0,
+          "Please select a row to display the genes info"
+        )
+      )
+      
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
       gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
@@ -301,7 +308,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       validate(
         need(
           length(input$table_annofuse_rows_selected) > 0,
-          message = "Select a row in the table"
+          message = "" 
         )
       )
       
