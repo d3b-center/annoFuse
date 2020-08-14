@@ -124,7 +124,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
                 ),
                 h4("Some content, for example linked to the selected row"),
                 uiOutput("geneinfo_ui"),
-                h4("Expanding more on this..."),
                 uiOutput("geneplots_ui")
               )
             )
@@ -412,9 +411,13 @@ shiny_fuse <- function(out_annofuse = NULL) {
     # TODO: spinner for when the plot is loading?
     
     output$af_recurrentfusions <- renderPlot({
-      ## TODO: ideally we could have the groupby variable even selectable in shiny
-      ## i.e. from an input$ widget
-      ## it would even make it more robust when specifying the columns - plus, examples would be cool!
+      validate(
+        need(
+          !is.null(values$annofuse_tbl),
+          "Please provide the results of annoFuse to display the plot"
+        )
+      )
+      
       gby_rf <- input$af_cols
       plotn_rf <- input$af_n_topfusions
       cid_rf <- input$af_countcol
@@ -427,9 +430,13 @@ shiny_fuse <- function(out_annofuse = NULL) {
     })
     
     output$af_recurrentgenes <- renderPlot({
-      ## TODO: ideally we could have the groupby variable even selectable in shiny
-      ## i.e. from an input$ widget
-      ## it would even make it more robust when specifying the columns - plus, examples would be cool!
+      validate(
+        need(
+          !is.null(values$annofuse_tbl),
+          "Please provide the results of annoFuse to display the plot"
+        )
+      )
+      
       gby_rg <- input$af_cols
       plotn_rg <- input$af_n_topfusions
       cid_rg <- input$af_countcol
