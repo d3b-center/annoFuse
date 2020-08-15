@@ -23,6 +23,7 @@
 #' @importFrom EnsDb.Hsapiens.v86 EnsDb.Hsapiens.v86
 #' @importFrom purrr is_empty
 #' @importFrom rmarkdown render
+#' @importFrom methods is
 #'
 #' @name annoFuse-pkg
 #' @docType package

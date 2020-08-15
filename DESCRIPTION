@@ -35,7 +35,8 @@ Imports:
     rintrojs,
     shinythemes,
     DT,
-    rmarkdown
+    rmarkdown,
+    methods
 Suggests: 
     knitr
 VignetteBuilder: knitr
