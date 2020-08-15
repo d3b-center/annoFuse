@@ -87,7 +87,7 @@ clinical<-read.delim(system.file("extdata", "pbta-histologies.tsv", package = "a
 clinical<-clinical[,c("Kids_First_Biospecimen_ID",group,"Kids_First_Participant_ID","disease_type_new")]
 clinical<-clinical[!is.na(clinical$broad_histology),]
 
-fusion_calls$FusionName<-unlist(lapply(fusion_calls$FusionName,function(x) rm_between(x, "(", ")", extract = F)))
+fusion_calls$FusionName<-unlist(lapply(fusion_calls$FusionName,function(x) rm_between(x, "(", ")", extract = FALSE)))
 
 
 table(clinical$broad_histology)
@@ -133,7 +133,7 @@ p1 <- ggplot(final, aes(x = broad_histology, y = log2(value), color = broad_hist
   stat_boxplot(geom ='errorbar', width = 0.5) +
   guides(alpha = FALSE, fill = FALSE) +
   xlab("BroadHistology") + ylab('Number of Fusions (log2)') +
-  guides(color = F) +
+  guides(color = FALSE) +
   scale_y_continuous(breaks = seq(0, 6, by = 1))+theme(axis.text = element_text(size=9,color="black",face="bold",angle = 45,hjust = 1))+colScale+theme_Publication()+ggtitle("Broad histology distribution")
 
 ggplotly(p1,height = 600, width=1200)
