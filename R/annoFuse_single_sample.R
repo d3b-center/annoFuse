@@ -21,7 +21,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-annoFuseSingleSample <- function(fusionfileArriba = fusionfileArriba,
+annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
                                  fusionfileStarFusion = fusionfileStarFusion,
                                  expressionFile = NULL,
                                  expressionFilter = 1,
