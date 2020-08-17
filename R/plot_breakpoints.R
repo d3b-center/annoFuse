@@ -1,6 +1,6 @@
 #' Function to plot breakpoints of a gene in a sample/cohort
 
-#' @param domainDataFrame A dataframe from star fusion or arriba standardized to run through the filtering steps and getPfamDomain() function to get pfam domain annotation per gene
+#' @param domainDataFrame A dataframe from star fusion or arriba standardized to run through the filtering steps and get_Pfam_domain() function to get pfam domain annotation per gene
 #' @param exons exon level information from gtf
 #' @param geneposition Left/Right position of gene
 #'
@@ -11,7 +11,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-plotBreakpoints <- function(domainDataFrame = domainDataFrame,
+plot_breakpoints <- function(domainDataFrame = domainDataFrame,
                             exons = exons,
                             geneposition = geneposition) {
 
@@ -35,7 +35,7 @@ plotBreakpoints <- function(domainDataFrame = domainDataFrame,
       geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 3) +
       geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 6, aes(col = geneExons$DESC, x = gene), color = "grey") +
       coord_flip() +
-      theme_Publication() +
+      theme_publication() +
       xlab("Transcript") +
       ylab("Coordinate") +
       ggtitle(paste0(geneposition, " fused Gene:", gene)) +
@@ -60,7 +60,7 @@ plotBreakpoints <- function(domainDataFrame = domainDataFrame,
       geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 3) +
       geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 6, aes(col = geneExons$DESC, x = gene), color = "grey") +
       coord_flip() +
-      theme_Publication() +
+      theme_publication() +
       xlab("Transcript") +
       ylab("Coordinate") +
       ggtitle(paste0(geneposition, " fused Gene:", gene))

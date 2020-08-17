@@ -12,7 +12,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-theme_Publication <- function(base_size = 12,
+theme_publication <- function(base_size = 12,
                               base_family = "Helvetica") {
   (theme_foundation(base_size = base_size, base_family = base_family) +
     theme(
