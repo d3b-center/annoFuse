@@ -13,7 +13,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-plotRecurrentGenes <- function(standardFusioncalls = standardFusioncalls,
+plot_recurrent_genes <- function(standardFusioncalls = standardFusioncalls,
                                groupby = groupby,
                                plotn = plotn,
                                countID = countID,
@@ -73,7 +73,7 @@ plotRecurrentGenes <- function(standardFusioncalls = standardFusioncalls,
     xlab(NULL) +
     scale_y_continuous(breaks = seq(0, 150, by = 10)) +
     rotate() +
-    theme_Publication() +
+    theme_publication() +
     theme(legend.title = element_blank(), axis.text.y = element_text(face = "italic", angle = 0, hjust = 1, size = 12)) +
     scale_fill_manual(name = as.name(groupby), values = palette_2) +
     scale_x_discrete(limits = rev(levels(rec_gene$Gene)))

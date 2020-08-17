@@ -13,7 +13,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-plotRecurrentFusions <- function(standardFusioncalls = standardFusioncalls,
+plot_recurrent_fusions <- function(standardFusioncalls = standardFusioncalls,
                                  groupby = groupby,
                                  plotn = plotn,
                                  countID = countID,
@@ -60,7 +60,7 @@ plotRecurrentFusions <- function(standardFusioncalls = standardFusioncalls,
     scale_y_continuous(breaks = seq(0, 200, by = 20)) +
     ggpubr::rotate() +
     scale_fill_manual(name = as.name(groupby), values = palette_1) +
-    theme_Publication() +
+    theme_publication() +
     theme(legend.title = element_blank(), axis.text.y = element_text(face = "italic", angle = 0, hjust = 1, size = 12), legend.position = "bottom") +
     scale_x_discrete(limits = rev(levels(rec_fusions$FusionName)))
 
