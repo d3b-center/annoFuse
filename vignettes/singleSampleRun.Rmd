@@ -68,7 +68,7 @@ standardFusioncalls<-annoFuse::annoFuseSingleSample(
 # Add domain level information for fusion
 # read in pfamDataBioMart with pfam and gene boundaries from UCSC pfam and biomaRt package  
 bioMartDataPfam<-readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
-annDomain<-annoFuse::getPfamDomain(
+annDomain<-annoFuse::get_Pfam_domain(
   standardFusioncalls  = standardFusioncalls,
   bioMartDataPfam = bioMartDataPfam,
   # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE; if keepPartialAnno=FALSE then domain retained status == "No" 

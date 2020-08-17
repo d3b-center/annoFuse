@@ -11,7 +11,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-getPfamDomain <- function(standardFusioncalls = standardFusioncalls,
+get_Pfam_domain <- function(standardFusioncalls = standardFusioncalls,
                           bioMartDataPfam = bioMartDataPfam,
                           keepPartialAnno = FALSE) {
   # get loci and chromosome as different columns
