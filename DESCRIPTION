@@ -23,6 +23,7 @@ Imports:
     ggpubr,
     tibble,
     ggthemes,
+    ensembldb,
     EnsDb.Hsapiens.v86,
     grid,
     readr,
