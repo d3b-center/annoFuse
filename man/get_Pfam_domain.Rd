@@ -25,5 +25,4 @@ Function to annotate fusion calls with domain terms
 }
 \examples{
 # TODOTODO
-
 }

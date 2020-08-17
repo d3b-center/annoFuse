@@ -46,5 +46,4 @@ Performs artifact filter to remove readthroughs,red flags and performs expressio
 }
 \examples{
 # TODOTODO
-
 }

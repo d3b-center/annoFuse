@@ -34,5 +34,4 @@ columns to run through this GTEx/cohort normalization function
 }
 \examples{
 # TODOTODO
-
 }

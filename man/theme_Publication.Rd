@@ -21,5 +21,4 @@ Publication quality images for summary plots
 }
 \examples{
 # TODOTODO
-
 }

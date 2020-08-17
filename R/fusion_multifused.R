@@ -6,10 +6,9 @@
 #' @export
 #'
 #' @return Fusions where gene partner(s) is multifused per sample
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 fusion_multifused <- function(standardFusioncalls = standardFusioncalls,
                               limitMultiFused = limitMultiFused) {
 

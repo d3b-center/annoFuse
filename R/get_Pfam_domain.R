@@ -7,13 +7,12 @@
 #' @export
 #'
 #' @return Standardized fusion calls annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 get_Pfam_domain <- function(standardFusioncalls = standardFusioncalls,
-                          bioMartDataPfam = bioMartDataPfam,
-                          keepPartialAnno = FALSE) {
+                            bioMartDataPfam = bioMartDataPfam,
+                            keepPartialAnno = FALSE) {
   # get loci and chromosome as different columns
   standardFusioncalls$RightBreakpoint <- gsub("^.*:", "", standardFusioncalls$RightBreakpoint)
   standardFusioncalls$RightBreakpointChr <- gsub(":.*$", "", standardFusioncalls$RightBreakpoint)

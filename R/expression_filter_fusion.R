@@ -7,13 +7,12 @@
 #' @export
 #'
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 expression_filter_fusion <- function(standardFusioncalls = standardFusioncalls,
-                                   expressionMatrix = expressionMatrix,
-                                   expressionFilter = expressionFilter) {
+                                     expressionMatrix = expressionMatrix,
+                                     expressionFilter = expressionFilter) {
   fusion_sample_gene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair
     dplyr::select(.data$Sample, .data$FusionName, .data$Gene1A, .data$Gene1B, .data$Gene2A, .data$Gene2B) %>%

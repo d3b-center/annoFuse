@@ -14,10 +14,9 @@
 #' @export
 #'
 #' @return Standardized fusion calls filtered to pass QC and remove calls with insufficient read-support and annotation red-flags
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 fusion_filtering_QC <- function(standardFusioncalls = standardFusioncalls,
                                 readingFrameFilter = readingFrameFilter,
                                 artifactFilter = artifactFilter,

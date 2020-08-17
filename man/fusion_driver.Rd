@@ -29,5 +29,4 @@ If standardized fusion is not annotated it will be annotated with geneListRefere
 }
 \examples{
 # TODOTODO
-
 }

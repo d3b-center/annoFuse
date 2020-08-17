@@ -17,20 +17,19 @@
 #' @export
 #'
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
-                                 fusionfileStarFusion = fusionfileStarFusion,
-                                 expressionFile = NULL,
-                                 expressionFilter = 1,
-                                 tumorID = "tumorID",
-                                 readingFrameFilter = "in-frame|frameshift|other",
-                                 readthroughFilter = FALSE,
-                                 artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
-                                 junctionReadCountFilter = 1,
-                                 spanningFragCountFilter = 10) {
+                                   fusionfileStarFusion = fusionfileStarFusion,
+                                   expressionFile = NULL,
+                                   expressionFilter = 1,
+                                   tumorID = "tumorID",
+                                   readingFrameFilter = "in-frame|frameshift|other",
+                                   readthroughFilter = FALSE,
+                                   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+                                   junctionReadCountFilter = 1,
+                                   spanningFragCountFilter = 10) {
 
   # read files
   STARFusioninputfile <- read_tsv(fusionfileStarFusion)

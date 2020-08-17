@@ -25,5 +25,4 @@ Function to annotate fusion calls
 }
 \examples{
 # TODOTODO
-
 }

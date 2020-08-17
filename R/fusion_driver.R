@@ -11,10 +11,9 @@
 #' @export
 #'
 #' @return Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 fusion_driver <- function(standardFusioncalls = standardFusioncalls,
                           annotated = TRUE,
                           geneListReferenceDataTab = geneListReferenceDataTab,

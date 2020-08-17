@@ -9,15 +9,14 @@
 #' @export
 #'
 #' @return recurrent fused genes
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 plot_recurrent_genes <- function(standardFusioncalls = standardFusioncalls,
-                               groupby = groupby,
-                               plotn = plotn,
-                               countID = countID,
-                               palette_rec = NULL) {
+                                 groupby = groupby,
+                                 plotn = plotn,
+                                 countID = countID,
+                                 palette_rec = NULL) {
 
   # inframe fusions only
   # standardFusioncalls<-unique(standardFusioncalls) %>% dplyr::filter(.data$Fusion_Type=="in-frame")

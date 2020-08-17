@@ -7,13 +7,12 @@
 #' @export
 #'
 #' @return ggplot of gene and breakpoints
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 plot_breakpoints <- function(domainDataFrame = domainDataFrame,
-                            exons = exons,
-                            geneposition = geneposition) {
+                             exons = exons,
+                             geneposition = geneposition) {
 
   # find unique
   if (geneposition == "Left") {

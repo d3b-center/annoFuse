@@ -25,5 +25,4 @@ Function to identify fusions called by at least n callers
 }
 \examples{
 # TODOTODO
-
 }

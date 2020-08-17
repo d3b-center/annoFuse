@@ -25,5 +25,4 @@ Function to aggregate Caller and read support per fusions calls
 }
 \examples{
 # TODOTODO
-
 }

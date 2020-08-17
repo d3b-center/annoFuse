@@ -25,5 +25,4 @@ Function to identify fusions called in n samples
 }
 \examples{
 # TODOTODO
-
 }

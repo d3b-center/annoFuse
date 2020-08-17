@@ -10,10 +10,9 @@
 #' @export
 #'
 #' @return Standardized fusion calls ready for filtering
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 fusion_standardization <- function(fusion_calls = fusion_calls,
                                    caller = caller) {
   if (caller == "STARFUSION") {

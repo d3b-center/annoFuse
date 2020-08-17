@@ -7,13 +7,12 @@
 #' @export
 #'
 #' @return summary pdf
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 plot_summary <- function(standardFusionCalls = standardFusionCalls,
-                        outputpdffile = outputpdffile,
-                        groupby = groupby) {
+                         outputpdffile = outputpdffile,
+                         groupby = groupby) {
   if (missing(groupby)) {
     # per sample
     groupby <- "Sample"

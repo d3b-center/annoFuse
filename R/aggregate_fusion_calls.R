@@ -7,10 +7,9 @@
 #' @export
 #'
 #' @return Standardized fusion calls with aggregated Caller and read support
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 aggregate_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
                                    removeother = FALSE,
                                    filterAnnots = filterAnnots) {

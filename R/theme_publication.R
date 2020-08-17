@@ -4,14 +4,13 @@
 #'
 #' @param base_size size of font for plot default "15"
 #' @param base_family font to be used default "Helvetica"
-#' 
+#'
 #' @return An object of class \code{\link{theme}} for styling the plots.
 #'
 #' @export
-#' 
+#'
 #' @examples
 #' # TODOTODO
-#' 
 theme_publication <- function(base_size = 12,
                               base_family = "Helvetica") {
   (theme_foundation(base_size = base_size, base_family = base_family) +

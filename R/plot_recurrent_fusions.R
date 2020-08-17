@@ -12,12 +12,11 @@
 #'
 #' @examples
 #' # TODOTODO
-#' 
 plot_recurrent_fusions <- function(standardFusioncalls = standardFusioncalls,
-                                 groupby = groupby,
-                                 plotn = plotn,
-                                 countID = countID,
-                                 palette_rec = NULL) {
+                                   groupby = groupby,
+                                   plotn = plotn,
+                                   countID = countID,
+                                   palette_rec = NULL) {
 
   # in-frame fusions only
   #  standardFusioncalls<-unique(standardFusioncalls) %>% dplyr::filter(.data$Fusion_Type=="in-frame")

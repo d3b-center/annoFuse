@@ -320,13 +320,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
           scrollX = TRUE,
           pageLength = 25,
           lengthMenu = c(5, 10, 25, 50, 100, nrow(values$enhanced_annofuse_tbl)),
-          dom = 'Bfrtip',
+          dom = "Bfrtip",
           buttons = list("copy", "print", list(
-              extend = "collection",
-              buttons = c("csv", "excel", "pdf"),
-              text = "Download"
-            )
-          )
+            extend = "collection",
+            buttons = c("csv", "excel", "pdf"),
+            text = "Download"
+          ))
         )
       )
     })

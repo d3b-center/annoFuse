@@ -31,5 +31,4 @@ Function to plot recurrent fused genes
 }
 \examples{
 # TODOTODO
-
 }

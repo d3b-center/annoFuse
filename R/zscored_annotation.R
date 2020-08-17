@@ -17,12 +17,11 @@
 #'
 #' @examples
 #' # TODOTODO
-#' 
 zscored_annotation <- function(standardFusionCalls = standardFusionCalls,
-                              zscoreFilter = zscoreFilter,
-                              saveZscoredMatrix = saveZscoredMatrix,
-                              normData = normData,
-                              expressionMatrix = expressionMatrix) {
+                               zscoreFilter = zscoreFilter,
+                               saveZscoredMatrix = saveZscoredMatrix,
+                               normData = normData,
+                               expressionMatrix = expressionMatrix) {
 
   # expressionMatrix collapsed at gene level like Gtex max rowMean
   expressionMatrixMatched <- expressionMatrix %>%
