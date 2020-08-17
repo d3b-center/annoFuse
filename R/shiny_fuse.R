@@ -315,10 +315,18 @@ shiny_fuse <- function(out_annofuse = NULL) {
         filter = "top",
         selection = "single",
         escape = FALSE,
+        extensions = c("Buttons"),
         options = list(
           scrollX = TRUE,
           pageLength = 25,
-          lengthMenu = c(5, 10, 25, 50, 100, nrow(values$enhanced_annofuse_tbl))
+          lengthMenu = c(5, 10, 25, 50, 100, nrow(values$enhanced_annofuse_tbl)),
+          dom = 'Bfrtip',
+          buttons = list("copy", "print", list(
+              extend = "collection",
+              buttons = c("csv", "excel", "pdf"),
+              text = "Download"
+            )
+          )
         )
       )
     })

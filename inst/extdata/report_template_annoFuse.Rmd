@@ -58,11 +58,19 @@ DT::datatable(
   enhanced_annofuse_tbl,
   filter = "top",
   selection = "single",
+  extensions = c("Buttons"),
   escape = FALSE,
   options = list(
     scrollX = TRUE,
     pageLength = 25,
-    lengthMenu = c(5, 10, 25, 50, 100, nrow(enhanced_annofuse_tbl))
+    lengthMenu = c(5, 10, 25, 50, 100, nrow(enhanced_annofuse_tbl)),
+    dom = "Bfrtip",
+    buttons = list("copy", "print", list(
+        extend = "collection",
+        buttons = c("csv", "excel", "pdf"),
+        text = "Download"
+      )
+    )
   )
 )
 
