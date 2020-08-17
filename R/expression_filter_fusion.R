@@ -11,7 +11,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-expressionFilterFusion <- function(standardFusioncalls = standardFusioncalls,
+expression_filter_fusion <- function(standardFusioncalls = standardFusioncalls,
                                    expressionMatrix = expressionMatrix,
                                    expressionFilter = expressionFilter) {
   fusion_sample_gene_df <- standardFusioncalls %>%
