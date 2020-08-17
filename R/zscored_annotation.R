@@ -18,7 +18,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-ZscoredAnnotation <- function(standardFusionCalls = standardFusionCalls,
+zscored_annotation <- function(standardFusionCalls = standardFusionCalls,
                               zscoreFilter = zscoreFilter,
                               saveZscoredMatrix = saveZscoredMatrix,
                               normData = normData,
