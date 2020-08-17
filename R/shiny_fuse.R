@@ -289,7 +289,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
       if (!is.null(values$data_pfam)) {
         message("Creating domain information...")
-        values$ann_domain <- annoFuse::getPfamDomain(
+        values$ann_domain <- annoFuse::get_Pfam_domain(
           standardFusioncalls = values$annofuse_tbl,
           bioMartDataPfam = values$data_pfam, # must be pre-loaded
           # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
@@ -396,12 +396,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
         dplyr::filter(!is.na(DESC))
       ## Plot breakpoint
 
-      plotBreakpoints(
+      plot_breakpoints(
         domainDataFrame = breakpoints_info,
         exons = values$data_exons,
         geneposition = "Right"
       ) +
-        theme_Publication(base_size = 12)
+        theme_publication(base_size = 12)
     })
 
     output$geneplots_left <- renderPlot({
@@ -423,12 +423,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
       breakpoints_info <- values$ann_domain$Gene1A[which(values$ann_domain$Gene1A$FusionName == fusion_for_content & values$ann_domain$Gene1A$Gene1A == leftfused_for_content), ] %>% dplyr::filter(!is.na(DESC))
       ## Plot breakpoint
 
-      plotBreakpoints(
+      plot_breakpoints(
         domainDataFrame = breakpoints_info,
         exons = values$data_exons,
         geneposition = "Left"
       ) +
-        theme_Publication(base_size = 12)
+        theme_publication(base_size = 12)
     })
 
     # Content for TableSummary panel -------------------------------------------
@@ -436,7 +436,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
     output$af_overview <- renderPlot({
       withProgress(
         {
-          plotSummary(values$annofuse_tbl)
+          plot_summary(values$annofuse_tbl)
         },
         message = "Rendering summary..."
       )
@@ -456,7 +456,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       plotn_rf <- input$af_n_topfusions
       cid_rf <- input$af_countcol
       palette_rf <- c("blue", "green", "orange") # I had to specify this
-      plotRecurrentFusions(values$annofuse_tbl,
+      plot_recurrent_fusions(values$annofuse_tbl,
         groupby = gby_rf,
         plotn = plotn_rf,
         countID = cid_rf,
@@ -476,7 +476,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       plotn_rg <- input$af_n_topfusions
       cid_rg <- input$af_countcol
       palette_rg <- c("blue", "green", "orange") # I had to specify this
-      plotRecurrentGenes(values$annofuse_tbl,
+      plot_recurrent_genes(values$annofuse_tbl,
         groupby = gby_rg,
         plotn = plotn_rg,
         countID = cid_rg,
@@ -506,7 +506,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
         if (!is.null(values$annofuse_tbl)) {
           showNotification("Correctly created domain information!", type = "message")
-          values$ann_domain <- annoFuse::getPfamDomain(
+          values$ann_domain <- annoFuse::get_Pfam_domain(
             standardFusioncalls = values$annofuse_tbl,
             bioMartDataPfam = values$data_pfam, # must be pre-loaded
             # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
