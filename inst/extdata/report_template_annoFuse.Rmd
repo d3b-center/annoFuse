@@ -32,6 +32,7 @@ knitr::opts_chunk$set(
 # Intro
 
 ```{r echo = TRUE}
+library("annoFuse")
 out_annofuse
 ```
 
@@ -77,6 +78,11 @@ DT::datatable(
 
 ```
 
+# General summary on the standardized fusion file
+
+```{r, fig.width=30, fig.height=15}
+plot_summary(annofuse_tbl)
+```
 
 
 # Session info {-}
