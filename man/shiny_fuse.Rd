@@ -8,7 +8,7 @@ shiny_fuse(out_annofuse = NULL)
 }
 \arguments{
 \item{out_annofuse}{The character string specifying the location of the file
-output by the annoFuse pipeline. This file needs to be structured with the set 
+output by the annoFuse pipeline. This file needs to be structured with the set
 of columns required for the later exploration steps in the interactive app.}
 }
 \value{
