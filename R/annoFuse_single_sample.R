@@ -131,7 +131,7 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
     # rename columns
     colnames(expressionMatrix.collapsed)[3] <- tumorID
 
-    expressionFiltered <- annoFuse::expressionFilterFusion(standardFusioncalls = fusionQCFiltered, expressionFilter = expressionFilter, expressionMatrix = expressionMatrix.collapsed)
+    expressionFiltered <- annoFuse::expression_filter_fusion(standardFusioncalls = fusionQCFiltered, expressionFilter = expressionFilter, expressionMatrix = expressionMatrix.collapsed)
 
     # annotated QC and expression filtered fusion calls
     filteredFusionAnnotated <- annotate_fusion_calls(standardFusioncalls = expressionFiltered, geneListReferenceDataTab = geneListReferenceDataTab, fusionReferenceDataTab = fusionReferenceDataTab)
