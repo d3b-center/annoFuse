@@ -11,7 +11,7 @@
 #' @examples
 #' # TODOTODO
 #' 
-plotSummary <- function(standardFusionCalls = standardFusionCalls,
+plot_summary <- function(standardFusionCalls = standardFusionCalls,
                         outputpdffile = outputpdffile,
                         groupby = groupby) {
   if (missing(groupby)) {
@@ -42,7 +42,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
 
   p1 <- ggplot(fusion_chrom, aes(x = !!as.name(groupby), fill = fusion_chrom$Distance, alpha = 0.75)) +
     geom_bar() +
-    theme_Publication() +
+    theme_publication() +
     theme(legend.position = "top") +
     xlab(as.name(groupby)) +
     ylab("Count") +
@@ -56,7 +56,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
     rotate() +
     xlab("Caller") +
     ylab("Count (log2)") +
-    theme_Publication() +
+    theme_publication() +
     theme(legend.position = "top") +
     guides(alpha = FALSE) +
     theme(axis.text.x = element_text(angle = 0, hjust = 1, size = 12), axis.text.y = element_text(angle = 0, vjust = 2, size = 12)) +
@@ -106,14 +106,14 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
     scale_size_continuous(range = c(1, 12)) +
     xlab("Gene Biotype") +
     ylab("Gene Position") +
-    theme_Publication() +
+    theme_publication() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12), axis.text.y = element_text(angle = 0, vjust = 2, size = 12), legend.text = element_text(size = 12), legend.position = "left") +
     guides(fill = FALSE)
 
 
   # Kinase groups
   bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
-  annDomain <- getPfamDomain(standardFusioncalls = standardFusionCalls, bioMartDataPfam = bioMartDataPfam, keepPartialAnno = TRUE)
+  annDomain <- get_Pfam_domain(standardFusioncalls = standardFusionCalls, bioMartDataPfam = bioMartDataPfam, keepPartialAnno = TRUE)
   gene1AKinaseDomain <- annDomain$Gene1A %>%
     dplyr::filter(Gene1A_DOMAIN_RETAINED_IN_FUSION == "Yes" & grepl("kinase", NAME)) %>%
     dplyr::select("Gene1A", "NAME", !!(as.name(groupby)), Sample) %>%
@@ -142,7 +142,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
 
     p4 <- ggplot(kinase_fusion, aes(x = Domain, y = Type.ct, fill = gene_position, alpha = 0.95)) +
       geom_col() +
-      theme_Publication() +
+      theme_publication() +
       ylab("Count") +
       xlab("Kinase domain retained") +
       guides(alpha = FALSE) +
@@ -188,7 +188,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
     scale_size_continuous(range = c(1, 12)) +
     ylab("Count") +
     xlab(as.name(groupby)) +
-    theme_Publication(base_size = 12) +
+    theme_publication(base_size = 12) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12), axis.text.y = element_text(angle = 0, vjust = 2, size = 12), legend.text = element_text(size = 12), legend.position = "left") +
     theme(plot.margin = unit(c(0, 10, 0, 15), "mm")) +
     facet_wrap(~gene_position)
@@ -199,7 +199,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
   } else {
     p1 <- ggplot(fusion_chrom, aes(x = !!as.name(groupby), fill = fusion_chrom$Distance, alpha = 0.75)) +
       geom_bar() +
-      theme_Publication(base_size = 24) +
+      theme_publication(base_size = 24) +
       theme(legend.position = "top") +
       xlab(as.name(groupby)) +
       ylab("Count") +
@@ -213,7 +213,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
       rotate() +
       xlab("Caller") +
       ylab("Count (log2)") +
-      theme_Publication(base_size = 24) +
+      theme_publication(base_size = 24) +
       theme(legend.position = "top") +
       guides(alpha = FALSE) +
       theme(axis.text.x = element_text(angle = 0, hjust = 1, size = 6), axis.text.y = element_text(angle = 0, vjust = 2, size = 6), plot.margin = unit(c(1, 10, 10, 1), "mm")) +
@@ -225,14 +225,14 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
       scale_size_continuous(range = c(0.1, 3)) +
       xlab("Gene Biotype") +
       ylab("Gene Position") +
-      theme_Publication(base_size = 24) +
+      theme_publication(base_size = 24) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6), axis.text.y = element_text(angle = 0, vjust = 2, size = 6), legend.text = element_text(size = 6), legend.position = "left", plot.margin = unit(c(1, 1, 1, 10), "mm")) +
       guides(fill = FALSE)
 
     if (!is_empty(fusion_kinase_protein_df$GeneSymbol)) {
       p4 <- ggplot(kinase_fusion, aes(x = Domain, y = Type.ct, fill = gene_position, alpha = 0.95)) +
         geom_col() +
-        theme_Publication(base_size = 24) +
+        theme_publication(base_size = 24) +
         ylab("Count") +
         xlab("Kinase domain retained") +
         guides(alpha = FALSE) +
@@ -249,7 +249,7 @@ plotSummary <- function(standardFusionCalls = standardFusionCalls,
       scale_size_continuous(range = c(0.1, 3)) +
       ylab("Count") +
       xlab(as.name(groupby)) +
-      theme_Publication(base_size = 24) +
+      theme_publication(base_size = 24) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6), axis.text.y = element_text(angle = 0, vjust = 2, size = 6), legend.text = element_text(size = 6), legend.position = "left") +
       theme(plot.margin = unit(c(1, 1, 1, 10), "mm")) +
       facet_wrap(~gene_position)
