@@ -2,17 +2,24 @@
 #'
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param removeother TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift Default: FALSE
-#' @param filterAnnots regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION
+#' @param filterAnnots regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION 
+#' ## TODO: should this mentioned above be e.g. the default value?
 #'
 #' @export
 #'
 #' @return Standardized fusion calls with aggregated Caller and read support
 #'
 #' @examples
-#' # TODOTODO
-aggregate_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' sfc_aggr <- aggregate_fusion_calls(sfc, removeother = TRUE, 
+#'                                    filterAnnots = "LOCAL_REARRANGEMENT|LOCAL_INVERSION")
+aggregate_fusion_calls <- function(standardFusioncalls,
                                    removeother = FALSE,
-                                   filterAnnots = filterAnnots) {
+                                   filterAnnots) {
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is.logical(removeother))
+  
   if (removeother) {
     # aggregate caller per FusionName, Sample and Fusion_Type
     fusion_caller.summary <- standardFusioncalls %>%
