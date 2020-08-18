@@ -11,13 +11,22 @@
 #' @return recurrent fused genes
 #'
 #' @examples
-#' # TODOTODO
-plot_recurrent_fusions <- function(standardFusioncalls = standardFusioncalls,
-                                   groupby = groupby,
-                                   plotn = plotn,
-                                   countID = countID,
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' plot_recurrent_fusions(sfc, groupby = "Fusion_Type", countID = "Sample")
+plot_recurrent_fusions <- function(standardFusioncalls,
+                                   groupby,
+                                   plotn = 20,
+                                   countID,
                                    palette_rec = NULL) {
-
+  
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is.character(groupby))
+  stopifnot(is.numeric(plotn))
+  stopifnot(is.character(countID))
+  
+  stopifnot(all(c(groupby, countID) %in% colnames(standardFusioncalls)))
+  
   # in-frame fusions only
   #  standardFusioncalls<-unique(standardFusioncalls) %>% dplyr::filter(.data$Fusion_Type=="in-frame")
   # remove geneA==geneB or intergenic
