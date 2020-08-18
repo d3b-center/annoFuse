@@ -8,10 +8,14 @@
 #' @return Fusions called by n callers
 #'
 #' @examples
-#' # TODOTODO
-called_by_n_callers <- function(standardFusioncalls = standardFusioncalls,
-                                numCaller = numCaller) {
-
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' sfc_called <- called_by_n_callers(sfc, numCaller = 2)
+called_by_n_callers <- function(standardFusioncalls,
+                                numCaller) {
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is.numeric(numCaller))
+  
   # aggregate caller per Sample,FusionName and Fusion_Type
   fusion_caller.summary <- standardFusioncalls %>%
     dplyr::select(.data$Sample, .data$FusionName, .data$Caller, .data$Fusion_Type) %>%
