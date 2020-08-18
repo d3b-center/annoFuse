@@ -4,8 +4,11 @@
 \alias{groupcount_fusion_calls}
 \title{Function to identify fusions called by at least n callers}
 \usage{
-groupcount_fusion_calls(standardFusioncalls = standardFusioncalls,
-  group = group, numGroup = numGroup)
+groupcount_fusion_calls(
+  standardFusioncalls = standardFusioncalls,
+  group = group,
+  numGroup = numGroup
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -19,4 +22,7 @@ Fusions found in more than n groups in cohort
 }
 \description{
 Function to identify fusions called by at least n callers
+}
+\examples{
+# TODOTODO
 }

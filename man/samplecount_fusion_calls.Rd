@@ -4,8 +4,11 @@
 \alias{samplecount_fusion_calls}
 \title{Function to identify fusions called in n samples}
 \usage{
-samplecount_fusion_calls(standardFusioncalls = standardFusioncalls,
-  numSample = numSample, group = group)
+samplecount_fusion_calls(
+  standardFusioncalls = standardFusioncalls,
+  numSample = numSample,
+  group = group
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -19,4 +22,7 @@ Fusions found in atleast n samples
 }
 \description{
 Function to identify fusions called in n samples
+}
+\examples{
+# TODOTODO
 }

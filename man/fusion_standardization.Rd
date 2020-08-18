@@ -19,3 +19,6 @@ Various fusion callers have different formats that make aggregating and filterin
 By standardizing fusion callers output we capture the required columns which we use for downstream
 analysis
 }
+\examples{
+# TODOTODO
+}
