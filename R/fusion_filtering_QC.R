@@ -16,13 +16,28 @@
 #' @return Standardized fusion calls filtered to pass QC and remove calls with insufficient read-support and annotation red-flags
 #'
 #' @examples
-#' # TODOTODO
-fusion_filtering_QC <- function(standardFusioncalls = standardFusioncalls,
-                                readingFrameFilter = readingFrameFilter,
-                                artifactFilter = artifactFilter,
-                                junctionReadCountFilter = junctionReadCountFilter,
-                                spanningFragCountFilter = spanningFragCountFilter,
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' # TODOTODO: what is a sensible value for artifactFilter
+#' # sfc_filtered <- fusion_filtering_QC(sfc,
+#'    #                                   readingFrameFilter = "in-frame|frameshift|other",
+#'    #                                   artifactFilter = TBD,
+#'    #                                   junctionReadCountFilter = 1,
+#'    #                                   spanningFragCountFilter = 1,
+#'    #                                   readthroughFilter = TRUE)
+fusion_filtering_QC <- function(standardFusioncalls,
+                                readingFrameFilter = "in-frame|frameshift|other",
+                                artifactFilter,
+                                junctionReadCountFilter,
+                                spanningFragCountFilter,
                                 readthroughFilter = TRUE) {
+  
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is.character(readingFrameFilter))
+  stopifnot(is.numeric(junctionReadCountFilter))
+  stopifnot(is.numeric(spanningFragCountFilter))
+  stopifnot(is.logical(readthroughFilter))
+  
 
   # formatting dataframe for filtering
   standardFusioncalls <- standardFusioncalls %>%
