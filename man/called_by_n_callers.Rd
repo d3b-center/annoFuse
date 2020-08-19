@@ -4,10 +4,7 @@
 \alias{called_by_n_callers}
 \title{Function to identify fusions called by at least n callers}
 \usage{
-called_by_n_callers(
-  standardFusioncalls = standardFusioncalls,
-  numCaller = numCaller
-)
+called_by_n_callers(standardFusioncalls, numCaller)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -21,5 +18,7 @@ Fusions called by n callers
 Function to identify fusions called by at least n callers
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+sfc_called <- called_by_n_callers(sfc, numCaller = 2)
 }

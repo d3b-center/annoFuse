@@ -5,9 +5,9 @@
 \title{Expression filtering with user provided expression Matrix and standard fusion calls}
 \usage{
 expression_filter_fusion(
-  standardFusioncalls = standardFusioncalls,
-  expressionMatrix = expressionMatrix,
-  expressionFilter = expressionFilter
+  standardFusioncalls,
+  expressionMatrix,
+  expressionFilter
 )
 }
 \arguments{
@@ -24,5 +24,8 @@ Standardized fusion calls annotated with gene list and fusion list provided in r
 Expression filtering with user provided expression Matrix and standard fusion calls
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+# TODOTODO: what are some good values for expressionMatrix and expressionFilter?
+
 }

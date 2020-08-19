@@ -5,10 +5,10 @@
 \title{Function to plot recurrent fused genes}
 \usage{
 plot_recurrent_genes(
-  standardFusioncalls = standardFusioncalls,
-  groupby = groupby,
-  plotn = plotn,
-  countID = countID,
+  standardFusioncalls,
+  groupby,
+  plotn = 20,
+  countID,
   palette_rec = NULL
 )
 }
@@ -24,11 +24,13 @@ plot_recurrent_genes(
 \item{palette_rec}{colors for grouping variables}
 }
 \value{
-recurrent fused genes
+A ggplot object containing an overview on the recurrent fused genes
 }
 \description{
 Function to plot recurrent fused genes
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+plot_recurrent_genes(sfc, groupby = "Fusion_Type", countID = "Sample")
 }

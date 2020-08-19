@@ -4,18 +4,14 @@
 \alias{get_Pfam_domain}
 \title{Function to annotate fusion calls with domain terms}
 \usage{
-get_Pfam_domain(
-  standardFusioncalls = standardFusioncalls,
-  bioMartDataPfam = bioMartDataPfam,
-  keepPartialAnno = FALSE
-)
+get_Pfam_domain(standardFusioncalls, bioMartDataPfam, keepPartialAnno = FALSE)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
 
 \item{bioMartDataPfam}{A dataframe with gene and domain coordinate information with chromosome_name,gene_start,gene_end,domain_chr,domain_start,domain_end,hgnc_symbol}
 
-\item{keepPartialAnno}{TRUE or FALSE to keep partial status}
+\item{keepPartialAnno}{TRUE or FALSE to keep partial status; defaults to FALSE}
 }
 \value{
 Standardized fusion calls annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
@@ -24,5 +20,9 @@ Standardized fusion calls annotated with domain terms and chromosome location; r
 Function to annotate fusion calls with domain terms
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+# TODO: is there an example to show how this was generated? It can be very useful to update this 
+# object later on
 }

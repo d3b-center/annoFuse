@@ -4,11 +4,7 @@
 \alias{groupcount_fusion_calls}
 \title{Function to identify fusions called by at least n callers}
 \usage{
-groupcount_fusion_calls(
-  standardFusioncalls = standardFusioncalls,
-  group = group,
-  numGroup = numGroup
-)
+groupcount_fusion_calls(standardFusioncalls, group, numGroup)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -24,5 +20,7 @@ Fusions found in more than n groups in cohort
 Function to identify fusions called by at least n callers
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+sfc_groupcount <- groupcount_fusion_calls(sfc, group = "Sample", 1)
 }

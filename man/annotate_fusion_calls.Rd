@@ -5,9 +5,9 @@
 \title{Function to annotate fusion calls}
 \usage{
 annotate_fusion_calls(
-  standardFusioncalls = standardFusioncalls,
-  geneListReferenceDataTab = geneListReferenceDataTab,
-  fusionReferenceDataTab = fusionReferenceDataTab
+  standardFusioncalls,
+  geneListReferenceDataTab,
+  fusionReferenceDataTab
 )
 }
 \arguments{
@@ -24,5 +24,8 @@ Standardized fusion calls annotated with gene list and fusion list provided in r
 Function to annotate fusion calls
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+# TODOTODO: what are some good values for geneListReferenceDataTab and fusionReferenceDataTab?
+
 }

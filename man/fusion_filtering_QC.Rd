@@ -5,11 +5,11 @@
 \title{Filters standardized fusion calls to remove artifacts and false positives.}
 \usage{
 fusion_filtering_QC(
-  standardFusioncalls = standardFusioncalls,
-  readingFrameFilter = readingFrameFilter,
-  artifactFilter = artifactFilter,
-  junctionReadCountFilter = junctionReadCountFilter,
-  spanningFragCountFilter = spanningFragCountFilter,
+  standardFusioncalls,
+  readingFrameFilter = "in-frame|frameshift|other",
+  artifactFilter,
+  junctionReadCountFilter,
+  spanningFragCountFilter,
   readthroughFilter = TRUE
 )
 }
@@ -35,5 +35,13 @@ tissue require stringent filtering, making it difficult for researchers and clin
 oncogenic drivers of a tumor and in some cases, appropriate therapy
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+# TODOTODO: what is a sensible value for artifactFilter
+# sfc_filtered <- fusion_filtering_QC(sfc,
+   #                                   readingFrameFilter = "in-frame|frameshift|other",
+   #                                   artifactFilter = TBD,
+   #                                   junctionReadCountFilter = 1,
+   #                                   spanningFragCountFilter = 1,
+   #                                   readthroughFilter = TRUE)
 }

@@ -5,11 +5,11 @@
 \title{Annotates standardizes fusion calls calls with zscored expression value from either GTEx/cohort}
 \usage{
 zscored_annotation(
-  standardFusionCalls = standardFusionCalls,
-  zscoreFilter = zscoreFilter,
-  saveZscoredMatrix = saveZscoredMatrix,
-  normData = normData,
-  expressionMatrix = expressionMatrix
+  standardFusionCalls,
+  zscoreFilter,
+  saveZscoredMatrix,
+  normData,
+  expressionMatrix
 )
 }
 \arguments{
@@ -33,5 +33,9 @@ columns to run through this GTEx/cohort normalization function
 "FusionName" GeneA--GeneB ,or if fusion is intergenic then Gene1A/Gene2A--GeneB
 }
 \examples{
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+
 # TODOTODO
+# example with full call
 }

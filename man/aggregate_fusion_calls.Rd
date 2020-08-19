@@ -4,18 +4,15 @@
 \alias{aggregate_fusion_calls}
 \title{Function to aggregate Caller and read support per fusions calls}
 \usage{
-aggregate_fusion_calls(
-  standardFusioncalls = standardFusioncalls,
-  removeother = FALSE,
-  filterAnnots = filterAnnots
-)
+aggregate_fusion_calls(standardFusioncalls, removeother = FALSE, filterAnnots)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
 
 \item{removeother}{TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift Default: FALSE}
 
-\item{filterAnnots}{regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION}
+\item{filterAnnots}{regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION 
+## TODO: should this mentioned above be e.g. the default value?}
 }
 \value{
 Standardized fusion calls with aggregated Caller and read support
@@ -24,5 +21,8 @@ Standardized fusion calls with aggregated Caller and read support
 Function to aggregate Caller and read support per fusions calls
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+sfc_aggr <- aggregate_fusion_calls(sfc, removeother = TRUE, 
+                                   filterAnnots = "LOCAL_REARRANGEMENT|LOCAL_INVERSION")
 }

@@ -4,7 +4,7 @@
 \alias{fusion_standardization}
 \title{Standardizes fusion calls}
 \usage{
-fusion_standardization(fusion_calls = fusion_calls, caller = caller)
+fusion_standardization(fusion_calls, caller = c("STARFUSION", "ARRIBA"))
 }
 \arguments{
 \item{fusion_calls}{A dataframe from star fusion or arriba (more callers to be added)}

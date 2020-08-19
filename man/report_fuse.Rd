@@ -18,7 +18,8 @@ report_fuse(
 )
 }
 \arguments{
-\item{out_annofuse}{TODO}
+\item{out_annofuse}{The character string specifying the location of the file
+output by the annoFuse pipeline.}
 
 \item{project_id}{A character string, which can be considered as an identifier
 for the set/session, and will be e.g. used in the title of the report created
@@ -68,7 +69,7 @@ edit and customize.
 }
 \examples{
 
-out_annofuse <- "PutativeDriverAnnoFuse_test_v14.tsv"
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
 \dontrun{
 report_fuse(out_annofuse = out_annofuse)
 }

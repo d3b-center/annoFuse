@@ -20,5 +20,8 @@ theme_publication for plots
 Publication quality images for summary plots
 }
 \examples{
-# TODOTODO
+library("ggplot2")
+p <- ggplot(cars, aes(speed, dist)) + geom_point()
+p
+p + theme_publication(base_size = 24)
 }

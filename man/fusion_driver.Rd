@@ -5,10 +5,10 @@
 \title{Filter standardized fusion calls for driver fusions}
 \usage{
 fusion_driver(
-  standardFusioncalls = standardFusioncalls,
+  standardFusioncalls,
   annotated = TRUE,
-  geneListReferenceDataTab = geneListReferenceDataTab,
-  fusionReferenceDataTab = fusionReferenceDataTab
+  geneListReferenceDataTab,
+  fusionReferenceDataTab
 )
 }
 \arguments{
@@ -28,5 +28,8 @@ If standardized fusion calls are annotated using the geneListReferenceDataTab an
 If standardized fusion is not annotated it will be annotated with geneListReferenceDataTab and fusionReferenceDataTab provided
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+# TODOTODO: what are some good values for geneListReferenceDataTab and fusionReferenceDataTab?
+
 }
