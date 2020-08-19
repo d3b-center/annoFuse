@@ -9,6 +9,7 @@
 #' geom_linerange geom_point geom_segment ggplot ggtitle guides labs
 #' rel scale_colour_manual scale_fill_manual scale_size_continuous
 #' scale_x_discrete scale_y_continuous stat theme theme_void xlab ylab .data
+#' ggsave
 #' @importFrom ggpubr ggarrange ggexport rotate
 #' @importFrom ggthemes theme_foundation
 #' @importFrom grid arrow unit
