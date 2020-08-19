@@ -9,10 +9,15 @@
 #' @return Fusions found in more than n groups in cohort
 #'
 #' @examples
-#' # TODOTODO
-groupcount_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
-                                    group = group,
-                                    numGroup = numGroup) {
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' sfc_groupcount <- groupcount_fusion_calls(sfc, group = "Sample", 1)
+groupcount_fusion_calls <- function(standardFusioncalls,
+                                    group,
+                                    numGroup) {
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(group %in% colnames(standardFusioncalls))
+  stopifnot(is.numeric(numGroup))
 
   # remove fusions that are in > numGroup
   group.count <- standardFusioncalls %>%
