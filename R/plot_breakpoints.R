@@ -88,10 +88,10 @@ plot_breakpoints <- function(domainDataFrame = NULL,
     uniqtranscript <- c(gene, uniqtranscript[-grep(gene, uniqtranscript)])
     geneExons$transcript <- factor(geneExons$transcript, levels = uniqtranscript[length(uniqtranscript):1])
     # basic plot for exon and gene
-    p1 <- ggplot(geneExons, aes(y = geneExons$start, x = geneExons$transcript)) +
+    p1 <- ggplot(geneExons, aes(y = .data$start, x = .data$transcript)) +
       geom_hline(yintercept = as.numeric(domainDataFrame$Gene1A$LeftBreakpoint), linetype = "dashed", color = "violet") +
       geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 3) +
-      geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 6, aes(col = geneExons$DESC, x = gene), color = "grey") +
+      geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 6, aes(col = .data$DESC, x = gene), color = "grey") +
       coord_flip() +
       theme_publication(base_size = base_size) +
       xlab("Transcript") +
@@ -114,10 +114,10 @@ plot_breakpoints <- function(domainDataFrame = NULL,
     uniqtranscript <- c(gene, uniqtranscript[-grep(gene, uniqtranscript)])
     geneExons$transcript <- factor(geneExons$transcript, levels = uniqtranscript[length(uniqtranscript):1])
     # basic plot for exon and gene
-    p1 <- ggplot(geneExons, aes(y = geneExons$end, x = geneExons$transcript)) +
+    p1 <- ggplot(geneExons, aes(y = .data$end, x = .data$transcript)) +
       geom_hline(yintercept = as.numeric(domainDataFrame$Gene1B$RightBreakpoint), linetype = "dashed", color = "violet") +
       geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 3) +
-      geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 6, aes(col = geneExons$DESC, x = gene), color = "grey") +
+      geom_linerange(ymin = geneExons$start, ymax = geneExons$end, size = 6, aes(col = .data$DESC, x = gene), color = "grey") +
       coord_flip() +
       theme_publication(base_size = base_size) +
       xlab("Transcript") +
@@ -127,7 +127,7 @@ plot_breakpoints <- function(domainDataFrame = NULL,
 
   # add domain level information
   if (!all(is.na(geneExons$DESC))) {
-    p1 <- p1 + geom_linerange(ymin = geneExons$domain_start, ymax = geneExons$domain_end, size = 6, aes(col = geneExons$DESC, x = gene)) + labs(color = "Domain") + theme(legend.position = "bottom") +
+    p1 <- p1 + geom_linerange(ymin = geneExons$domain_start, ymax = geneExons$domain_end, size = 6, aes(col = DESC, x = gene)) + labs(color = "Domain") + theme(legend.position = "bottom") +
       ggplot2::scale_colour_discrete(na.translate = F)
   }
 

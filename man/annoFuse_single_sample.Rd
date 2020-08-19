@@ -32,7 +32,8 @@ annoFuse_single_sample(
 
 \item{readthroughFilter}{Boolean for filtering readthroughs}
 
-\item{artifactFilter}{A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"}
+\item{artifactFilter}{A red flag filter from Annotation ; in OpenPBTA annotation 
+is from FusionAnnotator column "annots"}
 
 \item{junctionReadCountFilter}{An integer threshold for JunctionReadCount}
 
@@ -46,7 +47,8 @@ Performs artifact filter to remove readthroughs,red flags and performs expressio
 }
 \examples{
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
-  # Example files are provided in extdata, at-least 1 fusionfile is required along with it's rsem expression file
+  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+  # with its rsem expression file
   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
   expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
