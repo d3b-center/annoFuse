@@ -395,7 +395,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
       # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
       breakpoints_info <- values$ann_domain$Gene1B[which(values$ann_domain$Gene1B$FusionName == fusion_for_content & values$ann_domain$Gene1B$Gene1B == rightfused_for_content), ] %>%
-        dplyr::filter(!is.na(DESC))
+        dplyr::filter(!is.na(.data$DESC))
       ## Plot breakpoint
 
       plot_breakpoints(
@@ -422,7 +422,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
 
       # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-      breakpoints_info <- values$ann_domain$Gene1A[which(values$ann_domain$Gene1A$FusionName == fusion_for_content & values$ann_domain$Gene1A$Gene1A == leftfused_for_content), ] %>% dplyr::filter(!is.na(DESC))
+      breakpoints_info <- values$ann_domain$Gene1A[which(values$ann_domain$Gene1A$FusionName == fusion_for_content & values$ann_domain$Gene1A$Gene1A == leftfused_for_content), ] %>% dplyr::filter(!is.na(.data$DESC))
       ## Plot breakpoint
 
       plot_breakpoints(
