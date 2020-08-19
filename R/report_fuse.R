@@ -8,7 +8,8 @@
 #' `annoFuse` package. Experienced users can take that as a starting point to further
 #' edit and customize.
 #'
-#' @param out_annofuse TODO
+#' @param out_annofuse The character string specifying the location of the file
+#' output by the annoFuse pipeline.
 #' @param project_id A character string, which can be considered as an identifier
 #' for the set/session, and will be e.g. used in the title of the report created
 #' via [report_fuse()]
@@ -37,7 +38,7 @@
 #'
 #' @examples
 #'
-#' out_annofuse <- "PutativeDriverAnnoFuse_test_v14.tsv"
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
 #' \dontrun{
 #' report_fuse(out_annofuse = out_annofuse)
 #' }
@@ -52,6 +53,18 @@ report_fuse <- function(out_annofuse,
                         open_after_creating = TRUE,
                         ...) {
   # generates a nice number of outputs, plots, and so on, placed in a report. Boom :)
+  
+  stopifnot(is.character(project_id))
+  stopifnot(is.character(output_file))
+  stopifnot(is.character(output_dir))
+  stopifnot(is.logical(force_overwrite))
+  stopifnot(is.logical(knitr_show_progress))
+  stopifnot(is.logical(open_after_creating))
+  
+  # annofuse_tbl is then used in the Rmd report
+  annofuse_tbl <- read.delim(normalizePath(out_annofuse))
+  
+  annofuse_tbl <- .check_annoFuse_calls(annofuse_tbl)
 
   # If possible, set output format based on the extension of output_file, if the output format is not provided
   if (is.null(output_format)) {
@@ -131,9 +144,7 @@ report_fuse <- function(out_annofuse,
     )
   }
 
-  # annofuse_tbl is then used in the Rmd report
-  annofuse_tbl <- read.delim(normalizePath(out_annofuse))
-
+  
   # Process the arguments
   args <- list(...)
   args$input <- output_rmd

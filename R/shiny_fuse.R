@@ -19,7 +19,7 @@
 #' @importFrom DT datatable renderDataTable dataTableOutput
 #'
 #' @examples
-#' out_annofuse <- "/Users/fede/Development/annoFuse/PutativeDriverAnnoFuse_test_v14.tsv"
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
 #' if (interactive()) {
 #'   shiny_fuse(out_annofuse)
 #' }
@@ -241,6 +241,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       })
     } else {
       annofuse_tbl <- read.delim(out_annofuse)
+      annofuse_tbl <- .check_annoFuse_calls(annofuse_tbl)
       values$annofuse_tbl <- annofuse_tbl
 
       enhanced_annofuse_tbl <- annofuse_tbl
@@ -280,7 +281,9 @@ shiny_fuse <- function(out_annofuse = NULL) {
     # Load annoFuse data file --------------------------------------------------
     observeEvent(input$annofusedatasel, {
       message("Reading in...")
-      values$annofuse_tbl <- read.delim(input$annofusedatasel$datapath)
+      values$annofuse_tbl <- .check_annoFuse_calls(
+        read.delim(input$annofusedatasel$datapath)
+      )
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
 
       # enhancing the content of the table
