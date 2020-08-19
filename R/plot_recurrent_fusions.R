@@ -8,7 +8,7 @@
 #'
 #' @export
 #'
-#' @return recurrent fused genes
+#' @return A ggplot object containing an overview on the recurrent fusions
 #'
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")

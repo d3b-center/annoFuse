@@ -8,7 +8,7 @@
 #'
 #' @export
 #'
-#' @return recurrent fused genes
+#' @return A ggplot object containing an overview on the recurrent fused genes
 #'
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
@@ -75,7 +75,7 @@ plot_recurrent_genes <- function(standardFusioncalls,
   }
 
   rec_genes <- ggplot(rec_gene) +
-    geom_col(aes(x = Gene, y = count, fill = !!as.name(groupby)), alpha = 0.75) +
+    geom_col(aes(x = .data$Gene, y = .data$count, fill = !!as.name(groupby)), alpha = 0.75) +
     ylab("Number of patients") +
     guides(color = FALSE, alpha = FALSE) +
     xlab(NULL) +
