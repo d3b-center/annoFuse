@@ -13,8 +13,14 @@
 #'
 #' @examples
 #' # TODOTODO
-fusion_standardization <- function(fusion_calls = fusion_calls,
-                                   caller = caller) {
+fusion_standardization <- function(fusion_calls,
+                                   caller = c("STARFUSION", "ARRIBA")) {
+  stopifnot(is(fusion_calls, "data.frame"))
+  stopifnot(is.character(caller))
+  # TODO: maybe you want to handle it via match.arg?
+  # say:
+  # caller <- match.arg(caller, choices = c("STARFUSION", "ARRIBA"))
+  
   if (caller == "STARFUSION") {
     fusion_calls <- fusion_calls %>%
       # standardize fusion type column name
