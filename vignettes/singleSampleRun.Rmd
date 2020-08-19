@@ -37,8 +37,8 @@ Gene fusion events are a significant source of somatic variation across adult an
 
 
 ## Generating StarFusion and arriba files
-  * [STAR-Fusion] (https://github.com/STAR-Fusion/STAR-Fusion/wiki)
-  * [Arriba] (https://arriba.readthedocs.io/en/latest/)
+  * [STAR-Fusion](https://github.com/STAR-Fusion/STAR-Fusion/wiki)
+  * [Arriba](https://arriba.readthedocs.io/en/latest/)
 
 ## Fusion format requirements
 
