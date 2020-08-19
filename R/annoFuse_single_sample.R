@@ -125,7 +125,7 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
       distinct(GeneSymbol, .keep_all = TRUE) %>% # keep the ones with greatest FPKM value. If ties occur, keep the first occurencce
       unique() %>%
       remove_rownames() %>%
-      dplyr::select(EnsembleID, GeneSymbol, FPKM, gene_id)
+      dplyr::select(.data$EnsembleID, .data$GeneSymbol, .data$FPKM, .data$gene_id)
 
     # rename columns
     colnames(expressionMatrix.collapsed)[3] <- tumorID
