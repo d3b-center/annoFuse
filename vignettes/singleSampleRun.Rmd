@@ -45,6 +45,7 @@ Additionally, in the vignette we annotate filtered fusion with pfam domains per 
 suppressPackageStartupMessages(library("annoFuse"))
 suppressPackageStartupMessages(library("dplyr"))
 suppressPackageStartupMessages(library("reshape2"))
+suppressPackageStartupMessages(library("ggplot2"))
 
 # Run annoFuse for Single sample with default expression filter and FusionAnnotator red flag artifact filter
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
@@ -75,9 +76,6 @@ annDomain <- annoFuse::get_Pfam_domain(
   keepPartialAnno = TRUE
 )
 
-# plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-kiaabraf <- annDomain$Gene1B[which(annDomain$Gene1B$FusionName == "KIAA1549--BRAF" & annDomain$Gene1B$Gene1B == "BRAF"), ] %>% dplyr::filter(!is.na(DESC))
-
 # read in exonsToPlot with exon and gene boundaries from gencode.v27.primary_assembly.annotation.gtf.gz
 exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
 ```
@@ -85,7 +83,11 @@ exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse")
 ## Plot breakpoint
 
 ```{r , fig.width=10, fig.height=5}
-plot_breakpoints(domainDataFrame = kiaabraf, exons = exons, geneposition = "Right") + theme_publication(base_size = 12)
+# plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
+kiaa1549 <- plot_breakpoints(domainDataFrame = annDomain, exons = exons, geneposition = "Left",fusionname = "KIAA1549--BRAF" ,base_size = 12) 
+braf <- plot_breakpoints(domainDataFrame = annDomain, exons = exons, geneposition = "Right",fusionname = "KIAA1549--BRAF"  , base_size = 12) 
+
+ggpubr::ggarrange(kiaa1549,braf,align = "h")
 ```
 
 
