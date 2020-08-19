@@ -74,7 +74,7 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
 
   # if StarFusion file is empty only run standardization for Arriba calls
   if (is_empty(STARFusioninputfile$FusionName) & !is_empty(Arribainputfile$"gene1--gene2")) {
-    warning(paste("No fusion calls in StarFusion : ", opt$fusionfileStarFusion))
+    warning(paste("No fusion calls in StarFusion "))
 
     colnames(Arribainputfile)[27] <- "annots"
     # To have a general column with unique IDs associated with each sample
@@ -90,7 +90,7 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
 
   # if Arriba file is empty only run standardization for StarFusion calls
   if (!is_empty(STARFusioninputfile$FusionName) & is_empty(Arribainputfile$"gene1--gene2")) {
-    warning(paste("No fusion calls in StarFusion : ", opt$fusionfileStarFusion))
+    warning(paste("No fusion calls in Arriba "))
 
     # To have a general column with unique IDs associated with each sample
     STARFusioninputfile$Sample <- tumorID
