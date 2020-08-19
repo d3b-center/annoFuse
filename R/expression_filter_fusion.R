@@ -9,10 +9,20 @@
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 #'
 #' @examples
-#' # TODOTODO
-expression_filter_fusion <- function(standardFusioncalls = standardFusioncalls,
-                                     expressionMatrix = expressionMatrix,
-                                     expressionFilter = expressionFilter) {
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' # TODOTODO: what are some good values for expressionMatrix and expressionFilter?
+#' 
+expression_filter_fusion <- function(standardFusioncalls,
+                                     expressionMatrix,
+                                     expressionFilter) {
+  # TODO: needs to be restored, otherwise the vignette halts
+  # TODO: looks like the file created in the vignette is missing one of the expected columns,
+  # or I did put too many mandatory columns!
+  # standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  
+  # TODO: check if e.g. expressionMatrix is a matrix, and if the filter is a numeric?
+  
   fusion_sample_gene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair
     dplyr::select(.data$Sample, .data$FusionName, .data$Gene1A, .data$Gene1B, .data$Gene2A, .data$Gene2B) %>%
