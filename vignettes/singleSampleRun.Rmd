@@ -84,10 +84,10 @@ exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse")
 
 ```{r , fig.width=10, fig.height=5}
 # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-kiaa1549 <- plot_breakpoints(domainDataFrame = annDomain, exons = exons, geneposition = "Left",fusionname = "KIAA1549--BRAF" ,base_size = 12) 
-braf <- plot_breakpoints(domainDataFrame = annDomain, exons = exons, geneposition = "Right",fusionname = "KIAA1549--BRAF"  , base_size = 12) 
+kiaa1549 <- plot_breakpoints(domainDataFrame = annDomain, exons = exons, geneposition = "Left", fusionname = "KIAA1549--BRAF", base_size = 12)
+braf <- plot_breakpoints(domainDataFrame = annDomain, exons = exons, geneposition = "Right", fusionname = "KIAA1549--BRAF", base_size = 12)
 
-ggpubr::ggarrange(kiaa1549,braf,align = "h")
+ggpubr::ggarrange(kiaa1549, braf, align = "h")
 ```
 
 
