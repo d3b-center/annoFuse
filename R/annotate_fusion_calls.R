@@ -9,10 +9,17 @@
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 #'
 #' @examples
-#' # TODOTODO
-annotate_fusion_calls <- function(standardFusioncalls = standardFusioncalls,
-                                  geneListReferenceDataTab = geneListReferenceDataTab,
-                                  fusionReferenceDataTab = fusionReferenceDataTab) {
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' # TODOTODO: what are some good values for geneListReferenceDataTab and fusionReferenceDataTab?
+#' 
+annotate_fusion_calls <- function(standardFusioncalls,
+                                  geneListReferenceDataTab,
+                                  fusionReferenceDataTab) {
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is(geneListReferenceDataTab, "data.frame"))
+  stopifnot(is(fusionReferenceDataTab, "data.frame"))
+  
   geneListReferenceDataTab <- geneListReferenceDataTab %>% dplyr::select(-file)
   fusionReferenceDataTab <- fusionReferenceDataTab %>% dplyr::select(-file)
   annotated_filtered_fusions <- standardFusioncalls %>%
