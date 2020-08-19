@@ -16,13 +16,24 @@
 #' @return expression_annotated_fusions is a standardized fusion call set with standard
 #'
 #' @examples
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' 
 #' # TODOTODO
-zscored_annotation <- function(standardFusionCalls = standardFusionCalls,
-                               zscoreFilter = zscoreFilter,
-                               saveZscoredMatrix = saveZscoredMatrix,
-                               normData = normData,
-                               expressionMatrix = expressionMatrix) {
+#' # example with full call
+zscored_annotation <- function(standardFusionCalls,
+                               zscoreFilter,
+                               saveZscoredMatrix,
+                               normData,
+                               expressionMatrix) {
 
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  
+  stopifnot(is.numeric(zscoreFilter))
+  if (!missing(saveZscoredMatrix)) 
+    stopifnot(is.character(saveZscoredMatrix))
+  # TODO: checks on other params as well
+  
   # expressionMatrix collapsed at gene level like Gtex max rowMean
   expressionMatrixMatched <- expressionMatrix %>%
     unique() %>%
@@ -37,8 +48,6 @@ zscored_annotation <- function(standardFusionCalls = standardFusionCalls,
     dplyr::filter(.data$GeneSymbol %in% normData$GeneSymbol) %>%
     tibble::column_to_rownames("GeneSymbol")
   expressionMatrixMatched <- log2(expressionMatrixMatched + 1)
-
-
 
   # gene matched
   # get log transformed GTEx matrix
@@ -57,7 +66,6 @@ zscored_annotation <- function(standardFusionCalls = standardFusionCalls,
   expressionMatrixzscored <- sweep(expressionMatrixzscored, 1, normData_sd, FUN = "/") %>%
     mutate(GeneSymbol = rownames(.data)) %>%
     na.omit(.data)
-
 
   # To save GTEx/cohort scored matrix
   if (!missing(saveZscoredMatrix)) {
