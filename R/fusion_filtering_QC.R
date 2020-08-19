@@ -32,7 +32,8 @@ fusion_filtering_QC <- function(standardFusioncalls,
                                 spanningFragCountFilter,
                                 readthroughFilter = TRUE) {
   
-  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  ## TODO: will need to double check this one
+  # standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is.character(readingFrameFilter))
   stopifnot(is.numeric(junctionReadCountFilter))
   stopifnot(is.numeric(spanningFragCountFilter))

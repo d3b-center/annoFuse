@@ -8,7 +8,7 @@
                         "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", 
                         "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B", 
                         "Gene1A_anno", "Gene1B_anno", "Gene2A_anno", "Gene2B_anno",
-                        "Fusion_anno", "CalledBy", "caller.count", "Kids_First_Participant_ID")
+                        "Fusion_anno")
   # TODO: are these all the columns that are specified?
   
   stopifnot(all(cols_fusioncalls %in% colnames(standardFusioncalls)))
