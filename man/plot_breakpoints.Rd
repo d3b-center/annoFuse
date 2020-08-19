@@ -6,10 +6,10 @@
 \usage{
 plot_breakpoints(
   domainDataFrame = NULL,
-  exons = exons,
-  geneposition = NULL,
+  exons,
+  geneposition = c("Left", "Right"),
   sampleid = NULL,
-  fusionname = NULL,
+  fusionname,
   leftBreakpoint = NULL,
   rightBreakpoint = NULL,
   base_size = 12

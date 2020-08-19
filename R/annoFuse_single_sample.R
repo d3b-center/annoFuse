@@ -38,8 +38,8 @@
 #'   # keep read throughs
 #'   readthroughFilter = FALSE
 #' )
-annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
-                                   fusionfileStarFusion = fusionfileStarFusion,
+annoFuse_single_sample <- function(fusionfileArriba,
+                                   fusionfileStarFusion,
                                    expressionFile = NULL,
                                    expressionFilter = 1,
                                    tumorID = "tumorID",
@@ -48,7 +48,17 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
                                    artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
                                    junctionReadCountFilter = 1,
                                    spanningFragCountFilter = 10) {
-
+  
+  stopifnot(is.character(fusionfileArriba))
+  stopifnot(is.character(fusionfileStarFusion))
+  stopifnot(is.numeric(expressionFilter))
+  stopifnot(is.character(tumorID))
+  stopifnot(is.character(readingFrameFilter))
+  stopifnot(is.logical(readthroughFilter))
+  stopifnot(is.character(artifactFilter))
+  stopifnot(is.numeric(junctionReadCountFilter))
+  stopifnot(is.numeric(spanningFragCountFilter))
+  
   # read files
   STARFusioninputfile <- read_tsv(fusionfileStarFusion)
   Arribainputfile <- read_tsv(fusionfileArriba, col_types = readr::cols(breakpoint1 = readr::col_character(), breakpoint2 = readr::col_character()))

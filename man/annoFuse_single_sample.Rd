@@ -5,8 +5,8 @@
 \title{Single Sample use for annoFuse}
 \usage{
 annoFuse_single_sample(
-  fusionfileArriba = fusionfileArriba,
-  fusionfileStarFusion = fusionfileStarFusion,
+  fusionfileArriba,
+  fusionfileStarFusion,
   expressionFile = NULL,
   expressionFilter = 1,
   tumorID = "tumorID",

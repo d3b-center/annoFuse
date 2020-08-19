@@ -34,18 +34,24 @@
 #'                           fusionname = "ANTXR1--BRAF")
 #' ggpubr::ggarrange(left, right, align = "h")
 plot_breakpoints <- function(domainDataFrame = NULL,
-                             exons = exons,
-                             geneposition = NULL,
+                             exons,
+                             geneposition = c("Left", "Right"),
                              sampleid = NULL,
-                             fusionname = NULL,
+                             fusionname,
                              leftBreakpoint = NULL,
                              rightBreakpoint = NULL,
                              base_size = 12) {
+  
+  geneposition <- match.arg(geneposition, c("Left", "Right"))
+  stopifnot(is(exons, "data.frame"))
+  stopifnot(is.character(fusionname))
+  stopifnot(is.numeric(base_size))
+  
   if (is.null(domainDataFrame)) {
     stop("domainDataFrame not provide; please provide output from get_Pfam_domain() ")
   } else {
     if (is.null(fusionname)) {
-      warning("FusionName not provide; using first row of domainDataFrame")
+      warning("FusionName not provided; using first row of domainDataFrame")
     } else {
       # subset the dataframe with domain information to only fusionname
       domainDataFrame$Gene1B <- domainDataFrame$Gene1B[which(domainDataFrame$Gene1B$FusionName == fusionname), ]
