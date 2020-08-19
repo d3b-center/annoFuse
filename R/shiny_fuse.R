@@ -79,6 +79,9 @@ shiny_fuse <- function(out_annofuse = NULL) {
     sidebar = shinydashboard::dashboardSidebar(
       width = 250,
       collapsed = !is.null(out_annofuse),
+      
+      actionButton(inputId = "btn_load_demo",
+                   label = "Load demo data"),
 
       uiOutput("choose_annofusedata_file"),
       # shinydashboard::menuItem(
@@ -301,6 +304,32 @@ shiny_fuse <- function(out_annofuse = NULL) {
         )
       }
     })
+    
+    # Load demo data
+    observeEvent(input$btn_load_demo, {
+      message("Loading demo data...")
+      demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+      values$annofuse_tbl <- 
+        .check_annoFuse_calls(read.delim(demodata_location))
+      values$enhanced_annofuse_tbl <- values$annofuse_tbl
+      
+      # enhancing the content of the table
+      values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
+      values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
+      
+      if (!is.null(values$data_pfam)) {
+        message("Creating domain information...")
+        values$ann_domain <- annoFuse::get_Pfam_domain(
+          standardFusioncalls = values$annofuse_tbl,
+          bioMartDataPfam = values$data_pfam, # must be pre-loaded
+          # partial overlapping domains are retained == "Partial" with keepPartialAnno=TRUE;
+          # if keepPartialAnno=FALSE then domain retained status == "No"
+          keepPartialAnno = TRUE
+        )
+      }
+    })
+    
+    
 
     # Main interactive table for exploration -----------------------------------
     output$table_annofuse <- DT::renderDataTable({
