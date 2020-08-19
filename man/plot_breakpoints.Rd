@@ -39,14 +39,23 @@ ggplot of gene and breakpoints
 Function to plot breakpoints of a gene in a sample/cohort
 }
 \examples{
-standardFusionfile <- system.file("extdata", "PutativeOncogenicFusion.tsv", package = "annoFuse")
-standardFusioncalls <- readr::read_tsv(standardFusionfile)
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
 exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
-bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
-domainDataFrame <- get_Pfam_domain(standardFusioncalls = standardFusioncalls, bioMartDataPfam = bioMartDataPfam, keepPartialAnno = TRUE)
-left <- plot_breakpoints(sampleid = "BS_044XZ8ST",domainDataFrame = domainDataFrame,exons = exons,geneposition = "Left",fusionname = "ANTXR1--BRAF")
-right <- plot_breakpoints(sampleid = "BS_044XZ8ST",domainDataFrame = domainDataFrame,exons = exons,geneposition = "Right",fusionname = "ANTXR1--BRAF")
-ggpubr::ggarrange(left,right,align = "h")
-
-
+bioMartDataPfam <- 
+  readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+domainDataFrame <- get_Pfam_domain(standardFusioncalls = sfc, 
+                                   bioMartDataPfam = bioMartDataPfam, 
+                                   keepPartialAnno = TRUE)
+left <- plot_breakpoints(sampleid = "BS_044XZ8ST", 
+                         domainDataFrame = domainDataFrame, 
+                         exons = exons, 
+                         geneposition = "Left", 
+                         fusionname = "ANTXR1--BRAF")
+right <- plot_breakpoints(sampleid = "BS_044XZ8ST", 
+                          domainDataFrame = domainDataFrame, 
+                          exons = exons, 
+                          geneposition = "Right", 
+                          fusionname = "ANTXR1--BRAF")
+ggpubr::ggarrange(left, right, align = "h")
 }

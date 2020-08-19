@@ -46,23 +46,20 @@ Performs artifact filter to remove readthroughs,red flags and performs expressio
 }
 \examples{
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
-# Example files are provided in extdata, at-least 1 fusionfile is required along with it's rsem expression file
-fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
-fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
-expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
-tumorID = "BS_W97QQYKQ",
-# multiple read flag values for filtering using FusionAnnotator values
-artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
-# keep all in-frame , frameshift and other types of Fusion_Type
-readingFrameFilter = "in-frame|frameshift|other",
-# keep all fusions with atleast 1 junction read support
-junctionReadCountFilter = 1,
-# keep only fusions where spanningFragCount-junctionReadCountFilter less than equal to 10
-spanningFragCountFilter = 10,
-# keep read throughs
-readthroughFilter = FALSE
+  # Example files are provided in extdata, at-least 1 fusionfile is required along with it's rsem expression file
+  fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
+  fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
+  expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
+  tumorID = "BS_W97QQYKQ",
+  # multiple read flag values for filtering using FusionAnnotator values
+  artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+  # keep all in-frame , frameshift and other types of Fusion_Type
+  readingFrameFilter = "in-frame|frameshift|other",
+  # keep all fusions with atleast 1 junction read support
+  junctionReadCountFilter = 1,
+  # keep only fusions where spanningFragCount-junctionReadCountFilter less than equal to 10
+  spanningFragCountFilter = 10,
+  # keep read throughs
+  readthroughFilter = FALSE
 )
-
-
-
 }
