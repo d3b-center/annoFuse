@@ -1,10 +1,30 @@
 ---
-title: "Single sample fusion annotation and filtering"
-output: rmarkdown::html_vignette
+title: >
+  Single sample fusion annotation and filtering
+author:
+- name: Krutika Gaonkar
+  affiliation: 
+  - &id1 Center for Data-Driven Discovery in Biomedicine, Children’s Hospital of Philadelphia, USA
+  email: gaonkark@chop.email.edu
+- name: Federico Marini
+  affiliation: 
+  - &id2 Institute of Medical Biostatistics, Epidemiology and Informatics (IMBEI), Mainz
+  - Center for Thrombosis and Hemostasis (CTH), Mainz
+  email: marinif@uni-mainz.de
+date: "`r Sys.Date()`"
+package: "`r paste('annoFuse', packageVersion('annoFuse'))"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
 vignette: >
   %\VignetteIndexEntry{Project specific filtering}
+  %\VignetteEncoding{UTF-8}  
+  %\VignettePackage{annoFuse}
+  %\VignetteKeywords{Software, Transcription, Visualization, GeneExpression, Annotation,
+    GeneFusionDetection, GUI, ReportWriting}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include=FALSE} 
@@ -16,16 +36,16 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 Gene fusion events are a significant source of somatic variation across adult and pediatric cancers and have provided some of the most effective clinically relevant therapeutic targets, yet computational algorithms for fusion detection from RNA sequencing data show low overlap of predictions across methods. annoFuse provides a standardized filtering and annotating method for gene fusion calls from STAR-Fusion and Arriba by merging, filtering, and prioritizing putative oncogenic fusions across large cancer datasets, as demonstrated in the manuscript with the OpenPBTA project dataset.
 
 
-### Generating StarFusion and arriba files
+## Generating StarFusion and arriba files
   * [STAR-Fusion] (https://github.com/STAR-Fusion/STAR-Fusion/wiki)
   * [Arriba] (https://arriba.readthedocs.io/en/latest/)
 
-### Fusion format requirements
+## Fusion format requirements
 
   * [STAR-Fusion star-fusion.fusion_predictions.tsv ](https://github.com/STAR-Fusion/STAR-Fusion/wiki#output-from-star-fusion)
   * [Arriba fusions.tsv](https://arriba.readthedocs.io/en/latest/output-files/)
 
-### Rsem gene format
+## Rsem gene format
   * RSEM genes.results.gz
 
 # Overview of the package
@@ -88,5 +108,10 @@ exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse")
 plot_breakpoints(domainDataFrame = kiaabraf, exons = exons, geneposition = "Right") + theme_publication(base_size = 12)
 ```
 
+# Session info {-}
+
+```{r}
+sessionInfo()
+```
 
 
