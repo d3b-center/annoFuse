@@ -10,7 +10,10 @@
 #' @export
 #'
 #' @examples
-#' # TODOTODO
+#' library("ggplot2")
+#' p <- ggplot(cars, aes(speed, dist)) + geom_point()
+#' p
+#' p + theme_publication(base_size = 24)
 theme_publication <- function(base_size = 12,
                               base_family = "Helvetica") {
   (theme_foundation(base_size = base_size, base_family = base_family) +
