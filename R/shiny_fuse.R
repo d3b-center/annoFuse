@@ -161,18 +161,24 @@ shiny_fuse <- function(out_annofuse = NULL) {
                   width = 12,
                   collapsible = TRUE,
                   collapsed = TRUE,
-                  plotOutput("af_overview")
+                  plotOutput("af_overview"),
+                  downloadButton("btn_dl_summary", label = "", 
+                                 class = "btn btn-success")
                 )
               )
             ),
             fluidRow(
               column(
                 width = 6,
-                plotOutput("af_recurrentfusions")
+                plotOutput("af_recurrentfusions"),
+                downloadButton("btn_dl_recufusions", label = "", 
+                               class = "btn btn-success")
               ),
               column(
                 width = 6,
-                plotOutput("af_recurrentgenes")
+                plotOutput("af_recurrentgenes"),
+                downloadButton("btn_dl_recugenes", label = "",
+                               class = "btn btn-success")
               )
             )
           )
@@ -467,10 +473,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
     output$af_overview <- renderPlot({
       withProgress(
         {
-          plot_summary(values$annofuse_tbl)
+          p <- plot_summary(values$annofuse_tbl)
         },
         message = "Rendering summary..."
       )
+      values$plotobj_summary <- p
+      print(p)
     })
 
     # TODO: spinner for when the plot is loading?
@@ -487,12 +495,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
       plotn_rf <- input$af_n_topfusions
       cid_rf <- input$af_countcol
       palette_rf <- c("blue", "green", "orange") # I had to specify this
-      plot_recurrent_fusions(values$annofuse_tbl,
+      p <- plot_recurrent_fusions(values$annofuse_tbl,
         groupby = gby_rf,
         plotn = plotn_rf,
         countID = cid_rf,
         palette_rec = palette_rf
       )
+      values$plotobj_recufusions <- p
+      print(p)
     })
 
     output$af_recurrentgenes <- renderPlot({
@@ -507,12 +517,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
       plotn_rg <- input$af_n_topfusions
       cid_rg <- input$af_countcol
       palette_rg <- c("blue", "green", "orange") # I had to specify this
-      plot_recurrent_genes(values$annofuse_tbl,
+      p <- plot_recurrent_genes(values$annofuse_tbl,
         groupby = gby_rg,
         plotn = plotn_rg,
         countID = cid_rg,
         palette_rec = palette_rg
       )
+      values$plotobj_recugenes <- p
+      print(p)
     })
 
     # Tour trigger -------------------------------------------------------------
@@ -560,8 +572,37 @@ shiny_fuse <- function(out_annofuse = NULL) {
         showNotification("exons data already loaded", type = "default")
       }
     })
+    
+    
+    # Defining behaviors for downloading the plots -----------------------------
+    output$btn_dl_summary <- downloadHandler(
+      filename = "annofuse_summary.pdf",
+      content = function(file) {
+        ggsave(file, plot = values$plotobj_summary #, 
+               # width = input$export_width,
+               # height = input$export_height, units = "cm"
+        )
+      })
+    
+    output$btn_dl_recufusions <- downloadHandler(
+      filename = "annofuse_recurrent_fusions.pdf",
+      content = function(file) {
+        ggsave(file, plot = values$plotobj_recufusions #, 
+               # width = input$export_width,
+               # height = input$export_height, units = "cm"
+        )
+      })
+    
+    output$btn_dl_recugenes <- downloadHandler(
+      filename = "annofuse_recurrent_genes.pdf",
+      content = function(file) {
+        ggsave(file, plot = values$plotobj_recugenes #, 
+               # width = input$export_width,
+               # height = input$export_height, units = "cm"
+        )
+      })
+    
   }
-
   shinyApp(ui = shinyfuse_ui, server = shinyfuse_server)
 }
 
