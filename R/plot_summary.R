@@ -1,30 +1,39 @@
 #' Function to annotate fusion calls
 
-#' @param standardFusionCalls A dataframe from star fusion or arriba standardized to run through the filtering steps
-#' @param outputpdffile Filename to plot image
+#' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
+#' @param outputpdffile Filename to plot image - optional, if not specified, the 
+#' plot is simply generated
 #' @param groupby column name with grouping variables
 #'
 #' @export
 #'
-#' @return summary pdf
+#' @return A ggplot object containing a summary of the standardized fusion calls
 #'
 #' @examples
-#' # TODOTODO
-plot_summary <- function(standardFusionCalls = standardFusionCalls,
-                         outputpdffile = outputpdffile,
-                         groupby = groupby) {
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' plot_summary(sfc, groupby = "Fusion_Type")
+plot_summary <- function(standardFusioncalls,
+                         outputpdffile,
+                         groupby) {
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  if (!missing(outputpdffile))
+    stopifnot(is.character(outputpdffile))
+  
   if (missing(groupby)) {
     # per sample
     groupby <- "Sample"
+  } else {
+    stopifnot(is.character(groupby))
   }
 
-  # fusion_calls_interchromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTERCHROMOSOMAL",annots))
-  # fusion_calls_intrachromosomal<-standardFusionCalls %>% dplyr::filter(grepl("INTRACHROMOSOMAL",annots))
+  # fusion_calls_interchromosomal<-standardFusioncalls %>% dplyr::filter(grepl("INTERCHROMOSOMAL",annots))
+  # fusion_calls_intrachromosomal<-standardFusioncalls %>% dplyr::filter(grepl("INTRACHROMOSOMAL",annots))
   #
   # fusion_chrom<-rbind(data.frame(cbind(fusion_calls_interchromosomal,"Distance"=rep("Interchromosomal",nrow(fusion_calls_interchromosomal)))),cbind(fusion_calls_intrachromosomal,"Distance"=rep("Intrachromosomal",nrow(fusion_calls_intrachromosomal)))) %>% unique()
 
   # Inter and intrachromosomal plot
-  fusion_chrom <- standardFusionCalls %>%
+  fusion_chrom <- standardFusioncalls %>%
     # get left breakpoints
     group_by(.data$LeftBreakpoint) %>%
     # get left chromosome
@@ -50,7 +59,7 @@ plot_summary <- function(standardFusionCalls = standardFusionCalls,
     labs(fill = "Distance")
 
   # frame information
-  p2 <- ggplot(standardFusionCalls, aes(fill = Fusion_Type, x = Caller, alpha = 0.75)) +
+  p2 <- ggplot(standardFusioncalls, aes(fill = .data$Fusion_Type, x = .data$Caller, alpha = 0.75)) +
     geom_bar(aes(y = log2(stat(count)))) +
     rotate() +
     xlab("Caller") +
@@ -69,7 +78,7 @@ plot_summary <- function(standardFusionCalls = standardFusionCalls,
   genes <- as.data.frame(genes(edb))
 
   # keep if atleast 1 gene is protein coding gene in fusions
-  fusion_protein_coding_gene_df <- standardFusionCalls %>%
+  fusion_protein_coding_gene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair
     dplyr::select(.data$Sample, .data$FusionName, .data$Gene1A, .data$Gene1B, .data$Gene2A, .data$Gene2B, !!(as.name(groupby))) %>%
     # We want a single column that contains the gene symbols
@@ -112,7 +121,7 @@ plot_summary <- function(standardFusionCalls = standardFusionCalls,
 
   # Kinase groups
   bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
-  annDomain <- get_Pfam_domain(standardFusioncalls = standardFusionCalls, bioMartDataPfam = bioMartDataPfam, keepPartialAnno = TRUE)
+  annDomain <- get_Pfam_domain(standardFusioncalls = standardFusioncalls, bioMartDataPfam = bioMartDataPfam, keepPartialAnno = TRUE)
   gene1AKinaseDomain <- annDomain$Gene1A %>%
     dplyr::filter(Gene1A_DOMAIN_RETAINED_IN_FUSION == "Yes" & grepl("kinase", NAME)) %>%
     dplyr::select("Gene1A", "NAME", !!(as.name(groupby)), Sample) %>%
@@ -153,7 +162,7 @@ plot_summary <- function(standardFusionCalls = standardFusionCalls,
   }
 
   # bubble plot for genes in kinase/oncoplot etc
-  fusion_type_bubblegene_df <- standardFusionCalls %>%
+  fusion_type_bubblegene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair
     dplyr::select(.data$Sample, .data$FusionName, .data$Gene1A_anno, .data$Gene1B_anno, !!(as.name(groupby))) %>%
     unique() %>%
@@ -207,7 +216,7 @@ plot_summary <- function(standardFusionCalls = standardFusionCalls,
       labs(fill = "Distance")
 
     # frame information
-    p2 <- ggplot(standardFusionCalls, aes(fill = Fusion_Type, x = Caller, alpha = 0.75)) +
+    p2 <- ggplot(standardFusioncalls, aes(fill = .data$Fusion_Type, x = .data$Caller, alpha = 0.75)) +
       geom_bar(aes(y = log2(stat(count)))) +
       rotate() +
       xlab("Caller") +
@@ -253,7 +262,12 @@ plot_summary <- function(standardFusionCalls = standardFusionCalls,
       theme(plot.margin = unit(c(1, 1, 1, 10), "mm")) +
       facet_wrap(~gene_position)
 
-    p <- ggarrange(p1, p2, p3, p4, p5, labels = c("A", "B", "C", "D", "E"), heights = c(3, 2, 3), widths = c(2, 1), nrow = 3, ncol = 2, font.label = list(size = 12))
+    p <- ggarrange(p1, p2, p3, p4, p5, 
+                   labels = c("A", "B", "C", "D", "E"), 
+                   heights = c(3, 2, 3), 
+                   widths = c(2, 1), 
+                   nrow = 3, ncol = 2, 
+                   font.label = list(size = 12))
 
     return(p)
   }
