@@ -2,7 +2,7 @@ Package: annoFuse
 Type: Package
 Title: Annotation And Filtering Analysis For Fusion Calls
 Version: 0.2
-Authors@R: c(person("Krutika", "Gaonkark", role = c("aut", "cre"), 
+Authors@R: c(person("Krutika", "Gaonkar", role = c("aut", "cre"), 
     email = "gaonkark@chop.email.edu"),
     person("Federico", "Marini", role = "ctb", 
     email = "marinif@uni-mainz.de",
@@ -44,5 +44,5 @@ VignetteBuilder: knitr
 NeedsCompilation: no
 biocViews:
     Software, Transcription, Visualization, GeneExpression, Annotation,
-    GeneFusionDetection
+    GeneFusionDetection, GUI, ReportWriting
     
