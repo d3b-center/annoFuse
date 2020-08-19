@@ -3,7 +3,7 @@
 #' @param domainDataFrame A dataframe from star fusion or arriba standardized to run through the filtering steps and get_Pfam_domain() function to get pfam domain annotation per gene
 #' @param exons exon level information from gtf availbale in the package exonsToPlot.RDS
 #' @param geneposition Position of gene in the fusion allowed values are Left (Gene1A) or Right (Gene1B)
-#' @param sampleid id from Sample column of standardized fusion file format 
+#' @param sampleid id (if multiple provide a character vector) from Sample column of standardized fusion file format 
 #' @param fusionname value from FusionName column of standardized fusion file format (Gene1A--Gene1B) 
 #' @param leftBreakpoint If a specific breakpoint needs to be plotted then provide genomic coordinate as LeftBreakpoint 
 #' @param rightBreakpoint  If a specific breakpoint needs to be plotted then provide genomic coordinate as RightBreakpoint
@@ -49,8 +49,8 @@ plot_breakpoints <- function(domainDataFrame = NULL,
   } 
   
   if (!is.null(sampleid) ){
-    domainDataFrame$Gene1B <- domainDataFrame$Gene1B[which(domainDataFrame$Gene1B$Sample == sampleid), ] 
-    domainDataFrame$Gene1A <- domainDataFrame$Gene1A[which(domainDataFrame$Gene1A$Sample == sampleid), ] 
+    domainDataFrame$Gene1B <- domainDataFrame$Gene1B[which(domainDataFrame$Gene1B$Sample %in% sampleid), ] 
+    domainDataFrame$Gene1A <- domainDataFrame$Gene1A[which(domainDataFrame$Gene1A$Sample %in% sampleid), ] 
   }
 
   if (!is.null(leftBreakpoint)){
