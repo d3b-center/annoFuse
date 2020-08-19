@@ -11,7 +11,7 @@
                         "Fusion_anno", "CalledBy", "caller.count", "Kids_First_Participant_ID")
   # TODO: are these all the columns that are specified?
   
-  stopifnot(all(colnames(standardFusioncalls) %in% cols_fusioncalls))
+  stopifnot(all(cols_fusioncalls %in% colnames(standardFusioncalls)))
   
   invisible(standardFusioncalls)
 }
