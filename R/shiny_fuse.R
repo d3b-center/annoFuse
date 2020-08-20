@@ -116,11 +116,11 @@ shiny_fuse <- function(out_annofuse = NULL) {
         windowTitle = "shinyfuse",
         footer = "",
         theme = shinytheme("cosmo"),
-        selected = "TableExplorer",
+        selected = "FusionExplorer",
 
-        # ui TableExplorer -----------------------------------------------------
+        # ui FusionExplorer -----------------------------------------------------
         tabPanel(
-          title = "TableExplorer", icon = icon("table"),
+          title = "FusionExplorer", icon = icon("table"),
           fluidPage(
             fluidRow(
               column(
@@ -370,7 +370,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
     # TODO? link to the DB where the info was taken from
 
-    # Gene info and plots from TableExplorer
+    # Gene info and plots from FusionExplorer
     output$geneinfo_ui <- renderUI({
       validate(
         need(

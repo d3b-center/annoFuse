@@ -1,6 +1,6 @@
 element;intro
 #Welcome;Welcome to <code>annoFuse</code>! Here you can ... <br><br>In this tour you will get an overview of the user interface. You can always leave the tour by pressing "Skip", or by clicking anywhere outside of the tour box. At any stage, you can access the tour by clicking on the question mark in the top right corner of the app.
-#TableExplorer;this text
+#FusionExplorer;this text
 #table_annofuse;that text
 #geneinfo_ui;here
 #table_annofuse;Select a line here...
