@@ -5,32 +5,17 @@
 \title{Function to plot breakpoints of a gene in a sample/cohort}
 \usage{
 plot_breakpoints(
-  domainDataFrame = NULL,
+  domainDataFrame = domainDataFrame,
   exons = exons,
-  geneposition = NULL,
-  sampleid = NULL,
-  fusionname = NULL,
-  leftBreakpoint = NULL,
-  rightBreakpoint = NULL,
-  base_size = 12
+  geneposition = geneposition
 )
 }
 \arguments{
 \item{domainDataFrame}{A dataframe from star fusion or arriba standardized to run through the filtering steps and get_Pfam_domain() function to get pfam domain annotation per gene}
 
-\item{exons}{exon level information from gtf availbale in the package exonsToPlot.RDS}
+\item{exons}{exon level information from gtf}
 
-\item{geneposition}{Position of gene in the fusion allowed values are Left (Gene1A) or Right (Gene1B)}
-
-\item{sampleid}{id (if multiple provide a character vector) from Sample column of standardized fusion file format}
-
-\item{fusionname}{value from FusionName column of standardized fusion file format (Gene1A--Gene1B)}
-
-\item{leftBreakpoint}{If a specific breakpoint needs to be plotted then provide genomic coordinate as LeftBreakpoint}
-
-\item{rightBreakpoint}{If a specific breakpoint needs to be plotted then provide genomic coordinate as RightBreakpoint}
-
-\item{base_size}{base size for text in plot ; default is 12}
+\item{geneposition}{Left/Right position of gene}
 }
 \value{
 ggplot of gene and breakpoints
@@ -39,14 +24,5 @@ ggplot of gene and breakpoints
 Function to plot breakpoints of a gene in a sample/cohort
 }
 \examples{
-standardFusionfile <- system.file("extdata", "PutativeOncogenicFusion.tsv", package = "annoFuse")
-standardFusioncalls <- readr::read_tsv(standardFusionfile)
-exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
-bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
-domainDataFrame <- get_Pfam_domain(standardFusioncalls = standardFusioncalls, bioMartDataPfam = bioMartDataPfam, keepPartialAnno = TRUE)
-left <- plot_breakpoints(sampleid = "BS_044XZ8ST",domainDataFrame = domainDataFrame,exons = exons,geneposition = "Left",fusionname = "ANTXR1--BRAF")
-right <- plot_breakpoints(sampleid = "BS_044XZ8ST",domainDataFrame = domainDataFrame,exons = exons,geneposition = "Right",fusionname = "ANTXR1--BRAF")
-ggpubr::ggarrange(left,right,align = "h")
-
-
+# TODOTODO
 }
