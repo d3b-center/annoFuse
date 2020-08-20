@@ -402,12 +402,23 @@ shiny_fuse <- function(out_annofuse = NULL) {
         tabsetPanel(
           tabPanel(
             "Plot left",
-            plotOutput("geneplots_left")
+            plotOutput("geneplots_left"),
+            downloadButton("btn_dl_bpleft", label = "", 
+                           class = "btn btn-success")
           ),
           tabPanel(
             "Plot right",
-            plotOutput("geneplots_right")
+            plotOutput("geneplots_right"),
+            downloadButton("btn_dl_bpright", label = "", 
+                           class = "btn btn-success")
+          ),
+          tabPanel(
+            "Plot both",
+            plotOutput("geneplots_both"),
+            downloadButton("btn_dl_bpboth", label = "", 
+                           class = "btn btn-success")
           )
+          
         )
       )
     })
@@ -429,16 +440,18 @@ shiny_fuse <- function(out_annofuse = NULL) {
       rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
 
       # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-      breakpoints_info <- values$ann_domain$Gene1B[which(values$ann_domain$Gene1B$FusionName == fusion_for_content & values$ann_domain$Gene1B$Gene1B == rightfused_for_content), ] %>%
-        dplyr::filter(!is.na(.data$DESC))
+      # breakpoints_info <- values$ann_domain$Gene1B[which(values$ann_domain$Gene1B$FusionName == fusion_for_content & values$ann_domain$Gene1B$Gene1B == rightfused_for_content), ] %>%
+      #   dplyr::filter(!is.na(.data$DESC))
       ## Plot breakpoint
 
-      plot_breakpoints(
-        domainDataFrame = breakpoints_info,
+      p <- plot_breakpoints(
+        domainDataFrame = values$ann_domain,
         exons = values$data_exons,
-        geneposition = "Right"
-      ) +
-        theme_publication(base_size = 12)
+        geneposition = "Right",
+        fusionname = fusion_for_content
+      ) 
+      values$plotobj_breakpoint_right <- p
+      print(p)
     })
 
     output$geneplots_left <- renderPlot({
@@ -457,15 +470,32 @@ shiny_fuse <- function(out_annofuse = NULL) {
       leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
 
       # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-      breakpoints_info <- values$ann_domain$Gene1A[which(values$ann_domain$Gene1A$FusionName == fusion_for_content & values$ann_domain$Gene1A$Gene1A == leftfused_for_content), ] %>% dplyr::filter(!is.na(.data$DESC))
+      # breakpoints_info <- values$ann_domain$Gene1A[which(values$ann_domain$Gene1A$FusionName == fusion_for_content & values$ann_domain$Gene1A$Gene1A == leftfused_for_content), ] %>% dplyr::filter(!is.na(.data$DESC))
       ## Plot breakpoint
 
-      plot_breakpoints(
-        domainDataFrame = breakpoints_info,
+      p <- plot_breakpoints(
+        domainDataFrame = values$ann_domain,
         exons = values$data_exons,
-        geneposition = "Left"
-      ) +
-        theme_publication(base_size = 12)
+        geneposition = "Left",
+        fusionname = fusion_for_content
+      )
+      values$plotobj_breakpoint_left <- p
+      print(p)
+    })
+    
+    output$geneplots_both <- renderPlot({
+      validate(
+        need(
+          !is.null(values$plotobj_breakpoint_left) & !is.null(values$plotobj_breakpoint_right),
+          "Please load the exons and the pfam information via the buttons above to display the plot"
+        )
+      )  
+      pboth <- ggpubr::ggarrange(
+        values$plotobj_breakpoint_left, 
+        values$plotobj_breakpoint_right, 
+        align = "h")
+      values$plotobj_breakpoint_both <- pboth
+      print(pboth)      
     })
 
     # Content for TableSummary panel -------------------------------------------
@@ -575,6 +605,33 @@ shiny_fuse <- function(out_annofuse = NULL) {
     
     
     # Defining behaviors for downloading the plots -----------------------------
+    output$btn_dl_bpleft <- downloadHandler(
+      filename = "annofuse_bpleft.pdf",
+      content = function(file) {
+        ggsave(file, plot = values$plotobj_breakpoint_left #, 
+               # width = input$export_width,
+               # height = input$export_height, units = "cm"
+        )
+      })
+    
+    output$btn_dl_bpright <- downloadHandler(
+      filename = "annofuse_bpright.pdf",
+      content = function(file) {
+        ggsave(file, plot = values$plotobj_breakpoint_right #, 
+               # width = input$export_width,
+               # height = input$export_height, units = "cm"
+        )
+      })
+    
+    output$btn_dl_bpboth <- downloadHandler(
+      filename = "annofuse_bpboth.pdf",
+      content = function(file) {
+        ggsave(file, plot = values$plotobj_breakpoint_both #, 
+               # width = input$export_width,
+               # height = input$export_height, units = "cm"
+        )
+      })
+    
     output$btn_dl_summary <- downloadHandler(
       filename = "annofuse_summary.pdf",
       content = function(file) {
