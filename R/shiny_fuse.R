@@ -148,9 +148,9 @@ shiny_fuse <- function(out_annofuse = NULL) {
           )
         ),
 
-        # ui TableSummary -----------------------------------------------------
+        # ui FusionSummary -----------------------------------------------------
         tabPanel(
-          title = "TableSummary", icon = icon("dna"),
+          title = "FusionSummary", icon = icon("dna"),
           fluidPage(
             fluidRow(
               column(
@@ -498,7 +498,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       print(pboth)      
     })
 
-    # Content for TableSummary panel -------------------------------------------
+    # Content for FusionSummary panel -------------------------------------------
 
     output$af_overview <- renderPlot({
       withProgress(
