@@ -524,12 +524,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
       gby_rf <- input$af_cols
       plotn_rf <- input$af_n_topfusions
       cid_rf <- input$af_countcol
-      palette_rf <- c("blue", "green", "orange") # I had to specify this
       p <- plot_recurrent_fusions(values$annofuse_tbl,
         groupby = gby_rf,
         plotn = plotn_rf,
-        countID = cid_rf,
-        palette_rec = palette_rf
+        countID = cid_rf
       )
       values$plotobj_recufusions <- p
       print(p)
@@ -546,12 +544,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
       gby_rg <- input$af_cols
       plotn_rg <- input$af_n_topfusions
       cid_rg <- input$af_countcol
-      palette_rg <- c("blue", "green", "orange") # I had to specify this
       p <- plot_recurrent_genes(values$annofuse_tbl,
         groupby = gby_rg,
         plotn = plotn_rg,
-        countID = cid_rg,
-        palette_rec = palette_rg
+        countID = cid_rg
       )
       values$plotobj_recugenes <- p
       print(p)
