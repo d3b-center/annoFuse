@@ -33,6 +33,7 @@ Imports:
     stringr,
     shiny,
     shinydashboard,
+    shinycssloaders,
     rintrojs,
     shinythemes,
     DT,
