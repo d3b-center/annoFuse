@@ -287,6 +287,28 @@ shiny_fuse <- function(out_annofuse = NULL) {
             choices = c("", all_cols),
             selectize = TRUE, multiple = FALSE, selected = "Sample"
           ),
+          
+          selectInput(
+            inputId = "filter_fusion_type",
+            label = "filter column fusion type",
+            choices = c("", unique(values$annofuse_tbl$Fusion_Type)),
+            selectize = TRUE, multiple = TRUE, 
+            selected = unique(values$annofuse_tbl$Fusion_Type)
+          ),
+          selectInput(
+            inputId = "filter_caller",
+            label = "filter column caller",
+            choices = c("", unique(annofuse_tbl$Caller)),
+            selectize = TRUE, multiple = TRUE, 
+            selected = unique(annofuse_tbl$Caller)
+          ),
+          selectInput(
+            inputId = "filter_confidence",
+            label = "filter column confidence",
+            choices = c("", unique(annofuse_tbl$Confidence)),
+            selectize = TRUE, multiple = TRUE, 
+            selected = unique(annofuse_tbl$Confidence)
+          )
         )
       }
     })
@@ -524,11 +546,28 @@ shiny_fuse <- function(out_annofuse = NULL) {
           "Please provide the results of annoFuse to display the plot"
         )
       )
-
+      
+      subset_to_plot <- values$annofuse_tbl
+      
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Caller %in% input$filter_caller, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Confidence %in% input$filter_confidence, ]
+      
+      message(paste0("nr rows", nrow(subset_to_plot)))
+      validate(
+        need(
+          nrow(subset_to_plot) > 0,
+        "Please changing the filtering criteria, current table has no record"
+        )
+      )
+    
       gby_rf <- input$af_cols
       plotn_rf <- input$af_n_topfusions
       cid_rf <- input$af_countcol
-      p <- plot_recurrent_fusions(values$annofuse_tbl,
+      p <- plot_recurrent_fusions(subset_to_plot,
         groupby = gby_rf,
         plotn = plotn_rf,
         countID = cid_rf
@@ -544,11 +583,29 @@ shiny_fuse <- function(out_annofuse = NULL) {
           "Please provide the results of annoFuse to display the plot"
         )
       )
-
+      
+      subset_to_plot <- values$annofuse_tbl
+      
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Caller %in% input$filter_caller, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Confidence %in% input$filter_confidence, ]
+      
+      message(paste0("nr rows", nrow(subset_to_plot)))
+      validate(
+        need(
+          nrow(subset_to_plot) > 0,
+          "Please changing the filtering criteria, current table has no record"
+        )
+      )
+      
+      
       gby_rg <- input$af_cols
       plotn_rg <- input$af_n_topfusions
       cid_rg <- input$af_countcol
-      p <- plot_recurrent_genes(values$annofuse_tbl,
+      p <- plot_recurrent_genes(subset_to_plot,
         groupby = gby_rg,
         plotn = plotn_rg,
         countID = cid_rg
