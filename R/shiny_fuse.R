@@ -502,7 +502,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       print(pboth)      
     })
 
-    # Content for FusionSummary panel -------------------------------------------
+    # FusionSummary panel -------------------------------------------
 
     output$af_overview <- renderPlot({
       withProgress(
