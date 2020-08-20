@@ -37,14 +37,14 @@ plot_breakpoints <- function(domainDataFrame = NULL,
                              exons,
                              geneposition = c("Left", "Right"),
                              sampleid = NULL,
-                             fusionname,
+                             fusionname = NULL,
                              leftBreakpoint = NULL,
                              rightBreakpoint = NULL,
                              base_size = 12) {
   
   geneposition <- match.arg(geneposition, c("Left", "Right"))
   stopifnot(is(exons, "data.frame"))
-  stopifnot(is.character(fusionname))
+  # stopifnot(is.character(fusionname))
   stopifnot(is.numeric(base_size))
   
   if (is.null(domainDataFrame)) {
