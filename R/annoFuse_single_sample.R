@@ -19,23 +19,7 @@
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 #'
 #' @examples
-#' standardFusioncalls <- annoFuse::annoFuse_single_sample(
-#'   # Example files are provided in extdata, at-least 1 fusionfile is required along with it's rsem expression file
-#'   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
-#'   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
-#'   expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
-#'   tumorID = "BS_W97QQYKQ",
-#'   # multiple read flag values for filtering using FusionAnnotator values
-#'   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
-#'   # keep all in-frame , frameshift and other types of Fusion_Type
-#'   readingFrameFilter = "in-frame|frameshift|other",
-#'   # keep all fusions with atleast 1 junction read support
-#'   junctionReadCountFilter = 1,
-#'   # keep only fusions where spanningFragCount-junctionReadCountFilter less than equal to 10
-#'   spanningFragCountFilter = 10,
-#'   # keep read throughs
-#'   readthroughFilter = FALSE
-#' )
+#' # TODOTODO
 annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
                                    fusionfileStarFusion = fusionfileStarFusion,
                                    expressionFile = NULL,
@@ -90,7 +74,7 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
 
   # if StarFusion file is empty only run standardization for Arriba calls
   if (is_empty(STARFusioninputfile$FusionName) & !is_empty(Arribainputfile$"gene1--gene2")) {
-    warning(paste("No fusion calls in StarFusion "))
+    warning(paste("No fusion calls in StarFusion : ", opt$fusionfileStarFusion))
 
     colnames(Arribainputfile)[27] <- "annots"
     # To have a general column with unique IDs associated with each sample
@@ -106,7 +90,7 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
 
   # if Arriba file is empty only run standardization for StarFusion calls
   if (!is_empty(STARFusioninputfile$FusionName) & is_empty(Arribainputfile$"gene1--gene2")) {
-    warning(paste("No fusion calls in Arriba "))
+    warning(paste("No fusion calls in StarFusion : ", opt$fusionfileStarFusion))
 
     # To have a general column with unique IDs associated with each sample
     STARFusioninputfile$Sample <- tumorID
