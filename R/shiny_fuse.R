@@ -265,11 +265,15 @@ shiny_fuse <- function(out_annofuse = NULL) {
       if (is.null(values$annofuse_tbl)) {
         return(NULL)
       } else {
+        all_cols <- colnames(values$annofuse_tbl)
+        cols_groupable <- 
+          all_cols[unlist(lapply(annofuse_tbl,class)) %in% c("character", "factor")]
+        
         tagList(
           selectInput(
             inputId = "af_cols",
             label = "Grouping column",
-            choices = c("", colnames(values$annofuse_tbl)),
+            choices = c("", cols_groupable),
             selectize = TRUE, multiple = FALSE, selected = "Fusion_Type"
           ),
           numericInput(
@@ -280,7 +284,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
           selectInput(
             inputId = "af_countcol",
             label = "Counting column",
-            choices = c("", colnames(values$annofuse_tbl)),
+            choices = c("", all_cols),
             selectize = TRUE, multiple = FALSE, selected = "Sample"
           ),
         )
