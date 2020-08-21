@@ -18,7 +18,7 @@ QCGeneFiltered_filtFusion<-rbind(strandedQCGeneFiltered_filtFusion,polyaQCGeneFi
 # subset for recurrent fusion detection and multifused genes QC
 fusion_calls<-unique(QCGeneFiltered_filtFusion)
 # remove distance from intergenic fusions
-fusion_calls$FusionName<-unlist(lapply(fusion_calls$FusionName,function(x) rm_between(x, "(", ")", extract = FALSE)))
+fusion_calls$FusionName<-unlist(lapply(fusion_calls$FusionName,function(x) rm_between(x, "(", ")", extract = F)))
 
 
 # get grouping column id

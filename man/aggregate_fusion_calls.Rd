@@ -4,11 +4,8 @@
 \alias{aggregate_fusion_calls}
 \title{Function to aggregate Caller and read support per fusions calls}
 \usage{
-aggregate_fusion_calls(
-  standardFusioncalls = standardFusioncalls,
-  removeother = FALSE,
-  filterAnnots = filterAnnots
-)
+aggregate_fusion_calls(standardFusioncalls = standardFusioncalls,
+  removeother = FALSE, filterAnnots = filterAnnots)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -22,7 +19,4 @@ Standardized fusion calls with aggregated Caller and read support
 }
 \description{
 Function to aggregate Caller and read support per fusions calls
-}
-\examples{
-# TODOTODO
 }

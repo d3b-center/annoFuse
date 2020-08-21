@@ -1,0 +1,140 @@
+install.packages("BiocManager")
+BiocManager::install("sevenbridges")
+
+install_github("sbg/sevenbridges-r")
+
+library("sevenbridges")
+library("tidyr")
+
+(a <- Auth(platform = "cavatica", token = "f98b31870ab24182a22a8a76ac7793eb"))
+a$user(username = "gaonkark")
+
+get_fid<-function(x,y){
+  fid<-a$file(name = x, project = y ,exact = TRUE)$id
+  fid
+}
+
+genertate_mpileup_WF_task<-function(x){
+  input_file<-x
+  ref_fasta_file<-p$file(name="human_g1k_v37_decoy.phiX174.fasta",exact=TRUE)
+  chr_pos_list_file<-p$file(name="_1_SNP_GRCh37_hg19_woChr.bed",exact=TRUE)
+  tsk_name=paste("mpileup",input_file,date(),sep="-")
+  tsk <- p$task_add(name=tsk_name,
+                    app = "gaonkark/cbttc-0012a-cell-line/bcftools-mpileup-call", inputs=list(input_file=input_file,reference_fasta_file=ref_fasta_file,chr_pos_list_file=chr_pos_list_file),use_interruptible_instances = TRUE,execution_settings = list(
+                      max_parallel_instances = 1
+                    ))
+  #Run task; better to validate correct task generation for a subset of samples in your list. Then continue with other samples uncommenting the following tsk_TF_Wf$run()
+  #Verify correct generation of task on website and run
+  
+  tsk$run()
+}
+
+
+
+kids.first.manifest<-read.delim("/Users/gaonkark/Downloads/kidsfirst-participant-family-manifest_2018-09-26.tsv", stringsAsFactors = F, header = T)
+kids.first.manifest<-as.data.frame(kids.first.manifest[which (kids.first.manifest$File.Format %in% "bam"),])
+normal_file<-kids.first.manifest[ grep("+-N-+",kids.first.manifest[,10]),]
+
+
+normal<-unlist(lapply(normal_file$File.Name,function(x) get_fid(x,"kfdrc-harmonization/sd-bhjxbdqk-01")))
+
+pid <- a$project(name="CBTTC_0012a cell line")$id
+
+a$copy_file(normal,project=pid)
+
+p <- a$project(name="CBTTC_0012a cell line")
+
+
+lapply(normal_file$File.Name,function(x) genertate_mpileup_WF_task(x))
+
+tumor_file<-kids.first.manifest[-grep("RNA", kids.first.manifest$Sample.External.ID),]
+
+#High grade glioma for Dr. Cole's project
+HGG_sample<-read.delim("/Users/gaonkark/Documents/telomere_hunter/list_all",sep="\t",header = F)
+
+tumor_file<-tumor_file[which( tumor_file$Participants.ID %in% as.character(HGG_sample$V1)),]
+tumor_file<-tumor_file[-grep("+-N-+",tumor_file[,10]),]
+
+tumor<-unlist(lapply(tumor_file$File.Name,function(x) get_fid(x,"kfdrc-harmonization/sd-bhjxbdqk-02")))
+a$copy_file(tumor,project=pid)
+
+lapply(tumor_file$File.Name[73:length(tumor_file$File.Name)],function(x) genertate_mpileup_WF_task(x))
+#check for 7316-2980-T-534980.WGS,PT_63HDZHCN,ea5e85d1-b7d4-495a-b0a8-a533ecb64b12.bam
+#found multiple: tumor_file[grep ("PT_63HDZHCN",tumor_file$Participants.ID),]
+#7316-3000-T-536211.WGS  PT_S2BEPYQ0 90aa9eb9-ec85-4f95-887c-03785ec34c18.bam
+#found multiple : tumor_file[grep ("PT_S2BEPYQ0",tumor_file$Participants.ID),]
+
+
+#aborted files  
+#Feb 5th
+get_aborted_files<-read.delim("~/Downloads/mpileup_task_queued.csv", sep=",",header=T)
+aborted_tasks<-unlist(lapply(get_aborted_files$x,function(x) gsub("mpileup-","",strsplit(as.character(x),".bam",fixed=TRUE)[[1]][1])))
+
+aborted_tasks<-aborted_tasks[-224]
+lapply(aborted_tasks,function(x) genertate_mpileup_WF_task(x))
+
+
+#check tumor normal samples
+t_n_task1<-read.delim("~/Documents/Cole_HCC/t_n_match.txt", header=F, sep="\t")
+colnames(t_n_task1)<-c("Sample1","Matched","Sample2","Correlation","Coverage")
+task_all_ngschek<-merge(merge(t_n_file, as.data.frame(t_n_task1),by.x="File.Name",by.y="Sample1"),t_n_file,by.x="Sample2","File.Name")
+write.table(task_all_ngschek[,c(11,13,24,14,15,8,21)],"~/Documents/Cole_HCC/t_n_match_SampleID.txt",quote = F, row.names = F)
+
+t_n_matches<-task_all_ngschek[,c(11,13,24,14,15,8,21)]
+t_n_matches$Correlation<-as.numeric(t_n_matches$Correlation)
+t_n_matches<-t_n_matches[,c(1,2,3,4,6,7)]
+t_n_matches<-unique(t_n_matches)
+
+t_n_paired_samples<-t_n_matches[!(str_detect(t_n_matches$Sample.External.ID.x,"-T") & str_detect(t_n_matches$Sample.External.ID.y ,"-T")),]
+no_match_samples<-tumor_file[-which(tumor_file$Sample.External.ID %in% t_n_paired_samples$Sample.External.ID.x | tumor_file$Sample.External.ID %in% t_n_paired_samples$Sample.External.ID.y),]
+
+write.table(t_n_paired_samples,"~/Documents/Cole_HCC/t_n_paired_samples.xls",row.names = F,quote = F,sep="\t")
+write.table(no_match_samples,"~/Documents/Cole_HCC/no_match_samples.xls",row.names = F,quote = F,sep="\t")
+
+
+phgg_task_raw<-read.delim("~/Documents/Cole_HCC/output_corr_matrix.txt")
+
+colnames(phgg_task_raw)<-gsub("called_","",colnames(phgg_task_raw))
+colnames(phgg_task_raw)<-gsub("[.]","-",colnames(phgg_task_raw))
+colnames(phgg_task_raw)<-gsub("-sorted-bam-mpileup",".bam",colnames(phgg_task_raw))
+
+colnames(phgg_task_raw)[2:ncol(phgg_task_raw)]<-paste(t_n_file[unlist(lapply(colnames(phgg_task_raw[,2:ncol(phgg_task_raw)]),function(x) grep (x, t_n_file$File.Name))),10],t_n_file[unlist(lapply(colnames(phgg_task_raw[,2:176]),function(x) grep (x, t_n_file$File.Name))),7],sep="_")
+
+
+png("~/Documents/Cole_HCC/output_corr_matrix.phgg.png",height = 3000, width = 800 ,res=100)
+par(mar=c(5,1,1,25))
+plot(as.dendrogram(hclust(as.dist(1- phgg_task_raw[,-1]))),horiz=T,type="r",center=TRUE)
+dev.off()
+
+library("stringr")
+
+t_n_file<-kids.first.manifest[grep ("cram", kids.first.manifest$File.Name),]
+t_n_file$File.Name<-paste0("called_",gsub(".cram",".sorted.bam.mpileup.vcf", t_n_file$File.Name))
+
+get_sample_name_mpileup<-function(x){
+  x<-"~/Documents/Cole_HCC/round2_t_n_matched.txt"
+  t_n_task2<-read.delim(x, header=F, sep="\t")
+  colnames(t_n_task2)<-c("Sample1","Matched","Sample2","Correlation","Coverage")
+
+  task_all_ngschek<-merge(merge(t_n_file, as.data.frame(t_n_task2),by.x="File.Name",by.y="Sample2",all=TRUE),t_n_file,by.x="Sample1",by.y="File.Name")
+  t_n_matches<-task_all_ngschek[,c(1,2,11,13,24,14,15,8,21)]
+  t_n_matches$Correlation<-as.numeric(t_n_matches$Correlation)
+  t_n_matches<-t_n_matches[,c(1,2,3,4,6,7)]
+  t_n_matches<-unique(t_n_matches)
+  
+  t_n_paired_samples<-t_n_matches[!(str_detect(t_n_matches$Sample.External.ID.x,"-T") & str_detect(t_n_matches$Sample.External.ID.y ,"-T")),]
+  no_match_samples<-tumor_file[-which(tumor_file$Sample.External.ID %in% t_n_paired_samples$Sample.External.ID.x | tumor_file$Sample.External.ID %in% t_n_paired_samples$Sample.External.ID.y),]
+}
+
+
+library("sevenbridges")
+library("tidyr")
+(a <- Auth(platform = "cavatica", token = "27b0cf79728e4fccb869a6baff54b452"))
+p <- a$project(name="CNMC_test_space")
+
+
+p$task_add(name="draw_star",
+           app = "gaonkark/cnmc-test-space/arriba-fusion", inputs=list(fusion_tsv="strandv20ad46fdb-fae3-4098-aca1-5ad2fd48d4a2.STAR.fusion_predictions.abridged.coding_effect_arriba.tsv",genome_aligned_bam="0ad46fdb-fae3-4098-aca1-5ad2fd48d4a2.Aligned.out.sorted.bam",gtf_anno="gencode.v27.primary_assembly.annotation.gtf"
+),use_interruptible_instances = TRUE,execution_settings = list(
+             max_parallel_instances = 1))
+

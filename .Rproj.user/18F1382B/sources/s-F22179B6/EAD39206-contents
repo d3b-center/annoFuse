@@ -1,0 +1,88 @@
+library("tidyr")
+arriba<-read.delim("~/Downloads/bfdb3b10-ad84-411e-a879-3625ce3aa61c.arriba.fusions.tsv",sep="\t",stringsAsFactors = F)
+star<-read.delim("~/Downloads/0ad46fdb-fae3-4098-aca1-5ad2fd48d4a2.STAR.fusion_predictions.abridged.coding_effect.tsv",sep="\t",stringsAsFactors = F)
+
+star<-separate(star,X.FusionName,sep="--",into=c("gene1","gene2"))
+
+star$strand1.gene.fusion.<-paste0(unlist(lapply(star$LeftBreakpoint,function(x) strsplit(x,":")[[1]][3])),"/.")
+star$strand2.gene.fusion.<-paste0(unlist(lapply(star$RightBreakpoint,function(x) strsplit(x,":")[[1]][3])),"/.")
+
+star$breakpoint1<-paste(unlist(lapply(star$LeftBreakpoint,function(x) strsplit(x,":")[[1]][1])),unlist(lapply(star$LeftBreakpoint,function(x) strsplit(x,":")[[1]][2])),sep =":")
+star$breakpoint2<-paste(unlist(lapply(star$RightBreakpoint,function(x) strsplit(x,":")[[1]][1])),unlist(lapply(star$RightBreakpoint,function(x) strsplit(x,":")[[1]][2])),sep =":")
+
+
+
+star$breakpoint1<-sub("chr","",star$breakpoint1)
+star$breakpoint2<-sub("chr","",star$breakpoint2)
+
+star$distance1<-rep("NA",nrow(star))
+star$distance2<-rep("NA",nrow(star))
+
+star$reading_frame<-gsub("INFRAME","in-frame",star$PROT_FUSION_TYPE)
+star$reading_frame<-gsub("FRAMESHIFT","frameshift",star$reading_frame)
+
+
+# differences in transcript annotation in STAR : only has exon/cds sequence in lowercase alpha= gene1 fusion cds and uppercase alpha= gene2 fusion cds.
+# transcript annotation for arriba: The breakpoint is represented via a pipe symbol (|). When non-template bases are inserted between the fused genes, these bases are represented as lowercase letters between two pipes. Reference mismatches (SNPs or SNVs) are indicated as lowercase letters, insertions as bases between brackets ([ and ]), deleted bases as one or more dashes (-), introns as three underscores (___), and missing information due to insufficient coverage as an ellipsis (...). Ambiguous positions, such as positions with diverse reference mismatches, are represented as ?.
+star$fusion_transcript<-"."
+
+
+
+for (i in 1:nrow(star)){
+  strand1<-strsplit(star[i,"LeftBreakpoint"],":")[[1]][3]
+  print(strand1)
+  if(!is.na(strsplit(star$FUSION_MODEL[i],"|",fixed = TRUE)[[1]][2])){
+  star$strand1.gene.fusion.[i] <-paste(strand1,"/",strsplit(star$FUSION_MODEL[i],"|",fixed = TRUE)[[1]][2],sep="")
+  }else{
+    star$strand1.gene.fusion.[i] <-paste0(strand1,"/.")
+  }
+  chr1<-strsplit(star[i,"LeftBreakpoint"],":")[[1]][1]
+  loc1<-strsplit(star[i,"LeftBreakpoint"],":")[[1]][2]
+  strand2<-strsplit(star[i,"RightBreakpoint"],":")[[1]][3]
+  if(!is.na(strsplit(star$FUSION_MODEL[i],"|",fixed = TRUE)[[1]][4])){
+  star$strand2.gene.fusion.[i] <-paste(strand2,"/",strsplit(star$FUSION_MODEL[i],"|",fixed = TRUE)[[1]][4],sep="")
+  }else{
+    star$strand2.gene.fusion.[i] <-paste0(strand2,"/.")
+  }
+  chr2<-strsplit(star[i,"RightBreakpoint"],":")[[1]][1]
+  loc2<-strsplit(star[i,"RightBreakpoint"],":")[[1]][2]
+  if(strand1 =="+" & loc1<loc2){
+  star[i,"direction1"]<-"downstream"
+  }
+  if(strand1 =="-" & loc1<loc2){
+    star[i,"direction1"]<-"upstream"
+  }
+  if(strand1 =="+" & loc1>loc2){
+    star[i,"direction1"]<-"upstream"
+  }
+  if(strand1 =="-" & loc1>loc2){
+    star[i,"direction1"]<-"downstream"
+  }
+  if(strand2 =="+" & loc1<loc2){
+    star[i,"direction2"]<-"upstream"
+  }
+  if(strand2 =="-" & loc1<loc2){
+    star[i,"direction2"]<-"downstream"
+  }
+  if(strand2 =="+" & loc1>loc2){
+    star[i,"direction2"]<-"downstream"
+  }
+  if(strand2 =="-" & loc1>loc2){
+    star[i,"direction2"]<-"upstream"
+  }
+}
+
+is.lower <- "[a-z]"
+bk_index <- unlist(lapply(strsplit(star$FUSION_CDS,""),function(x) sum(grepl(pattern = is.lower, x = x))))
+star$fusion_transcript<-paste(substr(star$FUSION_CDS,1,bk_index),substr(star$FUSION_CDS,bk_index+1,length(strsplit(star$FUSION_CDS[6],"")[[1]])),sep="|")
+star$fusion_transcript<-toupper(star$fusion_transcript)
+
+star$fusion_transcript<-sub("^\\|\\.$","\\.",star$fusion_transcript)
+star$confidence<-"low"
+star$confidence[6]<-"high"
+
+colnames(star)[1]<-"X.gene1"
+
+
+
+write.table(star,"~/Downloads/0ad46fdb-fae3-4098-aca1-5ad2fd48d4a2.STAR.fusion_predictions.abridged.coding_effect_arriba.tsv",sep="\t",quote = F,row.names = F)

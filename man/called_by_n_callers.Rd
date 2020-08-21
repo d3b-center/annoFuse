@@ -4,10 +4,8 @@
 \alias{called_by_n_callers}
 \title{Function to identify fusions called by at least n callers}
 \usage{
-called_by_n_callers(
-  standardFusioncalls = standardFusioncalls,
-  numCaller = numCaller
-)
+called_by_n_callers(standardFusioncalls = standardFusioncalls,
+  numCaller = numCaller)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -19,7 +17,4 @@ Fusions called by n callers
 }
 \description{
 Function to identify fusions called by at least n callers
-}
-\examples{
-# TODOTODO
 }
