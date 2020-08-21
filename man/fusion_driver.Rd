@@ -4,12 +4,10 @@
 \alias{fusion_driver}
 \title{Filter standardized fusion calls for driver fusions}
 \usage{
-fusion_driver(
-  standardFusioncalls = standardFusioncalls,
+fusion_driver(standardFusioncalls = standardFusioncalls,
   annotated = TRUE,
   geneListReferenceDataTab = geneListReferenceDataTab,
-  fusionReferenceDataTab = fusionReferenceDataTab
-)
+  fusionReferenceDataTab = fusionReferenceDataTab)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba (more callers to be added)}
@@ -26,7 +24,4 @@ Putative Driver standardized fusion calls annotated with gene list and fusion li
 \description{
 If standardized fusion calls are annotated using the geneListReferenceDataTab and fusionReferenceDataTab filters out fusion calls where partner genes are not annotated.
 If standardized fusion is not annotated it will be annotated with geneListReferenceDataTab and fusionReferenceDataTab provided
-}
-\examples{
-# TODOTODO
 }

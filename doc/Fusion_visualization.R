@@ -12,7 +12,7 @@ suppressPackageStartupMessages(library(plotly))
 suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(library(tibble))
 
-theme_publication <- function(base_size=15, base_family="Helvetica") {
+theme_Publication <- function(base_size=15, base_family="Helvetica") {
   library(grid)
   library(ggthemes)
   (theme_foundation(base_size=base_size, base_family=base_family)
@@ -65,7 +65,7 @@ clinical<-read.delim(system.file("extdata", "pbta-histologies.tsv", package = "a
 clinical<-clinical[,c("Kids_First_Biospecimen_ID",group,"Kids_First_Participant_ID","disease_type_new")]
 clinical<-clinical[!is.na(clinical$broad_histology),]
 
-fusion_calls$FusionName<-unlist(lapply(fusion_calls$FusionName,function(x) rm_between(x, "(", ")", extract = FALSE)))
+fusion_calls$FusionName<-unlist(lapply(fusion_calls$FusionName,function(x) rm_between(x, "(", ")", extract = F)))
 
 
 table(clinical$broad_histology)
@@ -107,8 +107,8 @@ p1 <- ggplot(final, aes(x = broad_histology, y = log2(value), color = broad_hist
   stat_boxplot(geom ='errorbar', width = 0.5) +
   guides(alpha = FALSE, fill = FALSE) +
   xlab("BroadHistology") + ylab('Number of Fusions (log2)') +
-  guides(color = FALSE) +
-  scale_y_continuous(breaks = seq(0, 6, by = 1))+theme(axis.text = element_text(size=9,color="black",face="bold",angle = 45,hjust = 1))+colScale+theme_publication()+ggtitle("Broad histology distribution")
+  guides(color = F) +
+  scale_y_continuous(breaks = seq(0, 6, by = 1))+theme(axis.text = element_text(size=9,color="black",face="bold",angle = 45,hjust = 1))+colScale+theme_Publication()+ggtitle("Broad histology distribution")
 
 ggplotly(p1,height = 600, width=1200)
 
@@ -144,7 +144,7 @@ fusion_calls_intrachromosomal<-fusion_calls %>% dplyr::filter(grepl("INTRACHROMO
 
 fusion_chrom<-rbind(data.frame(cbind(fusion_calls_interchromosomal,"Distance"=rep("INTERCHROMOSOMAL",nrow(fusion_calls_interchromosomal)))),cbind(fusion_calls_intrachromosomal,"Distance"=rep("INTRACHROMOSOMAL",nrow(fusion_calls_intrachromosomal)))) %>% unique()
 
-p2<-ggplot(fusion_chrom,aes(x=broad_histology,fill=Distance,alpha=0.75))+geom_bar()+theme_publication()+theme(axis.text = element_text(size=9,color="black",face="bold",angle = 60,hjust = 1),legend.position = "bottom",legend.text = element_text(size=rel(0.7)),)+ggtitle("Chromosomal Distance")+xlab("BroadHistology")+guides(alpha=FALSE)
+p2<-ggplot(fusion_chrom,aes(x=broad_histology,fill=Distance,alpha=0.75))+geom_bar()+theme_Publication()+theme(axis.text = element_text(size=9,color="black",face="bold",angle = 60,hjust = 1),legend.position = "bottom",legend.text = element_text(size=rel(0.7)),)+ggtitle("Chromosomal Distance")+xlab("BroadHistology")+guides(alpha=FALSE)
 ggplotly(p2,height = 600, width=1200)
 
 
@@ -211,7 +211,7 @@ kinase_fusion<-fusion_protein_coding_gene_df %>%
   
 
 
-p5<-ggplot(kinase_fusion,aes(x=Group,y=Type.ct,fill=gene_position,alpha=0.75))+geom_col()+scale_color_brewer(palette="Pastel2")+scale_fill_brewer(palette="Pastel2")+theme_publication()+ylab("Count")+theme(legend.position = "bottom")+ggtitle("Kinase group distribution")+guides(alpha=FALSE)
+p5<-ggplot(kinase_fusion,aes(x=Group,y=Type.ct,fill=gene_position,alpha=0.75))+geom_col()+scale_color_brewer(palette="Pastel2")+scale_fill_brewer(palette="Pastel2")+theme_Publication()+ylab("Count")+theme(legend.position = "bottom")+ggtitle("Kinase group distribution")+guides(alpha=FALSE)
 ggplotly(p5,height = 600, width=1200)
 
 

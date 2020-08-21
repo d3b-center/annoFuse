@@ -1,0 +1,151 @@
+library("ggplot2")
+library("plyr")
+library("dplyr")
+library("tidyr")
+library("ggpubr")
+library("bedr")
+
+theme_Publication <- function(base_size=25, base_family="Arial") {
+  library(grid)
+  library(ggthemes)
+  (theme_foundation(base_size=base_size, base_family=base_family)
+    + theme(plot.title = element_text(face = "bold",
+                                      size = rel(1), hjust = 0.5),
+            text = element_text(family="Arial"),
+            panel.background = element_rect(colour = NA),
+            plot.background = element_rect(colour = NA),
+            panel.border = element_rect(colour = NA),
+            axis.title = element_text(face = "bold",size = rel(0.85)),
+            axis.title.y = element_text(angle=90,vjust =2,size=rel(0.85)),
+            axis.title.x = element_text(vjust = -0.2,size=rel(0.85)),
+            axis.text = element_text(size=9,color="black",face="bold",angle = 65,hjust = 1),
+            axis.line = element_line(colour="black",size=0.7),
+            axis.ticks = element_line(),
+            panel.grid.major = element_line(colour="#f0f0f0"),
+            panel.grid.minor = element_blank(),
+            legend.key = element_rect(colour = NA),
+            legend.position = "right",
+            legend.direction = "vertical",
+            legend.key.size= unit(0.8, "cm"),
+            legend.margin = unit(0.9, "cm"),
+            legend.title = element_text(face="italic"),
+            plot.margin=unit(c(10,5,5,5),"mm"),
+            strip.background=element_rect(colour="#f0f0f0",fill="#f0f0f0"),
+            strip.text = element_text(face="bold")
+    ))
+
+}
+
+
+#filtered somatic SV
+# [keep]  <0.0001 in gnomad and 1000G and IMH
+# [keep]  GC> 0.5
+# [keep]  PR alt read >10
+# [keep]  MAF >0.2
+# [keep] FILTER== PASS
+# [keep] AnnotSV.ranking 4/5 (pathogenic)
+# [remove]  brekpoints overlap mask region
+# [remove] length 
+
+pdf("~/Documents/CNMC/somaticSV.pdf")
+filt_merged<-readRDS("~/Documents/CNMC/SV/somaticSV/07_12_2019_somaticSV_overlap_cytoband.RDS")
+
+#histology SV length (DEL,DUP,INS)
+clinSV<-filt_merged
+clinSV<-clinSV[which(clinSV$SV.type !="BND"),]
+ggplot(clinSV[which(clinSV$SV.type != "INS"),])+geom_histogram(aes(x=clinSV$SV.length[which(clinSV$SV.type != "INS")]),binwidth = 1500000)+theme(axis.text.x = element_text(angle = 65, hjust = 1))+labs(title = sprintf("Histology of SV length"))+ylab("Count of SVs")+xlab("Length of SV")+facet_wrap(~SV.type,ncol=5)+facet_wrap(~SV.type,nrow=3,scales = "free")
+
+
+#bar of SV length (DEL,DUP,INS)
+ggplot(clinSV)+geom_col(aes(x=broad.histology,y=SV.length,fill=broad.histology))+theme(axis.text.x = element_text(angle = 65, hjust = 1),legend.position = "bottom")+labs(title = sprintf("Size of variation per histology"))+ylab("Length of SVs")+xlab("Broad Histologies")
+
+#count per participant
+countSV<-clinSV %>% group_by(broad.histology,participant_id) %>% dplyr::summarise(SV.type = toString(SV.type), SVs.Found.In = n())%>% unique() %>% as.data.frame()
+ggplot(countSV)+geom_boxplot(aes(x=countSV$broad.histology,y=log2(countSV$SVs.Found.In),fill=broad.histology)) + theme(axis.text.x = element_text(angle = 65, hjust = 1),legend.position = "bottom")+labs(title = sprintf("Genomic Instabilty"))+ylab("(log2)Number of SVs")+xlab("Broad Histologies")
+
+#SV burden
+#wgs bp 3234.83
+countSV$SV_burden<-countSV$SVs.Found.In/3234.83
+ggplot(countSV)+geom_boxplot(aes(x=countSV$broad.histology,y=countSV$SV_burden)) + theme(axis.text.x = element_text(angle = 65, hjust = 1))+labs(title = sprintf("Genomic Instabilty"))+ylab("SVBurden")+xlab("Broad Histologies")
+
+
+#number of SV per type
+clinSV$SV.chrom <- factor(clinSV$SV.chrom,levels = c("1", "2", "3", "4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","X","Y"))
+ggplot(clinSV)+geom_histogram(aes(x=clinSV$SV.chrom,fill=SV.type),stat="count") + theme(axis.text.x = element_text(angle = 65, hjust = 1))+labs(title = sprintf("Genomic Instabilty from somatic SV per chromosome"))+ylab("Number of SVs")+xlab("Chromosome")
+ggplot(clinSV)+geom_histogram(aes(x=clinSV$SV.chrom,fill=broad.histology),stat="count") + theme(axis.text.x = element_text(angle = 65, hjust = 1))+labs(title = sprintf("Genomic Instabilty from somatic SV per chromosome"))+ylab("Number of SVs")+xlab("Broad Histologies")
+
+dev.off()
+
+pdf("~/Documents/CNMC/somaticSV_overrep.pdf")
+#cytoband overrep
+clinSV<-as.data.frame(clinSV)
+add_rec_band <- as.data.frame(unique(clinSV[,c("SV.type", "broad.histology","cytoband:bandname","SV.chrom","participant_id")])) %>%
+  group_by(SV.type, broad.histology,SV.chrom,`cytoband:bandname`) %>%
+  dplyr::summarise(Participants= toString(participant_id), Participants.Found.In = n()) %>%
+  unique() %>% as.data.frame()
+
+
+
+index_rec<-sort(add_rec_band$Participants.Found.In,index.return=TRUE,decreasing = T)
+to.plot<-head(add_rec_band[index_rec$ix,],10)
+to.plot$bandname<-paste0("chr",to.plot$SV.chrom,":",to.plot$bandname)
+
+
+library("karyoploteR")
+clinSV$cytoband<-clinSV$`cytoband:bandname`
+to_karyo<-clinSV[which(clinSV$cytoband %in% to.plot$`cytoband:bandname`),]
+SV_cytoband <- toGRanges(unique(data.frame(chr=paste0("chr",to_karyo$SV.chrom), start=to_karyo$SV.start,
+                                    end=to_karyo$SV.end)))
+
+kp <- plotKaryotype(genome="hg38",chromosomes = unique(paste0('chr',to.plot$SV.chrom)),main = "Recurrent cytobands altered")
+kpPlotRegions(kp, SV_cytoband, col="#FF0000", r0=0,  r1=1)
+
+
+#top 50 reccurrent SV genes
+find_rec<-unique(clinSV[,c("Gene.name","SV.type","broad.histology","participant_id","SV.chrom")])
+
+add_rec <- find_rec %>%
+  group_by(Gene.name,SV.type, broad.histology,SV.chrom) %>%
+  dplyr::summarise(Participants= toString(participant_id), Participants.Found.In = n()) %>%
+  unique() %>% as.data.frame()
+
+add_rec<-unique(separate_rows(add_rec,Gene.name,sep="/"))
+
+index_rec<-sort(add_rec$Participants.Found.In,index.return=TRUE,decreasing = T)
+to.plot<-head(add_rec[index_rec$ix,],25)
+ggplot(to.plot)+geom_col(aes(x=to.plot$Gene.name,y=to.plot$Participants.Found.In,fill=SV.type))+theme(axis.text.x = element_text(angle = 65, hjust = 1))+labs(title = sprintf("Most reccurrent SV overlaping genes"))+ylab("Freq and type SVs")+xlab("Genes")+coord_flip()
+
+
+#top cosmic
+genelist<-read.delim("~/Documents/CNMC/fusion_filt_pipeline/references/references/Cosmic_gene_census.csv",sep=",",header = T)
+genelist_rec<-add_rec[which(add_rec$Gene.name %in% genelist$Gene.Symbol),]
+
+index_rec<-sort(genelist_rec$Participants.Found.In,index.return=TRUE,decreasing = T)
+
+to.plot<-head(genelist_rec[index_rec$ix,],25)
+ggplot(to.plot)+geom_col(aes(x=to.plot$Gene.name,y=to.plot$Participants.Found.In,fill=SV.type))+theme(axis.text.x = element_text(angle = 65, hjust = 1))+labs(title = sprintf("Most reccurrent SV overlaping cosmic genes genelist"))+ylab("Freq and type SVs")+xlab("Genes")+coord_flip()
+
+
+#top oncogenic
+genelist<-read.delim("~/Documents/CNMC/fusion_filt_pipeline/references/references/oncogenes.txt",sep="\t",header = T)
+genelist_rec<-add_rec[which(add_rec$Gene.name %in% genelist$OncogeneName),]
+
+index_rec<-sort(genelist_rec$Participants.Found.In,index.return=TRUE,decreasing = T)
+
+to.plot<-head(genelist_rec[index_rec$ix,],25)
+ggplot(to.plot)+geom_col(aes(x=to.plot$Gene.name,y=to.plot$Participants.Found.In,fill=SV.type))+theme(axis.text.x = element_text(angle = 65, hjust = 1))+labs(title = sprintf("Most reccurrent SV overlaping oncogenic genes genelist"))+ylab("Freq and type SVs")+xlab("Genes")+coord_flip()
+
+#top tumorsuppresor
+genelist<-read.delim("~/Documents/CNMC/fusion_filt_pipeline/references/references/tsgs.txt",sep="\t",header = T)
+genelist_rec<-add_rec[which(add_rec$Gene.name %in% genelist$GeneSymbol),]
+
+index_rec<-sort(genelist_rec$Participants.Found.In,index.return=TRUE,decreasing = T)
+
+to.plot<-head(genelist_rec[index_rec$ix,],25)
+ggplot(to.plot)+geom_col(aes(x=to.plot$Gene.name,y=to.plot$Participants.Found.In,fill=SV.type))+theme(axis.text.x = element_text(angle = 65, hjust = 1))+labs(title = sprintf("Most reccurrent SV overlaping tumor suppressor genes genelist"))+ylab("Freq and type SVs")+xlab("Genes")+coord_flip()
+
+dev.off()
+
+
+
+
