@@ -267,7 +267,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       } else {
         all_cols <- colnames(values$annofuse_tbl)
         cols_groupable <- 
-          all_cols[unlist(lapply(annofuse_tbl,class)) %in% c("character", "factor")]
+          all_cols[unlist(lapply(values$annofuse_tbl,class)) %in% c("character", "factor")]
         
         tagList(
           selectInput(
@@ -298,16 +298,28 @@ shiny_fuse <- function(out_annofuse = NULL) {
           selectInput(
             inputId = "filter_caller",
             label = "filter column caller",
-            choices = c("", unique(annofuse_tbl$Caller)),
+            choices = c("", unique(values$annofuse_tbl$Caller)),
             selectize = TRUE, multiple = TRUE, 
-            selected = unique(annofuse_tbl$Caller)
+            selected = unique(values$annofuse_tbl$Caller)
           ),
           selectInput(
             inputId = "filter_confidence",
             label = "filter column confidence",
-            choices = c("", unique(annofuse_tbl$Confidence)),
+            choices = c("", unique(values$annofuse_tbl$Confidence)),
             selectize = TRUE, multiple = TRUE, 
-            selected = unique(annofuse_tbl$Confidence)
+            selected = unique(values$annofuse_tbl$Confidence)
+          ),
+          numericInput(
+            inputId = "filter_spanningfragcount",
+            label = "filter spanning frag count",
+            value = 0,
+            min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
+          ),
+          numericInput(
+            inputId = "filter_callercount",
+            label = "filter caller count",
+            value = 1,
+            min = 1, max = max(values$annofuse_tbl$caller.count)
           )
         )
       }
@@ -555,6 +567,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
         subset_to_plot$Caller %in% input$filter_caller, ]
       subset_to_plot <- subset_to_plot[
         subset_to_plot$Confidence %in% input$filter_confidence, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$caller.count >= input$filter_callercount, ]
       
       message(paste0("nr rows", nrow(subset_to_plot)))
       validate(
@@ -592,6 +608,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
         subset_to_plot$Caller %in% input$filter_caller, ]
       subset_to_plot <- subset_to_plot[
         subset_to_plot$Confidence %in% input$filter_confidence, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$caller.count >= input$filter_callercount, ]
       
       message(paste0("nr rows", nrow(subset_to_plot)))
       validate(
