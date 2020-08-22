@@ -271,15 +271,16 @@ shiny_fuse <- function(out_annofuse = NULL) {
         
         tagList(
           selectInput(
+            inputId = "af_filtercols",
+            label = "Columns to display",
+            choices = c("", all_cols),
+            selectize = TRUE, multiple = TRUE, selected = all_cols[1:10]
+          ),
+          selectInput(
             inputId = "af_cols",
             label = "Grouping column",
             choices = c("", cols_groupable),
             selectize = TRUE, multiple = FALSE, selected = "Fusion_Type"
-          ),
-          numericInput(
-            inputId = "af_n_topfusions",
-            label = "Nr top fusions",
-            value = 20, min = 1, max = 300, step = 1
           ),
           selectInput(
             inputId = "af_countcol",
@@ -287,6 +288,11 @@ shiny_fuse <- function(out_annofuse = NULL) {
             choices = c("", all_cols),
             selectize = TRUE, multiple = FALSE, selected = "Sample"
           ),
+          numericInput(
+            inputId = "af_n_topfusions",
+            label = "Nr top fusions",
+            value = 20, min = 1, max = 300, step = 1
+          )
         )
       }
     })
@@ -349,19 +355,28 @@ shiny_fuse <- function(out_annofuse = NULL) {
           "Please upload the results of annoFuse to start the exploration"
         )
       )
+      
+      display_tbl <- values$enhanced_annofuse_tbl
+    
+      display_tbl <- display_tbl[, colnames(display_tbl) %in% input$af_filtercols]
+        
+        
 
       DT::datatable(
-        values$enhanced_annofuse_tbl,
+        display_tbl,
         style = "bootstrap",
         rownames = FALSE,
         filter = "top",
         selection = "single",
         escape = FALSE,
-        extensions = c("Buttons"),
+        extensions = c("Buttons", "FixedHeader"),
         options = list(
           scrollX = TRUE,
+          scrollY = "800px",
+          fixedHeader = TRUE,
+          paging = FALSE,
           pageLength = 25,
-          lengthMenu = c(5, 10, 25, 50, 100, nrow(values$enhanced_annofuse_tbl)),
+          lengthMenu = c(5, 10, 25, 50, 100, nrow(display_tbl)),
           dom = "Bfrtip",
           buttons = list("copy", "print", list(
             extend = "collection",
