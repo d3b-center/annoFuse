@@ -113,6 +113,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       id = "main-app",
       navbarPage(
         title = div(),
+        id = "navbartab",
         windowTitle = "shinyfuse",
         footer = "",
         theme = shinytheme("cosmo"),
