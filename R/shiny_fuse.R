@@ -184,25 +184,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
             )
           )
         ),
-        navbarMenu(
-          title = "About", icon = icon("question-circle"),
-          tabPanel(
-            title = "apanel1", icon = icon("laptop-code"),
-            fluidPage(
-              h1("About - panel1")
-            )
-          ),
-          tabPanel(
-            title = "apanel2", icon = icon("university"),
-            fluidPage(
-              h1("About - panel2")
-            )
-          ),
-          tabPanel(
-            title = "news", icon = icon("newspaper"),
-            fluidPage(
-              # includeMarkdown("NEWS.md")
-            )
+        
+        
+        tabPanel(
+          title = "About", icon = icon("info-circle"),
+          includeMarkdown(
+            system.file("extdata", "content_about.md", package = "annoFuse")
           )
         )
       )
