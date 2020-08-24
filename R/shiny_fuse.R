@@ -156,16 +156,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
             fluidRow(
               column(
                 width = 12,
-                box(
-                  title = "annoFuse summary",
-                  status = "success",
-                  width = 12,
-                  collapsible = TRUE,
-                  collapsed = TRUE,
-                  plotOutput("af_overview"),
-                  downloadButton("btn_dl_summary", label = "", 
-                                 class = "btn btn-success")
-                )
+                uiOutput("ui_af_summary")
               )
             ),
             fluidRow(
@@ -506,6 +497,21 @@ shiny_fuse <- function(out_annofuse = NULL) {
     })
 
     # FusionSummary panel -------------------------------------------
+    
+    output$ui_af_summary <- renderUI({
+      tagList(
+        box(
+          title = "annoFuse summary",
+          status = "success",
+          width = 12,
+          collapsible = TRUE,
+          collapsed = TRUE,
+          plotOutput("af_overview"),
+          downloadButton("btn_dl_summary", label = "", 
+                         class = "btn btn-success")
+        )
+      )
+    })
 
     output$af_overview <- renderPlot({
       withProgress(
