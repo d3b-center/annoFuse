@@ -1,12 +1,24 @@
 element;intro
 #Welcome;Welcome to <code>annoFuse</code>! Here you can ... <br><br>In this tour you will get an overview of the user interface. You can always leave the tour by pressing "Skip", or by clicking anywhere outside of the tour box. At any stage, you can access the tour by clicking on the question mark in the top right corner of the app.
-#FusionExplorer;this text
+#plot_controls;control sidebar
+#af_filtercols + .selectize-control; filterrrrr
+#af_cols + .selectize-control; sdfd
+#af_countcol + .selectize-control; sdfs
+#af_n_topfusions; 
+#btn_load_demo;
+#btn_load_exonsdata;
+#btn_load_pfamdata;
+#navbartab;
 #table_annofuse;that text
 #geneinfo_ui;here
 #table_annofuse;Select a line here...
 #geneinfo_ui;... and see how the info gets propagated
 #geneplots_ui;here
-#geneplots_left;lefto
+#btn_dl_bpleft;lefto
 #geneplots_ui;Click on the other tab panel...
-#geneplots_right;righto
+#navbartab; switching the content to the panel 2
+#ui_af_summary; text
+#af_recurrentfusions; text
+#af_recurrentgenes; text
+#navbartab;leading towards the about page
 #goodbye;Thank you for taking the tour of <code>annoFuse</code>!
