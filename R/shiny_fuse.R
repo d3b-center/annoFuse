@@ -93,7 +93,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       #     value = 15, min = 1, max = 50
       #   )
       # )
-      uiOutput("plot_controls")
+      uiOutput("plot_controls"),
+      uiOutput("plot_filters")
     ),
 
     # body definition ---------------------------------------------------------
@@ -249,7 +250,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
         )
       })
     } else {
-      annofuse_tbl <- read.delim(out_annofuse)
+      annofuse_tbl <- read.delim(out_annofuse, stringsAsFactors = FALSE)
       annofuse_tbl <- .check_annoFuse_calls(annofuse_tbl)
       values$annofuse_tbl <- annofuse_tbl
 
@@ -286,40 +287,53 @@ shiny_fuse <- function(out_annofuse = NULL) {
             label = "Counting column",
             choices = c("", all_cols),
             selectize = TRUE, multiple = FALSE, selected = "Sample"
-          ),
-          
-          selectInput(
-            inputId = "filter_fusion_type",
-            label = "filter column fusion type",
-            choices = c("", unique(values$annofuse_tbl$Fusion_Type)),
-            selectize = TRUE, multiple = TRUE, 
-            selected = unique(values$annofuse_tbl$Fusion_Type)
-          ),
-          selectInput(
-            inputId = "filter_caller",
-            label = "filter column caller",
-            choices = c("", unique(values$annofuse_tbl$Caller)),
-            selectize = TRUE, multiple = TRUE, 
-            selected = unique(values$annofuse_tbl$Caller)
-          ),
-          selectInput(
-            inputId = "filter_confidence",
-            label = "filter column confidence",
-            choices = c("", unique(values$annofuse_tbl$Confidence)),
-            selectize = TRUE, multiple = TRUE, 
-            selected = unique(values$annofuse_tbl$Confidence)
-          ),
-          numericInput(
-            inputId = "filter_spanningfragcount",
-            label = "filter spanning frag count",
-            value = 0,
-            min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
-          ),
-          numericInput(
-            inputId = "filter_callercount",
-            label = "filter caller count",
-            value = 1,
-            min = 1, max = max(values$annofuse_tbl$caller.count)
+          )
+        )
+      }
+    })
+    
+    output$plot_filters <- renderUI({
+      if (is.null(values$annofuse_tbl)) {
+        return(NULL)
+      } else {
+        tagList(
+          menuItem(
+            "Plot filters settings", 
+            icon = icon("paint-brush"),
+            startExpanded = TRUE,
+            selectInput(
+              inputId = "filter_fusion_type",
+              label = "filter column fusion type",
+              choices = c("", unique(values$annofuse_tbl$Fusion_Type)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Fusion_Type)
+            ),
+            selectInput(
+              inputId = "filter_caller",
+              label = "filter column caller",
+              choices = c("", unique(values$annofuse_tbl$Caller)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Caller)
+            ),
+            selectInput(
+              inputId = "filter_confidence",
+              label = "filter column confidence",
+              choices = c("", unique(values$annofuse_tbl$Confidence)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Confidence)
+            ),
+            numericInput(
+              inputId = "filter_spanningfragcount",
+              label = "filter spanning frag count",
+              value = 0,
+              min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
+            ),
+            numericInput(
+              inputId = "filter_callercount",
+              label = "filter caller count",
+              value = 1,
+              min = 1, max = max(values$annofuse_tbl$caller.count)
+            )
           )
         )
       }
@@ -329,7 +343,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
     observeEvent(input$annofusedatasel, {
       message("Reading in...")
       values$annofuse_tbl <- .check_annoFuse_calls(
-        read.delim(input$annofusedatasel$datapath)
+        read.delim(input$annofusedatasel$datapath, stringsAsFactors = FALSE)
       )
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
 
@@ -354,7 +368,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       message("Loading demo data...")
       demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
       values$annofuse_tbl <- 
-        .check_annoFuse_calls(read.delim(demodata_location))
+        .check_annoFuse_calls(read.delim(demodata_location, stringsAsFactors = FALSE))
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
       
       # enhancing the content of the table
