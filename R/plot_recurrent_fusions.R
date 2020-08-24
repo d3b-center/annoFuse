@@ -99,7 +99,7 @@ plot_recurrent_fusions <- function(standardFusioncalls,
     scale_y_continuous(breaks = seq(0, max(rec_fusions$count), by = 20)) +
     ggpubr::rotate() +
     scale_fill_manual(name = as.name(groupby), values = palette_1) +
-    ggtitle("Recurrent Fusion") +
+    ggtitle("Recurrent Fusions") +
     theme_publication(base_size = base_size) +
     theme(legend.title = element_blank(), axis.text.y = element_text(face = "italic", angle = 0, hjust = 1), legend.position = "bottom") +
     scale_x_discrete(limits = rev(levels(rec_fusions$FusionName)))
