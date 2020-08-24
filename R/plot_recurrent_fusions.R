@@ -11,17 +11,23 @@
 #' @return A ggplot object containing an overview on the recurrent fusions
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", 
+#'                            package = "annoFuse")
 #' sfc <- read_tsv(out_annofuse)
-#' clinical<-read_tsv(system.file("extdata", "pbta-histologies.tsv", package = "annoFuse"))
+#' clinical<-read_tsv(system.file("extdata", "pbta-histologies.tsv", 
+#'                               package = "annoFuse"))
 #' # Select only in-frame and frameshift
 #' sfc <- sfc %>%
-#' dplyr::filter(Fusion_Type %in% c("in-frame","frameshift"))
-#' sfc <- merge(sfc ,clinical[,c("Kids_First_Biospecimen_ID","broad_histology")],by.x="Sample",by.y="Kids_First_Biospecimen_ID")
+#'   dplyr::filter(Fusion_Type %in% c("in-frame","frameshift"))
+#' sfc <- merge(sfc ,clinical[,c("Kids_First_Biospecimen_ID","broad_histology")],
+#'             by.x="Sample",by.y="Kids_First_Biospecimen_ID")
 #' # Remove Benign tumor fusions
-#' sfc<-sfc[-which(sfc$FusionName %in% unique(sfc[which(sfc$broad_histology=="Benign tumor"),"FusionName"])),]
+#' sfc <- sfc[-which(sfc$FusionName %in% 
+#'                unique(sfc[which(sfc$broad_histology=="Benign tumor"), "FusionName"])),]
 #' # Remove GeneA == GeneB
-#' sfc <- sfc[-which(sfc$Gene1A==sfc$Gene1B|sfc$Gene1A==sfc$Gene2B|sfc$Gene1B==sfc$Gene2A),]
+#' sfc <- sfc[-which(sfc$Gene1A==sfc$Gene1B |
+#'                   sfc$Gene1A==sfc$Gene2B | 
+#'                   sfc$Gene1B==sfc$Gene2A),]
 #' # Remove intergenic fusions
 #' sfc <- sfc[-grep("/",sfc$FusionName),]
 #' plot_recurrent_fusions(sfc, groupby = "broad_histology", countID = "Kids_First_Participant_ID")
