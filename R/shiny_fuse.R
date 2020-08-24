@@ -277,16 +277,16 @@ shiny_fuse <- function(out_annofuse = NULL) {
             choices = c("", cols_groupable),
             selectize = TRUE, multiple = FALSE, selected = "Fusion_Type"
           ),
-          numericInput(
-            inputId = "af_n_topfusions",
-            label = "Nr top fusions",
-            value = 20, min = 1, max = 300, step = 1
-          ),
           selectInput(
             inputId = "af_countcol",
             label = "Counting column",
             choices = c("", all_cols),
             selectize = TRUE, multiple = FALSE, selected = "Sample"
+          ),
+          numericInput(
+            inputId = "af_n_topfusions",
+            label = "Nr top fusions",
+            value = 20, min = 1, max = 300, step = 1
           )
         )
       }
