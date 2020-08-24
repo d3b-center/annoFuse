@@ -1,10 +1,12 @@
 #' Function to plot recurrent fused genes
 
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
+#'
 #' @param groupby column name with grouping variables
 #' @param plotn top n recurrent fusions to plot
 #' @param countID column name to count recurrent fusions SampleID/ParticipantID/tumorID
 #' @param palette_rec colors for grouping variables
+#' @param base_size Numeric, size of font for plot
 #'
 #' @export
 #'
@@ -13,14 +15,15 @@
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", 
 #'                            package = "annoFuse")
-#' sfc <- read_tsv(out_annofuse)
-#' clinical<-read_tsv(system.file("extdata", "pbta-histologies.tsv", 
-#'                               package = "annoFuse"))
+#' sfc <- read.delim(out_annofuse)
+#' clinical <- read.delim(
+#'   system.file("extdata", "pbta-histologies.tsv", package = "annoFuse"))
 #' # Select only in-frame and frameshift
+#' library("dplyr")
 #' sfc <- sfc %>%
 #'   dplyr::filter(Fusion_Type %in% c("in-frame","frameshift"))
-#' sfc <- merge(sfc ,clinical[,c("Kids_First_Biospecimen_ID","broad_histology")],
-#'             by.x="Sample",by.y="Kids_First_Biospecimen_ID")
+#' sfc <- merge(sfc, clinical[,c("Kids_First_Biospecimen_ID","broad_histology")],
+#'              by.x = "Sample", by.y = "Kids_First_Biospecimen_ID")
 #' # Remove Benign tumor fusions
 #' sfc <- sfc[-which(sfc$FusionName %in% 
 #'                unique(sfc[which(sfc$broad_histology=="Benign tumor"), "FusionName"])),]
@@ -30,13 +33,15 @@
 #'                   sfc$Gene1B==sfc$Gene2A),]
 #' # Remove intergenic fusions
 #' sfc <- sfc[-grep("/",sfc$FusionName),]
-#' plot_recurrent_fusions(sfc, groupby = "broad_histology", countID = "Kids_First_Participant_ID")
+#' plot_recurrent_fusions(sfc, 
+#'                        groupby = "broad_histology", 
+#'                        countID = "Kids_First_Participant_ID")
 plot_recurrent_fusions <- function(standardFusioncalls,
                                    groupby,
                                    plotn = 20,
                                    countID,
                                    palette_rec = NULL,
-                                   base_size = 12 ) {
+                                   base_size = 12) {
   
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is.character(groupby))
