@@ -96,7 +96,7 @@ plot_recurrent_fusions <- function(standardFusioncalls,
     ylab(paste0("Number of ", countID)) +
     xlab(NULL) +
     guides(color = FALSE, alpha = FALSE) +
-    scale_y_continuous(breaks = seq(0, max(rec_fusions$count), by = 20)) +
+    scale_y_continuous(limits=c(0, max(rec_fusions$count))) +
     ggpubr::rotate() +
     scale_fill_manual(name = as.name(groupby), values = palette_1) +
     ggtitle("Recurrent Fusion") +
