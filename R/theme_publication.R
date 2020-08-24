@@ -2,8 +2,8 @@
 
 #' Publication quality images for summary plots
 #'
-#' @param base_size size of font for plot default "15"
-#' @param base_family font to be used default "Helvetica"
+#' @param base_size size of font for plot default (defaults to 12)
+#' @param base_family font to be used default (defaults to "Helvetica")
 #'
 #' @return An object of class \code{\link{theme}} for styling the plots.
 #'

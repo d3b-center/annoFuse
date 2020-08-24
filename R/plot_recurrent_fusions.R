@@ -13,44 +13,47 @@
 #' @return A ggplot object containing an overview on the recurrent fusions
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", 
-#'                            package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv",
+#'   package = "annoFuse"
+#' )
 #' sfc <- read.delim(out_annofuse)
 #' clinical <- read.delim(
-#'   system.file("extdata", "pbta-histologies.tsv", package = "annoFuse"))
+#'   system.file("extdata", "pbta-histologies.tsv", package = "annoFuse")
+#' )
 #' # Select only in-frame and frameshift
 #' library("dplyr")
 #' sfc <- sfc %>%
-#'   dplyr::filter(Fusion_Type %in% c("in-frame","frameshift"))
-#' sfc <- merge(sfc, clinical[,c("Kids_First_Biospecimen_ID","broad_histology")],
-#'              by.x = "Sample", by.y = "Kids_First_Biospecimen_ID")
+#'   dplyr::filter(Fusion_Type %in% c("in-frame", "frameshift"))
+#' sfc <- merge(sfc, clinical[, c("Kids_First_Biospecimen_ID", "broad_histology")],
+#'   by.x = "Sample", by.y = "Kids_First_Biospecimen_ID"
+#' )
 #' # Remove Benign tumor fusions
-#' sfc <- sfc[-which(sfc$FusionName %in% 
-#'                unique(sfc[which(sfc$broad_histology=="Benign tumor"), "FusionName"])),]
+#' sfc <- sfc[-which(sfc$FusionName %in%
+#'   unique(sfc[which(sfc$broad_histology == "Benign tumor"), "FusionName"])), ]
 #' # Remove GeneA == GeneB
-#' sfc <- sfc[-which(sfc$Gene1A==sfc$Gene1B |
-#'                   sfc$Gene1A==sfc$Gene2B | 
-#'                   sfc$Gene1B==sfc$Gene2A),]
+#' sfc <- sfc[-which(sfc$Gene1A == sfc$Gene1B |
+#'   sfc$Gene1A == sfc$Gene2B |
+#'   sfc$Gene1B == sfc$Gene2A), ]
 #' # Remove intergenic fusions
-#' sfc <- sfc[-grep("/",sfc$FusionName),]
-#' plot_recurrent_fusions(sfc, 
-#'                        groupby = "broad_histology", 
-#'                        countID = "Kids_First_Participant_ID")
+#' sfc <- sfc[-grep("/", sfc$FusionName), ]
+#' plot_recurrent_fusions(sfc,
+#'   groupby = "broad_histology",
+#'   countID = "Kids_First_Participant_ID"
+#' )
 plot_recurrent_fusions <- function(standardFusioncalls,
                                    groupby,
                                    plotn = 20,
                                    countID,
                                    palette_rec = NULL,
                                    base_size = 12) {
-  
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is.character(groupby))
   stopifnot(is.numeric(plotn))
   stopifnot(is.character(countID))
   stopifnot(is.numeric(base_size))
-  
+
   stopifnot(all(c(groupby, countID) %in% colnames(standardFusioncalls)))
-  
+
   # in-frame fusions only
   #  standardFusioncalls<-unique(standardFusioncalls) %>% dplyr::filter(.data$Fusion_Type=="in-frame")
   # remove geneA==geneB or intergenic
@@ -82,15 +85,15 @@ plot_recurrent_fusions <- function(standardFusioncalls,
     palette_1 <- palette[which(names(palette) %in% rec_fusions[, groupby])]
   }
 
-  if (base_size != 12){
-    base_size = base_size
+  if (base_size != 12) {
+    base_size <- base_size
   }
-  
+
   rec_fusions$FusionName <- factor(rec_fusions$FusionName, levels = unique(rec_fusions$FusionName), ordered = TRUE)
   rec_fusions_plot <- ggplot(rec_fusions) +
     geom_col(aes(x = FusionName, y = count, fill = !!as.name(groupby)), alpha = 0.75) +
     guides(alpha = FALSE) +
-    ylab(paste0("Number of ",countID)) +
+    ylab(paste0("Number of ", countID)) +
     xlab(NULL) +
     guides(color = FALSE, alpha = FALSE) +
     scale_y_continuous(breaks = seq(0, max(rec_fusions$count), by = 20)) +
