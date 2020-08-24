@@ -107,7 +107,7 @@ plot_recurrent_genes <- function(standardFusioncalls,
     ylab(paste0("Number of ", countID)) +
     guides(color = FALSE, alpha = FALSE) +
     xlab(NULL) +
-    scale_y_continuous(breaks = seq(0, max(rec_gene$count), by = 10)) +
+    scale_y_continuous(limits=c(0, max(rec_gene$count))) +
     rotate() +
     ggtitle("Genes Recurrently Fused") +
     theme_publication(base_size = base_size) +
