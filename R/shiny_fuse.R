@@ -303,34 +303,34 @@ shiny_fuse <- function(out_annofuse = NULL) {
             startExpanded = TRUE,
             selectInput(
               inputId = "filter_fusion_type",
-              label = "filter column fusion type",
+              label = "Filter for fusion type",
               choices = c("", unique(values$annofuse_tbl$Fusion_Type)),
               selectize = TRUE, multiple = TRUE, 
               selected = unique(values$annofuse_tbl$Fusion_Type)
             ),
             selectInput(
               inputId = "filter_caller",
-              label = "filter column caller",
+              label = "Filter for caller",
               choices = c("", unique(values$annofuse_tbl$Caller)),
               selectize = TRUE, multiple = TRUE, 
               selected = unique(values$annofuse_tbl$Caller)
             ),
             selectInput(
               inputId = "filter_confidence",
-              label = "filter column confidence",
+              label = "Filter for confidence",
               choices = c("", unique(values$annofuse_tbl$Confidence)),
               selectize = TRUE, multiple = TRUE, 
               selected = unique(values$annofuse_tbl$Confidence)
             ),
             numericInput(
               inputId = "filter_spanningfragcount",
-              label = "filter spanning frag count",
+              label = "Filter for spanning frag count",
               value = 0,
               min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
             ),
             numericInput(
               inputId = "filter_callercount",
-              label = "filter caller count",
+              label = "Filter for caller count",
               value = 1,
               min = 1, max = max(values$annofuse_tbl$caller.count)
             )
