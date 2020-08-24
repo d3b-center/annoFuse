@@ -109,7 +109,7 @@ plot_recurrent_genes <- function(standardFusioncalls,
     xlab(NULL) +
     scale_y_continuous(limits=c(0, max(rec_gene$count))) +
     rotate() +
-    ggtitle("Recurrent Genes Fused") +
+    ggtitle("Genes Recurrently Fused") +
     theme_publication(base_size = base_size) +
     theme(
       legend.title = element_blank(), axis.text.y = element_text(face = "italic", angle = 0, hjust = 1),
