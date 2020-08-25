@@ -16,7 +16,7 @@
 #' @return Standardized fusion calls filtered to pass QC and remove calls with insufficient read-support and annotation red-flags
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse)
 #' # TODOTODO: what is a sensible value for artifactFilter
 #' # sfc_filtered <- fusion_filtering_QC(sfc,

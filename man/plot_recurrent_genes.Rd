@@ -30,7 +30,7 @@ A ggplot object containing an overview on the recurrent fused genes
 Function to plot recurrent fused genes
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse)
 plot_recurrent_genes(sfc, groupby = "Fusion_Type", countID = "Sample")
 }

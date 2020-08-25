@@ -16,7 +16,7 @@
 #' @return expression_annotated_fusions is a standardized fusion call set with standard
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse)
 #' 
 #' # TODOTODO

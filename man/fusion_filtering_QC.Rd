@@ -35,7 +35,7 @@ tissue require stringent filtering, making it difficult for researchers and clin
 oncogenic drivers of a tumor and in some cases, appropriate therapy
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse)
 # TODOTODO: what is a sensible value for artifactFilter
 # sfc_filtered <- fusion_filtering_QC(sfc,
