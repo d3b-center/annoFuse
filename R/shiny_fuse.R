@@ -426,10 +426,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
           pageLength = 25,
           lengthMenu = c(5, 10, 25, 50, 100, nrow(display_tbl)),
           dom = "Bfrtip",
-          buttons = list("copy", "print", list(
+          buttons = list(list(
             extend = "collection",
             buttons = c("csv", "excel", "pdf"),
-            text = "Download"
+            text = "Download table"
           ))
         )
       )
