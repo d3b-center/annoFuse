@@ -135,11 +135,11 @@ shiny_fuse <- function(out_annofuse = NULL) {
                   column(
                     width = 4,
                     offset = 4,
-                    actionButton("btn_load_exonsdata", "load exons")
+                    actionButton("btn_load_exonsdata", "Load exons")
                   ),
                   column(
                     width = 4,
-                    actionButton("btn_load_pfamdata", "load pfam")
+                    actionButton("btn_load_pfamdata", "Load pfam")
                   )
                 ),
                 h4("Some content, for example linked to the selected row"),
