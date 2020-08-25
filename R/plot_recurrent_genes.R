@@ -42,7 +42,7 @@ plot_recurrent_genes <- function(standardFusioncalls,
                                  plotn = 20,
                                  countID,
                                  palette_rec = NULL,
-                                 base_size = 12) {
+                                 base_size = 20) {
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is.character(groupby))
   stopifnot(is.numeric(plotn))
@@ -98,7 +98,7 @@ plot_recurrent_genes <- function(standardFusioncalls,
     palette_2 <- palette[which(names(palette) %in% rec_gene[, groupby])]
   }
 
-  if (base_size != 12) {
+  if (base_size != 20) {
     base_size <- base_size
   }
 
