@@ -16,7 +16,7 @@
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv",
 #'   package = "annoFuse"
 #' )
-#' sfc <- read.delim(out_annofuse)
+#' sfc <- read.delim(out_annofuse,stringsAsFactors = FALSE)
 #' clinical <- read.delim(
 #'   system.file("extdata", "pbta-histologies.tsv", package = "annoFuse")
 #' )
