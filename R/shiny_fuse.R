@@ -93,7 +93,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       #     value = 15, min = 1, max = 50
       #   )
       # )
-      uiOutput("plot_controls")
+      uiOutput("plot_controls"),
+      uiOutput("plot_filters")
     ),
 
     # body definition ---------------------------------------------------------
@@ -228,7 +229,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
         )
       })
     } else {
-      annofuse_tbl <- read.delim(out_annofuse)
+      annofuse_tbl <- read.delim(out_annofuse, stringsAsFactors = FALSE)
       annofuse_tbl <- .check_annoFuse_calls(annofuse_tbl)
       values$annofuse_tbl <- annofuse_tbl
 
@@ -246,7 +247,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       } else {
         all_cols <- colnames(values$annofuse_tbl)
         cols_groupable <- 
-          all_cols[unlist(lapply(annofuse_tbl,class)) %in% c("character", "factor")]
+          all_cols[unlist(lapply(values$annofuse_tbl,class)) %in% c("character", "factor")]
         
         tagList(
           selectInput(
@@ -275,12 +276,59 @@ shiny_fuse <- function(out_annofuse = NULL) {
         )
       }
     })
+    
+    output$plot_filters <- renderUI({
+      if (is.null(values$annofuse_tbl)) {
+        return(NULL)
+      } else {
+        tagList(
+          menuItem(
+            "Plot filters settings", 
+            icon = icon("paint-brush"),
+            startExpanded = TRUE,
+            selectInput(
+              inputId = "filter_fusion_type",
+              label = "Filter for fusion type",
+              choices = c("", unique(values$annofuse_tbl$Fusion_Type)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Fusion_Type)
+            ),
+            selectInput(
+              inputId = "filter_caller",
+              label = "Filter for caller",
+              choices = c("", unique(values$annofuse_tbl$Caller)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Caller)
+            ),
+            selectInput(
+              inputId = "filter_confidence",
+              label = "Filter for confidence",
+              choices = c("", unique(values$annofuse_tbl$Confidence)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Confidence)
+            ),
+            numericInput(
+              inputId = "filter_spanningfragcount",
+              label = "Filter for spanning frag count",
+              value = 0,
+              min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
+            ),
+            numericInput(
+              inputId = "filter_callercount",
+              label = "Filter for caller count",
+              value = 1,
+              min = 1, max = max(values$annofuse_tbl$caller.count)
+            )
+          )
+        )
+      }
+    })
 
     # Load annoFuse data file --------------------------------------------------
     observeEvent(input$annofusedatasel, {
       message("Reading in...")
       values$annofuse_tbl <- .check_annoFuse_calls(
-        read.delim(input$annofusedatasel$datapath)
+        read.delim(input$annofusedatasel$datapath, stringsAsFactors = FALSE)
       )
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
 
@@ -305,7 +353,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       message("Loading demo data...")
       demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
       values$annofuse_tbl <- 
-        .check_annoFuse_calls(read.delim(demodata_location))
+        .check_annoFuse_calls(read.delim(demodata_location, stringsAsFactors = FALSE))
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
       
       # enhancing the content of the table
@@ -357,10 +405,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
           pageLength = 25,
           lengthMenu = c(5, 10, 25, 50, 100, nrow(display_tbl)),
           dom = "Bfrtip",
-          buttons = list("copy", "print", list(
+          buttons = list(list(
             extend = "collection",
             buttons = c("csv", "excel", "pdf"),
-            text = "Download"
+            text = "Download table"
           ))
         )
       )
@@ -533,11 +581,32 @@ shiny_fuse <- function(out_annofuse = NULL) {
           "Please provide the results of annoFuse to display the plot"
         )
       )
-
+      
+      subset_to_plot <- values$annofuse_tbl
+      
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Caller %in% input$filter_caller, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Confidence %in% input$filter_confidence, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$caller.count >= input$filter_callercount, ]
+      
+      message(paste0("nr rows", nrow(subset_to_plot)))
+      validate(
+        need(
+          nrow(subset_to_plot) > 0,
+        "Please changing the filtering criteria, current table has no record"
+        )
+      )
+    
       gby_rf <- input$af_cols
       plotn_rf <- input$af_n_topfusions
       cid_rf <- input$af_countcol
-      p <- plot_recurrent_fusions(values$annofuse_tbl,
+      p <- plot_recurrent_fusions(subset_to_plot,
         groupby = gby_rf,
         plotn = plotn_rf,
         countID = cid_rf
@@ -553,11 +622,33 @@ shiny_fuse <- function(out_annofuse = NULL) {
           "Please provide the results of annoFuse to display the plot"
         )
       )
-
+      
+      subset_to_plot <- values$annofuse_tbl
+      
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Caller %in% input$filter_caller, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Confidence %in% input$filter_confidence, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$caller.count >= input$filter_callercount, ]
+      
+      message(paste0("nr rows", nrow(subset_to_plot)))
+      validate(
+        need(
+          nrow(subset_to_plot) > 0,
+          "Please changing the filtering criteria, current table has no record"
+        )
+      )
+      
+      
       gby_rg <- input$af_cols
       plotn_rg <- input$af_n_topfusions
       cid_rg <- input$af_countcol
-      p <- plot_recurrent_genes(values$annofuse_tbl,
+      p <- plot_recurrent_genes(subset_to_plot,
         groupby = gby_rg,
         plotn = plotn_rg,
         countID = cid_rg
