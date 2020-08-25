@@ -270,7 +270,9 @@ shiny_fuse <- function(out_annofuse = NULL) {
         cols_groupable <- 
           all_cols[unlist(lapply(values$annofuse_tbl,class)) %in% c("character", "factor")]
         
-        minset_cols <- c("Sample", "FusionName", "LeftBreakpoint", "RightBreakpoint",
+        minset_cols <- c("Sample", "FusionName", 
+                         "Gene1A", "Gene1B",
+                         "LeftBreakpoint", "RightBreakpoint",
                          "Fusion_Type", "JunctionReadCount", "SpanningFragCount",
                          "Confidence","CalledBy")
         minset_cols <- minset_cols[minset_cols %in% all_cols]
