@@ -270,12 +270,17 @@ shiny_fuse <- function(out_annofuse = NULL) {
         cols_groupable <- 
           all_cols[unlist(lapply(values$annofuse_tbl,class)) %in% c("character", "factor")]
         
+        minset_cols <- c("Sample", "FusionName", "LeftBreakpoint", "RightBreakpoint",
+                         "Fusion_Type", "JunctionReadCount", "SpanningFragCount",
+                         "Confidence","CalledBy")
+        minset_cols <- minset_cols[minset_cols %in% all_cols]
+        
         tagList(
           selectInput(
             inputId = "af_filtercols",
             label = "Columns to display",
-            choices = c("", all_cols),
-            selectize = TRUE, multiple = TRUE, selected = all_cols[1:10]
+            choices = c("", union(minset_cols, all_cols)),
+            selectize = TRUE, multiple = TRUE, selected = minset_cols
           ),
           selectInput(
             inputId = "af_cols",
@@ -406,7 +411,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       
       display_tbl <- values$enhanced_annofuse_tbl
     
-      display_tbl <- display_tbl[, colnames(display_tbl) %in% input$af_filtercols]
+      display_tbl <- display_tbl[, input$af_filtercols]
         
         
 
