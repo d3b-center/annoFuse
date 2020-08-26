@@ -97,7 +97,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       #     value = 15, min = 1, max = 50
       #   )
       # )
-      uiOutput("plot_controls")
+      uiOutput("plot_controls"),
+      uiOutput("plot_filters")
     ),
 
     # body definition ---------------------------------------------------------
@@ -117,14 +118,15 @@ shiny_fuse <- function(out_annofuse = NULL) {
       id = "main-app",
       navbarPage(
         title = div(),
+        id = "navbartab",
         windowTitle = "shinyfuse",
         footer = "",
         theme = shinytheme("cosmo"),
-        selected = "TableExplorer",
+        selected = "FusionExplorer",
 
-        # ui TableExplorer -----------------------------------------------------
+        # ui FusionExplorer -----------------------------------------------------
         tabPanel(
-          title = "TableExplorer", icon = icon("table"),
+          title = "FusionExplorer", icon = icon("table"),
           fluidPage(
             fluidRow(
               column(
@@ -137,11 +139,11 @@ shiny_fuse <- function(out_annofuse = NULL) {
                   column(
                     width = 4,
                     offset = 4,
-                    actionButton("btn_load_exonsdata", "load exons")
+                    actionButton("btn_load_exonsdata", "Load exons")
                   ),
                   column(
                     width = 4,
-                    actionButton("btn_load_pfamdata", "load pfam")
+                    actionButton("btn_load_pfamdata", "Load pfam")
                   )
                 ),
                 h4("Some content, for example linked to the selected row"),
@@ -152,25 +154,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
           )
         ),
 
-        # ui TableSummary -----------------------------------------------------
+        # ui FusionSummary -----------------------------------------------------
         tabPanel(
-          title = "TableSummary", icon = icon("dna"),
+          title = "FusionSummary", icon = icon("dna"),
           fluidPage(
             fluidRow(
               column(
                 width = 12,
-                box(
-                  title = "annoFuse summary",
-                  status = "success",
-                  width = 12,
-                  collapsible = TRUE,
-                  collapsed = TRUE,
-                  withSpinner(
-                    plotOutput("af_overview")
-                  ),
-                  downloadButton("btn_dl_summary", label = "", 
-                                 class = "btn btn-success")
-                )
+                uiOutput("ui_af_summary")
               )
             ),
             fluidRow(
@@ -193,25 +184,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
             )
           )
         ),
-        navbarMenu(
-          title = "About", icon = icon("question-circle"),
-          tabPanel(
-            title = "apanel1", icon = icon("laptop-code"),
-            fluidPage(
-              h1("About - panel1")
-            )
-          ),
-          tabPanel(
-            title = "apanel2", icon = icon("university"),
-            fluidPage(
-              h1("About - panel2")
-            )
-          ),
-          tabPanel(
-            title = "news", icon = icon("newspaper"),
-            fluidPage(
-              # includeMarkdown("NEWS.md")
-            )
+        
+        
+        tabPanel(
+          title = "About", icon = icon("info-circle"),
+          includeMarkdown(
+            system.file("extdata", "content_about.md", package = "annoFuse")
           )
         )
       )
@@ -259,7 +237,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
         )
       })
     } else {
-      annofuse_tbl <- read.delim(out_annofuse)
+      annofuse_tbl <- read.delim(out_annofuse, stringsAsFactors = FALSE)
       annofuse_tbl <- .check_annoFuse_calls(annofuse_tbl)
       values$annofuse_tbl <- annofuse_tbl
 
@@ -275,24 +253,88 @@ shiny_fuse <- function(out_annofuse = NULL) {
       if (is.null(values$annofuse_tbl)) {
         return(NULL)
       } else {
+        all_cols <- colnames(values$annofuse_tbl)
+        cols_groupable <- 
+          all_cols[unlist(lapply(values$annofuse_tbl,class)) %in% c("character", "factor")]
+        
+        minset_cols <- c("Sample", "FusionName", 
+                         "Gene1A", "Gene1B",
+                         "LeftBreakpoint", "RightBreakpoint",
+                         "Fusion_Type", "JunctionReadCount", "SpanningFragCount",
+                         "Confidence","CalledBy")
+        minset_cols <- minset_cols[minset_cols %in% all_cols]
+        
         tagList(
+          selectInput(
+            inputId = "af_filtercols",
+            label = "Columns to display",
+            choices = c("", union(minset_cols, all_cols)),
+            selectize = TRUE, multiple = TRUE, selected = minset_cols
+          ),
           selectInput(
             inputId = "af_cols",
             label = "Grouping column",
-            choices = c("", colnames(values$annofuse_tbl)),
+            choices = c("", cols_groupable),
             selectize = TRUE, multiple = FALSE, selected = "Fusion_Type"
+          ),
+          selectInput(
+            inputId = "af_countcol",
+            label = "Counting column",
+            choices = c("", all_cols),
+            selectize = TRUE, multiple = FALSE, selected = "Sample"
           ),
           numericInput(
             inputId = "af_n_topfusions",
             label = "Nr top fusions",
             value = 20, min = 1, max = 300, step = 1
-          ),
-          selectInput(
-            inputId = "af_countcol",
-            label = "Counting column",
-            choices = c("", colnames(values$annofuse_tbl)),
-            selectize = TRUE, multiple = FALSE, selected = "Sample"
-          ),
+          )
+        )
+      }
+    })
+    
+    output$plot_filters <- renderUI({
+      if (is.null(values$annofuse_tbl)) {
+        return(NULL)
+      } else {
+        tagList(
+          menuItem(
+            "Plot filters settings", 
+            icon = icon("paint-brush"),
+            startExpanded = TRUE,
+            selectInput(
+              inputId = "filter_fusion_type",
+              label = "Filter for fusion type",
+              choices = c("", unique(values$annofuse_tbl$Fusion_Type)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Fusion_Type)
+            ),
+            selectInput(
+              inputId = "filter_caller",
+              label = "Filter for caller",
+              choices = c("", unique(values$annofuse_tbl$Caller)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Caller)
+            ),
+            selectInput(
+              inputId = "filter_confidence",
+              label = "Filter for confidence",
+              choices = c("", unique(values$annofuse_tbl$Confidence)),
+              selectize = TRUE, multiple = TRUE, 
+              selected = unique(values$annofuse_tbl$Confidence)
+            ),
+            numericInput(
+              inputId = "filter_spanningfragcount",
+              label = "Filter for spanning frag count",
+              value = 0,
+              min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
+            ),
+            numericInput(
+              inputId = "filter_callercount",
+              label = "Filter for caller count",
+              value = 1,
+              min = 1, max = max(values$annofuse_tbl$caller.count)
+            )
+          )
         )
       }
     })
@@ -301,7 +343,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
     observeEvent(input$annofusedatasel, {
       message("Reading in...")
       values$annofuse_tbl <- .check_annoFuse_calls(
-        read.delim(input$annofusedatasel$datapath)
+        read.delim(input$annofusedatasel$datapath, stringsAsFactors = FALSE)
       )
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
 
@@ -326,7 +368,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       message("Loading demo data...")
       demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
       values$annofuse_tbl <- 
-        .check_annoFuse_calls(read.delim(demodata_location))
+        .check_annoFuse_calls(read.delim(demodata_location, stringsAsFactors = FALSE))
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
       
       # enhancing the content of the table
@@ -355,24 +397,33 @@ shiny_fuse <- function(out_annofuse = NULL) {
           "Please upload the results of annoFuse to start the exploration"
         )
       )
+      
+      display_tbl <- values$enhanced_annofuse_tbl
+    
+      display_tbl <- display_tbl[, input$af_filtercols]
+        
+        
 
       DT::datatable(
-        values$enhanced_annofuse_tbl,
+        display_tbl,
         style = "bootstrap",
         rownames = FALSE,
         filter = "top",
         selection = "single",
         escape = FALSE,
-        extensions = c("Buttons"),
+        extensions = c("Buttons", "FixedHeader"),
         options = list(
           scrollX = TRUE,
+          scrollY = "800px",
+          fixedHeader = TRUE,
+          paging = FALSE,
           pageLength = 25,
-          lengthMenu = c(5, 10, 25, 50, 100, nrow(values$enhanced_annofuse_tbl)),
+          lengthMenu = c(5, 10, 25, 50, 100, nrow(display_tbl)),
           dom = "Bfrtip",
-          buttons = list("copy", "print", list(
+          buttons = list(list(
             extend = "collection",
             buttons = c("csv", "excel", "pdf"),
-            text = "Download"
+            text = "Download table"
           ))
         )
       )
@@ -380,7 +431,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
     # TODO? link to the DB where the info was taken from
 
-    # Gene info and plots from TableExplorer
+    # Gene info and plots from FusionExplorer
     output$geneinfo_ui <- renderUI({
       validate(
         need(
@@ -517,7 +568,24 @@ shiny_fuse <- function(out_annofuse = NULL) {
       print(pboth)      
     })
 
-    # Content for TableSummary panel -------------------------------------------
+    # FusionSummary panel -------------------------------------------
+    
+    output$ui_af_summary <- renderUI({
+      tagList(
+        box(
+          title = "annoFuse summary",
+          status = "success",
+          width = 12,
+          collapsible = TRUE,
+          collapsed = TRUE,
+          withSpinner(
+            plotOutput("af_overview")
+          ),
+          downloadButton("btn_dl_summary", label = "", 
+                         class = "btn btn-success")
+        )
+      )
+    })
 
     output$af_overview <- renderPlot({
       withProgress(
@@ -539,16 +607,35 @@ shiny_fuse <- function(out_annofuse = NULL) {
           "Please provide the results of annoFuse to display the plot"
         )
       )
-
+      
+      subset_to_plot <- values$annofuse_tbl
+      
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Caller %in% input$filter_caller, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Confidence %in% input$filter_confidence, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$caller.count >= input$filter_callercount, ]
+      
+      message(paste0("nr rows", nrow(subset_to_plot)))
+      validate(
+        need(
+          nrow(subset_to_plot) > 0,
+        "Please changing the filtering criteria, current table has no record"
+        )
+      )
+    
       gby_rf <- input$af_cols
       plotn_rf <- input$af_n_topfusions
       cid_rf <- input$af_countcol
-      palette_rf <- c("blue", "green", "orange") # I had to specify this
-      p <- plot_recurrent_fusions(values$annofuse_tbl,
+      p <- plot_recurrent_fusions(subset_to_plot,
         groupby = gby_rf,
         plotn = plotn_rf,
-        countID = cid_rf,
-        palette_rec = palette_rf
+        countID = cid_rf
       )
       values$plotobj_recufusions <- p
       print(p)
@@ -561,16 +648,36 @@ shiny_fuse <- function(out_annofuse = NULL) {
           "Please provide the results of annoFuse to display the plot"
         )
       )
-
+      
+      subset_to_plot <- values$annofuse_tbl
+      
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Caller %in% input$filter_caller, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$Confidence %in% input$filter_confidence, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$caller.count >= input$filter_callercount, ]
+      
+      message(paste0("nr rows", nrow(subset_to_plot)))
+      validate(
+        need(
+          nrow(subset_to_plot) > 0,
+          "Please changing the filtering criteria, current table has no record"
+        )
+      )
+      
+      
       gby_rg <- input$af_cols
       plotn_rg <- input$af_n_topfusions
       cid_rg <- input$af_countcol
-      palette_rg <- c("blue", "green", "orange") # I had to specify this
-      p <- plot_recurrent_genes(values$annofuse_tbl,
+      p <- plot_recurrent_genes(subset_to_plot,
         groupby = gby_rg,
         plotn = plotn_rg,
-        countID = cid_rg,
-        palette_rec = palette_rg
+        countID = cid_rg
       )
       values$plotobj_recugenes <- p
       print(p)

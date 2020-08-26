@@ -9,7 +9,7 @@ plot_breakpoints(
   exons,
   geneposition = c("Left", "Right"),
   sampleid = NULL,
-  fusionname,
+  fusionname = NULL,
   leftBreakpoint = NULL,
   rightBreakpoint = NULL,
   base_size = 12
