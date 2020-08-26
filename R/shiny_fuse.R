@@ -451,6 +451,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       )
 
       tagList(
+        hr(),
         h4("Some general info"),
         checkboxInput("bp_plot_samplespecific", 
                       label = "Plot sample-specific breakpoints",
