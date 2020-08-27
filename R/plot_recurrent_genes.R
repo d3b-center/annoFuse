@@ -84,6 +84,7 @@ plot_recurrent_genes <- function(standardFusioncalls,
 
   rec_gene <- utils::head(rec_gene[order(rec_gene$count, decreasing = TRUE), ], plotn)
   rec_gene$Gene <- factor(rec_gene$Gene, levels = unique(rec_gene$Gene), ordered = TRUE)
+  max_count <- rec_gene %>% group_by(Gene) %>% summarise(max=sum(count)) %>% pull(max) %>% head(1)
 
   if (!is.null(palette_rec)) {
     # provided palette is rownames=groupby values and color in column "color"
@@ -107,7 +108,7 @@ plot_recurrent_genes <- function(standardFusioncalls,
     ylab(paste0("Number of ", countID)) +
     guides(color = FALSE, alpha = FALSE) +
     xlab(NULL) +
-    scale_y_continuous(limits=c(0, max(rec_gene$count))) +
+    scale_y_continuous(limits=c(0, max_count)) +
     rotate() +
     ggtitle("Genes Recurrently Fused") +
     theme_publication(base_size = base_size) +

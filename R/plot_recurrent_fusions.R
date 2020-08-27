@@ -72,6 +72,7 @@ plot_recurrent_fusions <- function(standardFusioncalls,
 
   # Top n recurrent fusion per group
   rec_fusions <- utils::head(rec_fusions[order(rec_fusions$count, decreasing = TRUE), ], plotn)
+  max_count <- rec_fusions %>% group_by(FusionName) %>% summarise(max=sum(count)) %>% pull(max) %>% head(1)
 
   if (!is.null(palette_rec)) {
     # provided palette is rownames=groupby values and color in column "color"
@@ -96,7 +97,7 @@ plot_recurrent_fusions <- function(standardFusioncalls,
     ylab(paste0("Number of ", countID)) +
     xlab(NULL) +
     guides(color = FALSE, alpha = FALSE) +
-    scale_y_continuous(limits=c(0, max(rec_fusions$count))) +
+    scale_y_continuous(limits=c(0, max_count)) +
     ggpubr::rotate() +
     scale_fill_manual(name = as.name(groupby), values = palette_1) +
     ggtitle("Recurrent Fusions") +
