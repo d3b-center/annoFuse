@@ -10,7 +10,7 @@ plot_recurrent_genes(
   plotn = 20,
   countID,
   palette_rec = NULL,
-  base_size = 12
+  base_size = 20
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ Function to plot recurrent fused genes
 out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv",
   package = "annoFuse"
 )
-sfc <- read.delim(out_annofuse)
+sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 clinical <- read.delim(
   system.file("extdata", "pbta-histologies.tsv", package = "annoFuse")
 )

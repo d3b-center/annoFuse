@@ -26,6 +26,7 @@
 #' @importFrom purrr is_empty
 #' @importFrom rmarkdown render
 #' @importFrom methods is
+#' @importFrom shinycssloaders withSpinner
 #'
 #' @name annoFuse-pkg
 #' @docType package
