@@ -68,10 +68,10 @@ plot_breakpoints <- function(domainDataFrame = NULL,
     }
 
     if (!is.null(leftBreakpoint)) {
-      domainDataFrame$Gene1B <- domainDataFrame$Gene1B[which(domainDataFrame$Gene1B$LeftBreakpoint == leftBreakpoint), ]
+      domainDataFrame$Gene1A <- domainDataFrame$Gene1A[which(domainDataFrame$Gene1A$LeftBreakpoint == leftBreakpoint), ]
     }
     if (!is.null(rightBreakpoint)) {
-      domainDataFrame$Gene1A <- domainDataFrame$Gene1A[which(domainDataFrame$Gene1A$RightBreakpoint == rightBreakpoint), ]
+      domainDataFrame$Gene1B <- domainDataFrame$Gene1B[which(domainDataFrame$Gene1B$RightBreakpoint == rightBreakpoint), ]
     }
   }
 
