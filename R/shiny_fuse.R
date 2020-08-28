@@ -588,10 +588,57 @@ shiny_fuse <- function(out_annofuse = NULL) {
     output$geneplots_both <- renderPlot({
       validate(
         need(
-          !is.null(values$plotobj_breakpoint_left) & !is.null(values$plotobj_breakpoint_right),
+          (!is.null(values$data_exons) & !is.null(values$data_pfam)),
           "Please load the exons and the pfam information via the buttons above to display the plot"
         )
-      )  
+      )
+      
+      # common part
+      row_id <- input$table_annofuse_rows_selected
+      message(row_id)
+      fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
+      samplespec <- values$annofuse_tbl[row_id, "Sample"]
+      
+      # left plot
+      leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
+      if(input$bp_plot_samplespecific) {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Left",
+          sampleid = samplespec,
+          fusionname = fusion_for_content
+        )
+      } else {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Left",
+          fusionname = fusion_for_content
+        )
+      }
+      values$plotobj_breakpoint_left <- p
+      
+      # right plot
+      rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
+      if(input$bp_plot_samplespecific) {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Right",
+          sampleid = samplespec,
+          fusionname = fusion_for_content
+        ) 
+      } else {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Right",
+          fusionname = fusion_for_content
+        )
+      }
+      values$plotobj_breakpoint_right <- p
+      
       pboth <- ggpubr::ggarrange(
         values$plotobj_breakpoint_left, 
         values$plotobj_breakpoint_right, 
