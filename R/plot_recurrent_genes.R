@@ -84,7 +84,7 @@ plot_recurrent_genes <- function(standardFusioncalls,
 
   rec_gene <- utils::head(rec_gene[order(rec_gene$count, decreasing = TRUE), ], plotn)
   rec_gene$Gene <- factor(rec_gene$Gene, levels = unique(rec_gene$Gene), ordered = TRUE)
-  max_count <- rec_gene %>% group_by(Gene) %>% summarise(max=sum(count)) %>% pull(max) %>% head(1)
+  max_count <- rec_gene %>% group_by(.data$Gene) %>% summarise(max=sum(count)) %>% pull(max) %>% head(1)
 
   if (!is.null(palette_rec)) {
     # provided palette is rownames=groupby values and color in column "color"
