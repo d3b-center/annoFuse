@@ -94,7 +94,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       #   )
       # )
       uiOutput("plot_controls"),
-      uiOutput("plot_filters")
+      uiOutput("plot_filters"),
+      uiOutput("export_controls")
     ),
 
     # body definition ---------------------------------------------------------
@@ -332,6 +333,32 @@ shiny_fuse <- function(out_annofuse = NULL) {
               label = "Filter for caller count",
               value = 1,
               min = 1, max = max(values$annofuse_tbl$caller.count)
+            )
+          )
+        )
+      }
+    })
+    
+    output$export_controls <- renderUI({
+      if (is.null(values$annofuse_tbl)) {
+        return(NULL)
+      } else {
+        tagList(
+          menuItem(
+            "Plot export settings", 
+            icon = icon("images"),
+            startExpanded = TRUE,
+            numericInput(
+              inputId = "export_width",
+              label = "Export width (in)",
+              value = 20,
+              min = 4, max = 50
+            ),
+            numericInput(
+              inputId = "export_height",
+              label = "Export height (in)",
+              value = 12,
+              min = 4, max = 50
             )
           )
         )
