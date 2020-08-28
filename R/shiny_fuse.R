@@ -1029,12 +1029,14 @@ doublegeneinfo_2_html <- function(gene_id1, gene_id2) {
   gene_gtex_button_1 <- .link2gtex(gene_id1)
   gene_uniprot_button_1 <- .link2uniprot(gene_id1)
   gene_hpa_button_1 <- .link2hpa(gene_id1)
-
+  gene_cosmic_button_1 <- .link2cosmic(gene_id1)
+  
   gene_ncbi_button_2 <- .link2ncbi(gene_id2)
   gene_gtex_button_2 <- .link2gtex(gene_id2)
   gene_uniprot_button_2 <- .link2uniprot(gene_id2)
   gene_hpa_button_2 <- .link2hpa(gene_id2)
-
+  gene_cosmic_button_2 <- .link2cosmic(gene_id2)
+  
   # mycontent <- paste0(
   #   shiny::tags$table(
   #     shiny::tags$tr(
@@ -1079,7 +1081,14 @@ doublegeneinfo_2_html <- function(gene_id1, gene_id2) {
     '<td width="33%">', "HPA", "</td>",
     '<td width="33%">', gene_hpa_button_1, "</td>",
     '<td width="33%">', gene_hpa_button_2, "</td>",
+    "</tr></table>",
+    
+    "<table><tr>",
+    '<td width="33%">', "COSMIC", "</td>",
+    '<td width="33%">', gene_cosmic_button_1, "</td>",
+    '<td width="33%">', gene_cosmic_button_2, "</td>",
     "</tr></table>"
+    
   )
 
   #     shiny::tags$tr(
