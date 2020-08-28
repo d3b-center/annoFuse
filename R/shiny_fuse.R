@@ -88,15 +88,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
                    label = "Load demo data"),
 
       uiOutput("choose_annofusedata_file"),
-      # shinydashboard::menuItem(
-      #   text = "Input Settings", icon = icon("cog"),
-      #   startExpanded = TRUE,
-      #   numericInput(
-      #     inputId = "whatevs",
-      #     label = "number of genesets",
-      #     value = 15, min = 1, max = 50
-      #   )
-      # )
       uiOutput("plot_controls"),
       uiOutput("plot_filters"),
       uiOutput("export_controls")
@@ -214,11 +205,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
     ### TODO: these objects below need to be in the R session - in the final
     ### implementation, this should happen seamlessly, and ideally the app could check
     ### upon starting that these are available
-
-    ### These need to be prepped in advance... (e.g. upon starting the app, or
-    # in advance before launching it)
-
-
 
 
     # Define data file if annoFuse data is not provided ------------------------
@@ -427,7 +413,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
       }
     })
     
-    
 
     # Main interactive table for exploration -----------------------------------
     output$table_annofuse <- DT::renderDataTable({
@@ -439,11 +424,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       )
       
       display_tbl <- values$enhanced_annofuse_tbl
-    
       display_tbl <- display_tbl[, input$af_filtercols]
         
-        
-
       DT::datatable(
         display_tbl,
         style = "bootstrap",
@@ -726,7 +708,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
     })
 
     # FusionSummary panel -------------------------------------------
-    
     output$ui_af_summary <- renderUI({
       tagList(
         box(
@@ -832,7 +813,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
         )
       )
       
-      
       gby_rg <- input$af_cols
       plotn_rg <- input$af_n_topfusions
       cid_rg <- input$af_countcol
@@ -855,7 +835,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
       )
       rintrojs::introjs(session, options = list(steps = tour))
     })
-
 
     # Load data via buttons ----------------------------------------------------
     observeEvent(input$btn_load_pfamdata, {
@@ -890,7 +869,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
         showNotification("exons data already loaded", type = "default")
       }
     })
-    
     
     # Defining behaviors for downloading the plots -----------------------------
     output$btn_dl_bpleft <- downloadHandler(
@@ -960,7 +938,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
 .actionbutton_biocstyle <- "color: #ffffff; background-color: #0092AC"
 
 
-## TODO: should be able to handle the case where
 
 ## ENSEMBL? needs species info
 
