@@ -8,7 +8,7 @@
 #' @return Fusions called by n callers
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse)
 #' sfc_called <- called_by_n_callers(sfc, numCaller = 2)
 called_by_n_callers <- function(standardFusioncalls,

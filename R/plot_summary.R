@@ -10,9 +10,9 @@
 #' @return A ggplot object containing a summary of the standardized fusion calls
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
-#' sfc <- read.delim(out_annofuse)
-#' plot_summary(sfc, groupby = "Fusion_Type")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse,stringsAsFactors = F)
+#' plot_summary(sfc, groupby = "Fusion_Type",outputpdffile = "out.pdf")
 plot_summary <- function(standardFusioncalls,
                          outputpdffile,
                          groupby) {

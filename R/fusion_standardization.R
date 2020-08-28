@@ -5,18 +5,26 @@
 #' analysis
 #'
 #' @param fusion_calls A dataframe from star fusion or arriba (more callers to be added)
-#' @param caller string options STARfusion/arriba
+#' @param caller string options STARFUSION/ARRIBA
+#' @param tumorID string or character vector of same length as fusion_calls
 #'
 #' @export
 #'
 #' @return Standardized fusion calls ready for filtering
 #'
 #' @examples
-#' # TODOTODO
+#' # read in arriba fusion file
+#' fusionfileArriba = read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
+#' # reas in starfusion file
+#' fusionfileStarFusion = read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),,stringsAsFactors = FALSE)
+#' formattedArriba = fusion_standardization(fusionfileArriba,caller="ARRIBA",tumorID = "tumorID")
+#' formattedStarFusion = fusion_standardization(fusionfileStarFusion,caller="STARFUSION",tumorID = "tumorID")
 fusion_standardization <- function(fusion_calls,
-                                   caller = c("STARFUSION", "ARRIBA")) {
+                                   caller = c("STARFUSION", "ARRIBA"),
+                                   tumorID = "tumorID") {
   stopifnot(is(fusion_calls, "data.frame"))
   stopifnot(is.character(caller))
+  stopifnot(is.character(tumorID))
   # TODO: maybe you want to handle it via match.arg?
   # say:
   # caller <- match.arg(caller, choices = c("STARFUSION", "ARRIBA"))
@@ -39,7 +47,9 @@ fusion_standardization <- function(fusion_calls,
           Fusion_Type == "INFRAME" ~ "in-frame",
           Fusion_Type == "FRAMESHIFT" ~ "frameshift",
           TRUE ~ "other"
-        )
+        ),
+        Sample = tumorID,
+        Caller = "STARFUSION"
       )
   }
   else if (caller == "ARRIBA") {
@@ -68,7 +78,9 @@ fusion_standardization <- function(fusion_calls,
           !Fusion_Type %in% c("out-of-frame", "in-frame") ~ "other",
           Fusion_Type == "out-of-frame" ~ "frameshift",
           TRUE ~ "in-frame"
-        )
+        ),
+        Sample = tumorID,
+        Caller = "ARRIBA"
       )
   } else {
     stop(paste(caller, "is not a supported caller string."))

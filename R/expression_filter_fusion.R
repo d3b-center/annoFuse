@@ -9,9 +9,38 @@
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
-#' sfc <- read.delim(out_annofuse)
-#' # TODOTODO: what are some good values for expressionMatrix and expressionFilter?
+#' # standardize
+#' fusionfileArriba = read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
+#' fusionfileStarFusion = read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
+#' formattedArriba = fusion_standardization(fusionfileArriba,caller="ARRIBA",tumorID = "tumorID")
+#' formattedStarFusion = fusion_standardization(fusionfileStarFusion,caller="STARFUSION",tumorID = "tumorID")
+#' # merge standardized fusion calls
+#' standardFusioncalls <- rbind(formattedStarFusion, formattedArriba) %>% as.data.frame()
+#' fusionQCFiltered <- fusion_filtering_QC(standardFusioncalls = standardFusioncalls, 
+#'                     readingFrameFilter = "in-frame|frameshift|other",
+#'                     artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+#'                     junctionReadCountFilter = 1,
+#'                     spanningFragCountFilter = 10,
+#'                     readthroughFilter = TRUE)
+#' # expression based filter to capture only fusions where atleast 1 gene is expressed
+#'                     
+#' expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse")
+#' library(dplyr)
+#' expressionMatrix <- read_tsv(expressionFile)
+#' library(reshape2)
+#' # split gene id and symbol
+#' expressionMatrix <- cbind(expressionMatrix, colsplit(expressionMatrix$gene_id, pattern = "_", names = c("EnsembleID", "GeneSymbol")))
+#' # collapse to matrix of HUGO symbols x Sample identifiers
+#' # take max expression per row and use the max value for duplicated gene symbols
+#' expressionMatrix.collapsed <- expressionMatrix %>%
+#'                    arrange(desc(FPKM)) %>% # arrange decreasing by FPKM
+#'                    distinct(GeneSymbol, .keep_all = TRUE) %>% # keep the ones with greatest FPKM value. If ties occur, keep the first occurencce
+#'                    unique() %>%
+#'                    remove_rownames() %>%
+#'                    dplyr::select(.data$EnsembleID, .data$GeneSymbol, .data$FPKM, .data$gene_id)
+#' # rename columns
+#' colnames(expressionMatrix.collapsed)[3] <- "tumorID"
+#' expressionFiltered <- expression_filter_fusion(standardFusioncalls = fusionQCFiltered, expressionFilter = 1, expressionMatrix = expressionMatrix.collapsed)
 #' 
 expression_filter_fusion <- function(standardFusioncalls,
                                      expressionMatrix,

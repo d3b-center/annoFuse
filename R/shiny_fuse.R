@@ -19,7 +19,7 @@
 #' @importFrom DT datatable renderDataTable dataTableOutput
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' if (interactive()) {
 #'   shiny_fuse(out_annofuse)
 #' }
