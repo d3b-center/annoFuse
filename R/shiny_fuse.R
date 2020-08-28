@@ -271,22 +271,29 @@ shiny_fuse <- function(out_annofuse = NULL) {
             choices = c("", union(minset_cols, all_cols)),
             selectize = TRUE, multiple = TRUE, selected = minset_cols
           ),
-          selectInput(
-            inputId = "af_cols",
-            label = "Grouping column",
-            choices = c("", cols_groupable),
-            selectize = TRUE, multiple = FALSE, selected = "Fusion_Type"
-          ),
-          selectInput(
-            inputId = "af_countcol",
-            label = "Counting column",
-            choices = c("", all_cols),
-            selectize = TRUE, multiple = FALSE, selected = "Sample"
-          ),
-          numericInput(
-            inputId = "af_n_topfusions",
-            label = "Nr top fusions",
-            value = 20, min = 1, max = 300, step = 1
+          tagList(
+            menuItem(
+              "Plot output settings", 
+              icon = icon("paint-brush"),
+              startExpanded = TRUE,
+              selectInput(
+                inputId = "af_cols",
+                label = "Grouping column",
+                choices = c("", cols_groupable),
+                selectize = TRUE, multiple = FALSE, selected = "Fusion_Type"
+              ),
+              selectInput(
+                inputId = "af_countcol",
+                label = "Counting column",
+                choices = c("", all_cols),
+                selectize = TRUE, multiple = FALSE, selected = "Sample"
+              ),
+              numericInput(
+                inputId = "af_n_topfusions",
+                label = "Nr top fusions",
+                value = 20, min = 1, max = 300, step = 1
+              )
+            )
           )
         )
       }
