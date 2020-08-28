@@ -306,7 +306,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
         tagList(
           menuItem(
             "Plot filters settings", 
-            icon = icon("paint-brush"),
+            icon = icon("filter"),
             startExpanded = TRUE,
             selectInput(
               inputId = "filter_fusion_type",
