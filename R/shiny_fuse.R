@@ -487,9 +487,14 @@ shiny_fuse <- function(out_annofuse = NULL) {
       tagList(
         hr(),
         h4("Some general info"),
-        checkboxInput("bp_plot_samplespecific", 
-                      label = "Plot sample-specific breakpoints",
-                      value = FALSE),
+        radioButtons("bp_plot_mode",
+                     label = "Breakpoint plot type:",
+                     choices = c("Breakpoint specific" = "bp_bp",
+                                 "Sample specific" = "bp_sample",
+                                 "All samples" = "bp_allsamples"),
+                     inline = TRUE,
+                     selected = "bp_bp"
+                     ),
         tabsetPanel(
           tabPanel(
             "Plot left",
@@ -525,26 +530,32 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
-      # gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
 
       fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
       rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
       samplespec <- values$annofuse_tbl[row_id, "Sample"]
+      breakpointspec_right <- values$annofuse_tbl[row_id, "RightBreakpoint"]
 
-      # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-      # breakpoints_info <- values$ann_domain$Gene1B[which(values$ann_domain$Gene1B$FusionName == fusion_for_content & values$ann_domain$Gene1B$Gene1B == rightfused_for_content), ] %>%
-      #   dplyr::filter(!is.na(.data$DESC))
-      ## Plot breakpoint
-
-      if(input$bp_plot_samplespecific) {
+      if(input$bp_plot_mode == "bp_bp") {
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
           geneposition = "Right",
           sampleid = samplespec,
+          rightBreakpoint = breakpointspec_right,
           fusionname = fusion_for_content
         ) 
-      } else {
+      }
+      if(input$bp_plot_mode == "bp_sample") {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Right",
+          fusionname = fusion_for_content,
+          sampleid = samplespec
+        )
+      }
+      if(input$bp_plot_mode == "bp_allsamples") {
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -552,6 +563,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
           fusionname = fusion_for_content
         )
       }
+      
       values$plotobj_breakpoint_right <- p
       print(p)
     })
@@ -566,25 +578,32 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
       row_id <- input$table_annofuse_rows_selected
       message(row_id)
-      # gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
 
       fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
       leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
       samplespec <- values$annofuse_tbl[row_id, "Sample"]
+      breakpointspec_left <- values$annofuse_tbl[row_id, "LeftBreakpoint"]
       
-      # plot BRAF breakpoint in sample for KIAA1549--BRAF fusion
-      # breakpoints_info <- values$ann_domain$Gene1A[which(values$ann_domain$Gene1A$FusionName == fusion_for_content & values$ann_domain$Gene1A$Gene1A == leftfused_for_content), ] %>% dplyr::filter(!is.na(.data$DESC))
-      ## Plot breakpoint
-
-      if(input$bp_plot_samplespecific) {
+      if(input$bp_plot_mode == "bp_bp") {
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
           geneposition = "Left",
           sampleid = samplespec,
+          rightBreakpoint = breakpointspec_left,
           fusionname = fusion_for_content
+        ) 
+      }
+      if(input$bp_plot_mode == "bp_sample") {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Left",
+          fusionname = fusion_for_content,
+          sampleid = samplespec
         )
-      } else {
+      }
+      if(input$bp_plot_mode == "bp_allsamples") {
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -592,6 +611,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
           fusionname = fusion_for_content
         )
       }
+      
       values$plotobj_breakpoint_left <- p
       print(p)
     })
@@ -609,18 +629,31 @@ shiny_fuse <- function(out_annofuse = NULL) {
       message(row_id)
       fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
       samplespec <- values$annofuse_tbl[row_id, "Sample"]
+      breakpointspec_left <- values$annofuse_tbl[row_id, "LeftBreakpoint"]
+      breakpointspec_right <- values$annofuse_tbl[row_id, "RightBreakpoint"]
       
       # left plot
       leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
-      if(input$bp_plot_samplespecific) {
+      if(input$bp_plot_mode == "bp_bp") {
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
           geneposition = "Left",
           sampleid = samplespec,
+          rightBreakpoint = breakpointspec_left,
           fusionname = fusion_for_content
+        ) 
+      }
+      if(input$bp_plot_mode == "bp_sample") {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Left",
+          fusionname = fusion_for_content,
+          sampleid = samplespec
         )
-      } else {
+      }
+      if(input$bp_plot_mode == "bp_allsamples") {
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -632,15 +665,26 @@ shiny_fuse <- function(out_annofuse = NULL) {
       
       # right plot
       rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
-      if(input$bp_plot_samplespecific) {
+      if(input$bp_plot_mode == "bp_bp") {
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
           geneposition = "Right",
           sampleid = samplespec,
+          rightBreakpoint = breakpointspec_right,
           fusionname = fusion_for_content
         ) 
-      } else {
+      }
+      if(input$bp_plot_mode == "bp_sample") {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Right",
+          fusionname = fusion_for_content,
+          sampleid = samplespec
+        )
+      }
+      if(input$bp_plot_mode == "bp_allsamples") {
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
