@@ -20,7 +20,7 @@ Standardized fusion calls annotated with domain terms and chromosome location; r
 Function to annotate fusion calls with domain terms
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse)
 bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
 # TODO: is there an example to show how this was generated? It can be very useful to update this 

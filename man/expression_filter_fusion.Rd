@@ -24,7 +24,7 @@ Standardized fusion calls annotated with gene list and fusion list provided in r
 Expression filtering with user provided expression Matrix and standard fusion calls
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse)
 # TODOTODO: what are some good values for expressionMatrix and expressionFilter?
 

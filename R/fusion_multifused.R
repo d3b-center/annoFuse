@@ -8,7 +8,7 @@
 #' @return Fusions where gene partner(s) is multifused per sample
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse)
 #' sfc_multifused <- fusion_multifused(sfc, limitMultiFused = 2)
 fusion_multifused <- function(standardFusioncalls,
