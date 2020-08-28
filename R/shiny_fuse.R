@@ -741,27 +741,30 @@ shiny_fuse <- function(out_annofuse = NULL) {
     output$btn_dl_bpleft <- downloadHandler(
       filename = "annofuse_bpleft.pdf",
       content = function(file) {
-        ggsave(file, plot = values$plotobj_breakpoint_left #, 
-               # width = input$export_width,
-               # height = input$export_height, units = "cm"
+        ggsave(file, plot = values$plotobj_breakpoint_left, 
+               width = 14,
+               height = 10,
+               units = "in"
         )
       })
     
     output$btn_dl_bpright <- downloadHandler(
       filename = "annofuse_bpright.pdf",
       content = function(file) {
-        ggsave(file, plot = values$plotobj_breakpoint_right #, 
-               # width = input$export_width,
-               # height = input$export_height, units = "cm"
+        ggsave(file, plot = values$plotobj_breakpoint_right, 
+               width = 14,
+               height = 10,
+               units = "in"
         )
       })
     
     output$btn_dl_bpboth <- downloadHandler(
       filename = "annofuse_bpboth.pdf",
       content = function(file) {
-        ggsave(file, plot = values$plotobj_breakpoint_both #, 
-               # width = input$export_width,
-               # height = input$export_height, units = "cm"
+        ggsave(file, plot = values$plotobj_breakpoint_both, 
+               width = 20,
+               height = 10,
+               units = "in"
         )
       })
     
