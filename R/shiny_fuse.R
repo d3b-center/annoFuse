@@ -823,8 +823,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       filename = "annofuse_bpleft.pdf",
       content = function(file) {
         ggsave(file, plot = values$plotobj_breakpoint_left, 
-               width = 14,
-               height = 10,
+               width = input$export_width,
+               height = input$export_height,
                units = "in"
         )
       })
@@ -833,8 +833,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       filename = "annofuse_bpright.pdf",
       content = function(file) {
         ggsave(file, plot = values$plotobj_breakpoint_right, 
-               width = 14,
-               height = 10,
+               width = input$export_width,
+               height = input$export_height,
                units = "in"
         )
       })
@@ -843,8 +843,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       filename = "annofuse_bpboth.pdf",
       content = function(file) {
         ggsave(file, plot = values$plotobj_breakpoint_both, 
-               width = 20,
-               height = 10,
+               width = input$export_width,
+               height = input$export_height,
                units = "in"
         )
       })
@@ -853,8 +853,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       filename = "annofuse_summary.pdf",
       content = function(file) {
         ggsave(file, plot = values$plotobj_summary, 
-               width = 20,
-               height = 10, 
+               width = input$export_width,
+               height = input$export_height,
                units = "in"
         )
       })
