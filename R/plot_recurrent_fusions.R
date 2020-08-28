@@ -11,9 +11,13 @@
 #' @return A ggplot object containing an overview on the recurrent fusions
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
-#' sfc <- read.delim(out_annofuse)
-#' plot_recurrent_fusions(sfc, groupby = "Fusion_Type", countID = "Sample")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse,stringsAsFactors = F)
+#' library (dplyr)
+#' sfc <- sfc %>%
+#'    dplyr::filter(Fusion_Type=="in-frame",BreakpointLocation=="Genic") %>% 
+#'    as.data.frame()    
+#' plot_recurrent_fusions(sfc, groupby = "broad_histology", countID = "Kids_First_Participant_ID")
 plot_recurrent_fusions <- function(standardFusioncalls,
                                    groupby,
                                    plotn = 20,
