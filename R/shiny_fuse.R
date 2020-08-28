@@ -455,7 +455,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
         h4("Some general info"),
         checkboxInput("bp_plot_samplespecific", 
                       label = "Plot sample-specific breakpoints",
-                      value = TRUE),
+                      value = FALSE),
         tabsetPanel(
           tabPanel(
             "Plot left",
@@ -565,10 +565,57 @@ shiny_fuse <- function(out_annofuse = NULL) {
     output$geneplots_both <- renderPlot({
       validate(
         need(
-          !is.null(values$plotobj_breakpoint_left) & !is.null(values$plotobj_breakpoint_right),
+          (!is.null(values$data_exons) & !is.null(values$data_pfam)),
           "Please load the exons and the pfam information via the buttons above to display the plot"
         )
-      )  
+      )
+      
+      # common part
+      row_id <- input$table_annofuse_rows_selected
+      message(row_id)
+      fusion_for_content <- values$annofuse_tbl[row_id, "FusionName"]
+      samplespec <- values$annofuse_tbl[row_id, "Sample"]
+      
+      # left plot
+      leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
+      if(input$bp_plot_samplespecific) {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Left",
+          sampleid = samplespec,
+          fusionname = fusion_for_content
+        )
+      } else {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Left",
+          fusionname = fusion_for_content
+        )
+      }
+      values$plotobj_breakpoint_left <- p
+      
+      # right plot
+      rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
+      if(input$bp_plot_samplespecific) {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Right",
+          sampleid = samplespec,
+          fusionname = fusion_for_content
+        ) 
+      } else {
+        p <- plot_breakpoints(
+          domainDataFrame = values$ann_domain,
+          exons = values$data_exons,
+          geneposition = "Right",
+          fusionname = fusion_for_content
+        )
+      }
+      values$plotobj_breakpoint_right <- p
+      
       pboth <- ggpubr::ggarrange(
         values$plotobj_breakpoint_left, 
         values$plotobj_breakpoint_right, 
@@ -741,36 +788,40 @@ shiny_fuse <- function(out_annofuse = NULL) {
     output$btn_dl_bpleft <- downloadHandler(
       filename = "annofuse_bpleft.pdf",
       content = function(file) {
-        ggsave(file, plot = values$plotobj_breakpoint_left #, 
-               # width = input$export_width,
-               # height = input$export_height, units = "cm"
+        ggsave(file, plot = values$plotobj_breakpoint_left, 
+               width = 14,
+               height = 10,
+               units = "in"
         )
       })
     
     output$btn_dl_bpright <- downloadHandler(
       filename = "annofuse_bpright.pdf",
       content = function(file) {
-        ggsave(file, plot = values$plotobj_breakpoint_right #, 
-               # width = input$export_width,
-               # height = input$export_height, units = "cm"
+        ggsave(file, plot = values$plotobj_breakpoint_right, 
+               width = 14,
+               height = 10,
+               units = "in"
         )
       })
     
     output$btn_dl_bpboth <- downloadHandler(
       filename = "annofuse_bpboth.pdf",
       content = function(file) {
-        ggsave(file, plot = values$plotobj_breakpoint_both #, 
-               # width = input$export_width,
-               # height = input$export_height, units = "cm"
+        ggsave(file, plot = values$plotobj_breakpoint_both, 
+               width = 20,
+               height = 10,
+               units = "in"
         )
       })
     
     output$btn_dl_summary <- downloadHandler(
       filename = "annofuse_summary.pdf",
       content = function(file) {
-        ggsave(file, plot = values$plotobj_summary #, 
-               # width = input$export_width,
-               # height = input$export_height, units = "cm"
+        ggsave(file, plot = values$plotobj_summary, 
+               width = 20,
+               height = 10, 
+               units = "in"
         )
       })
     
