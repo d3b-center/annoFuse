@@ -329,6 +329,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
               min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
             ),
             numericInput(
+              inputId = "filter_junctionreadcount",
+              label = "Filter for junction read count",
+              value = 0,
+              min = 0, max = max(values$annofuse_tbl$JunctionReadCount)
+            ),
+            numericInput(
               inputId = "filter_callercount",
               label = "Filter for caller count",
               value = 1,
@@ -646,6 +652,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       subset_to_plot <- subset_to_plot[
         subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
       subset_to_plot <- subset_to_plot[
+        subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
+      subset_to_plot <- subset_to_plot[
         subset_to_plot$caller.count >= input$filter_callercount, ]
       
       message(paste0("nr rows", nrow(subset_to_plot)))
@@ -686,6 +694,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
         subset_to_plot$Confidence %in% input$filter_confidence, ]
       subset_to_plot <- subset_to_plot[
         subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
       subset_to_plot <- subset_to_plot[
         subset_to_plot$caller.count >= input$filter_callercount, ]
       
