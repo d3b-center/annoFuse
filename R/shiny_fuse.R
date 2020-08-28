@@ -801,9 +801,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
     output$btn_dl_summary <- downloadHandler(
       filename = "annofuse_summary.pdf",
       content = function(file) {
-        ggsave(file, plot = values$plotobj_summary #, 
-               # width = input$export_width,
-               # height = input$export_height, units = "cm"
+        ggsave(file, plot = values$plotobj_summary, 
+               width = 20,
+               height = 10, 
+               units = "in"
         )
       })
     
