@@ -973,6 +973,21 @@ shiny_fuse <- function(out_annofuse = NULL) {
   )
 }
 
+#' Link to the COSMIC Portal
+#'
+#' @param val Character, the gene symbol
+#'
+#' @return HTML for an action button
+#' @noRd
+.link2cosmic <- function(val) {
+  sprintf(
+    '<a href = "https://cancer.sanger.ac.uk/cosmic/gene/analysis?ln=%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-book-medical"></i>%s</a>',
+    val,
+    .actionbutton_biocstyle,
+    val
+  )
+}
+
 .multilink <- function(val) {
   b1 <- sprintf(
     '<a href = "http://www.ncbi.nlm.nih.gov/gene/?term=%s[sym]" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-database"></i>%s</a>',
