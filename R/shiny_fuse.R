@@ -605,7 +605,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
           collapsible = TRUE,
           collapsed = TRUE,
           withSpinner(
-            plotOutput("af_overview")
+            plotOutput("af_overview"),
+            type = 6, color = "#0092AC"
           ),
           downloadButton("btn_dl_summary", label = "", 
                          class = "btn btn-success")
