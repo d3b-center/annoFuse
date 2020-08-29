@@ -13,7 +13,7 @@
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse,stringsAsFactors = F)
-#' library (dplyr)
+#' library(tidyverse)
 #' sfc <- sfc %>%
 #'    dplyr::filter(Fusion_Type=="in-frame",BreakpointLocation=="Genic") %>% 
 #'    as.data.frame()    

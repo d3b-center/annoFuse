@@ -12,6 +12,7 @@
 #' # standardize
 #' fusionfileArriba = read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
 #' fusionfileStarFusion = read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
+#' library("tidyverse")
 #' formattedArriba = fusion_standardization(fusionfileArriba,caller="ARRIBA",tumorID = "tumorID")
 #' formattedStarFusion = fusion_standardization(fusionfileStarFusion,caller="STARFUSION",tumorID = "tumorID")
 #' # merge standardized fusion calls
