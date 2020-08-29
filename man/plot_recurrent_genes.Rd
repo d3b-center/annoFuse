@@ -33,6 +33,6 @@ Function to plot recurrent fused genes
 out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse,stringsAsFactors = FALSE)
 # keep only in-frame and fusions where both breakpoints are within genes
-sfc <- as.data.frame(sfc[ which(Fusion_Type == "in-frame" && BreakpointLocation == "Genic"),])
+sfc <- as.data.frame(sfc[ which(sfc$Fusion_Type == "in-frame" && sfc$BreakpointLocation == "Genic"),])
 plot_recurrent_genes(sfc, groupby = "broad_histology", countID = "Kids_First_Participant_ID")
 }
