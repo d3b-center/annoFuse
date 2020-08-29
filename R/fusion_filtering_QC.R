@@ -22,7 +22,7 @@
 #' formattedArriba = fusion_standardization(fusionfileArriba,caller="ARRIBA",tumorID = "tumorID")
 #' formattedStarFusion = fusion_standardization(fusionfileStarFusion,caller="STARFUSION",tumorID = "tumorID")
 #' # merge standardized fusion calls
-#' standardFusioncalls <- rbind(formattedStarFusion, formattedArriba) %>% as.data.frame()
+#' standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
 #' fusionQCFiltered <- fusion_filtering_QC(standardFusioncalls = standardFusioncalls, 
 #'                     readingFrameFilter = "in-frame|frameshift|other",
 #'                     artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
