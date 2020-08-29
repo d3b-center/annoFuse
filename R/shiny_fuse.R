@@ -324,7 +324,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
     # Load demo data
     observeEvent(input$btn_load_demo, {
       message("Loading demo data...")
-      demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
+      demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
       values$annofuse_tbl <- 
         .check_annoFuse_calls(read.delim(demodata_location))
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
