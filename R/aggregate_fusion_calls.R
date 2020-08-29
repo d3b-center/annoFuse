@@ -10,7 +10,7 @@
 #' @return Standardized fusion calls with aggregated Caller and read support
 #'
 #' @examples
-#' To-do
+#' ## To-do
 #' 
 aggregate_fusion_calls <- function(standardFusioncalls,
                                    removeother = FALSE,
