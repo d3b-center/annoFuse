@@ -14,15 +14,14 @@ get_Pfam_domain(standardFusioncalls, bioMartDataPfam, keepPartialAnno = FALSE)
 \item{keepPartialAnno}{TRUE or FALSE to keep partial status; defaults to FALSE}
 }
 \value{
-Standardized fusion calls annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
+Standardized fusion calls as list Gene1A and Gene1B annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
 }
 \description{
 Function to annotate fusion calls with domain terms
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse)
 bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
-# TODO: is there an example to show how this was generated? It can be very useful to update this 
-# object later on
+domain_list_df <- get_Pfam_domain(standardFusioncalls = sfc,bioMartDataPfam = bioMartDataPfam)
 }

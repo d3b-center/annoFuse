@@ -35,13 +35,17 @@ tissue require stringent filtering, making it difficult for researchers and clin
 oncogenic drivers of a tumor and in some cases, appropriate therapy
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
-sfc <- read.delim(out_annofuse)
-# TODOTODO: what is a sensible value for artifactFilter
-# sfc_filtered <- fusion_filtering_QC(sfc,
-   #                                   readingFrameFilter = "in-frame|frameshift|other",
-   #                                   artifactFilter = TBD,
-   #                                   junctionReadCountFilter = 1,
-   #                                   spanningFragCountFilter = 1,
-   #                                   readthroughFilter = TRUE)
+# standardize
+fusionfileArriba = read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
+fusionfileStarFusion = read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
+formattedArriba = fusion_standardization(fusionfileArriba,caller="ARRIBA",tumorID = "tumorID")
+formattedStarFusion = fusion_standardization(fusionfileStarFusion,caller="STARFUSION",tumorID = "tumorID")
+# merge standardized fusion calls
+standardFusioncalls <- rbind(formattedStarFusion, formattedArriba) \%>\% as.data.frame()
+fusionQCFiltered <- fusion_filtering_QC(standardFusioncalls = standardFusioncalls, 
+                    readingFrameFilter = "in-frame|frameshift|other",
+                    artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+                    junctionReadCountFilter = 1,
+                    spanningFragCountFilter = 10,
+                    readthroughFilter = TRUE)
 }

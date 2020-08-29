@@ -20,7 +20,7 @@ Fusions found in more than n groups in cohort
 Function to identify fusions called by at least n callers
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse)
 sfc_groupcount <- groupcount_fusion_calls(sfc, group = "Sample", 1)
 }

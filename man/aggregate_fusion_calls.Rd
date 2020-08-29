@@ -21,8 +21,6 @@ Standardized fusion calls with aggregated Caller and read support
 Function to aggregate Caller and read support per fusions calls
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v16.tsv", package = "annoFuse")
-sfc <- read.delim(out_annofuse)
-sfc_aggr <- aggregate_fusion_calls(sfc, removeother = TRUE, 
-                                   filterAnnots = "LOCAL_REARRANGEMENT|LOCAL_INVERSION")
+To-do
+
 }
