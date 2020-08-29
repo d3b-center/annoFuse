@@ -35,6 +35,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
       stop("File specified by 'out_annofuse' not found")
     }
   }
+  
+  oopt <- options(spinner.type = 6, spinner.color = "#0092AC")
+  # play nice with other previously chosen options
+  on.exit(options(oopt))
 
 
   ### TODO: maybe check here that pfam and exons objects are available?
@@ -155,13 +159,17 @@ shiny_fuse <- function(out_annofuse = NULL) {
             fluidRow(
               column(
                 width = 6,
-                plotOutput("af_recurrentfusions"),
+                withSpinner(
+                  plotOutput("af_recurrentfusions")
+                ),
                 downloadButton("btn_dl_recufusions", label = "", 
                                class = "btn btn-success")
               ),
               column(
                 width = 6,
-                plotOutput("af_recurrentgenes"),
+                withSpinner(
+                  plotOutput("af_recurrentgenes")
+                ),
                 downloadButton("btn_dl_recugenes", label = "",
                                class = "btn btn-success")
               )
@@ -313,6 +321,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
               label = "Filter for spanning frag count",
               value = 0,
               min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
+            ),
+            numericInput(
+              inputId = "filter_junctionreadcount",
+              label = "Filter for junction read count",
+              value = 0,
+              min = 0, max = max(values$annofuse_tbl$JunctionReadCount)
             ),
             numericInput(
               inputId = "filter_callercount",
@@ -480,19 +494,28 @@ shiny_fuse <- function(out_annofuse = NULL) {
         tabsetPanel(
           tabPanel(
             "Plot left",
-            plotOutput("geneplots_left"),
+            withSpinner(
+              plotOutput("geneplots_left"),
+              type = 6, color = "#0092AC"
+            ),
             downloadButton("btn_dl_bpleft", label = "", 
                            class = "btn btn-success")
           ),
           tabPanel(
             "Plot right",
-            plotOutput("geneplots_right"),
+            withSpinner(
+              plotOutput("geneplots_right"),
+              type = 6, color = "#0092AC"
+            ),
             downloadButton("btn_dl_bpright", label = "", 
                            class = "btn btn-success")
           ),
           tabPanel(
             "Plot both",
-            plotOutput("geneplots_both"),
+            withSpinner(
+              plotOutput("geneplots_both"),
+              type = 6, color = "#0092AC"
+            ),
             downloadButton("btn_dl_bpboth", label = "", 
                            class = "btn btn-success")
           )
@@ -693,7 +716,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
           width = 12,
           collapsible = TRUE,
           collapsed = TRUE,
-          plotOutput("af_overview"),
+          withSpinner(
+            plotOutput("af_overview"),
+            type = 6, color = "#0092AC"
+          ),
           downloadButton("btn_dl_summary", label = "", 
                          class = "btn btn-success")
         )
@@ -731,6 +757,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
         subset_to_plot$Confidence %in% input$filter_confidence, ]
       subset_to_plot <- subset_to_plot[
         subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
       subset_to_plot <- subset_to_plot[
         subset_to_plot$caller.count >= input$filter_callercount, ]
       
@@ -772,6 +800,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
         subset_to_plot$Confidence %in% input$filter_confidence, ]
       subset_to_plot <- subset_to_plot[
         subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      subset_to_plot <- subset_to_plot[
+        subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
       subset_to_plot <- subset_to_plot[
         subset_to_plot$caller.count >= input$filter_callercount, ]
       

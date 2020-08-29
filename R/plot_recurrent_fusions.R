@@ -72,6 +72,7 @@ plot_recurrent_fusions <- function(standardFusioncalls,
 
   # Top n recurrent fusion per group
   rec_fusions <- utils::head(rec_fusions[order(rec_fusions$count, decreasing = TRUE), ], plotn)
+
   max_count <- rec_fusions %>% 
     group_by(FusionName) %>% 
     summarise(max=sum(count)) %>% 
