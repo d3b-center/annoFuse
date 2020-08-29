@@ -9,6 +9,7 @@
 #' @return Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 #'
 #' @examples
+#' \dontrun{
 #' # standardize
 #' fusionfileArriba = read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
 #' fusionfileStarFusion = read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
@@ -41,6 +42,7 @@
 #' # rename columns
 #' colnames(expressionMatrix.collapsed)[3] <- "tumorID"
 #' expressionFiltered <- expression_filter_fusion(standardFusioncalls = fusionQCFiltered, expressionFilter = 1, expressionMatrix = expressionMatrix.collapsed)
+#' }
 #' 
 expression_filter_fusion <- function(standardFusioncalls,
                                      expressionMatrix,
