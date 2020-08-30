@@ -61,7 +61,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
     # header definition -------------------------------------------------------
     header = shinydashboard::dashboardHeader(
-      title = "shiny_fuse",
+      title = "shinyFuse",
       titleWidth = 350,
       shinydashboard::dropdownMenu(
         type = "tasks",
