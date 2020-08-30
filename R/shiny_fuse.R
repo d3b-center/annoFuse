@@ -230,8 +230,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
       enhanced_annofuse_tbl <- annofuse_tbl
       # enhancing the content of the table
-      enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
-      enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
+      # enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
+      # enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
       values$enhanced_annofuse_tbl <- enhanced_annofuse_tbl
     }
 
@@ -374,8 +374,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
 
       # enhancing the content of the table
-      values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
-      values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
+      # values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
+      # values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
 
       if (!is.null(values$data_pfam)) {
         message("Creating domain information...")
@@ -398,8 +398,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
       
       # enhancing the content of the table
-      values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
-      values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
+      # values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
+      # values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
       
       if (!is.null(values$data_pfam)) {
         message("Creating domain information...")
@@ -1071,27 +1071,6 @@ doublegeneinfo_2_html <- function(gene_id1, gene_id2) {
   gene_hpa_button_2 <- .link2hpa(gene_id2)
   gene_cosmic_button_2 <- .link2cosmic(gene_id2)
   
-  # mycontent <- paste0(
-  #   shiny::tags$table(
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_ncbi_button_1),
-  #       shiny::tags$td(width = "50%", gene_ncbi_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_gtex_button_1),
-  #       shiny::tags$td(width = "50%", gene_gtex_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_uniprot_button_1),
-  #       shiny::tags$td(width = "50%", gene_uniprot_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_hpa_button_1),
-  #       shiny::tags$td(width = "50%", gene_hpa_button_2)
-  #     )
-  #   )
-  # )
-
   mycontent <- paste0(
     "<table><tr>",
     '<td width="33%">', "NCBI", "</td>",
@@ -1124,27 +1103,6 @@ doublegeneinfo_2_html <- function(gene_id1, gene_id2) {
     "</tr></table>"
     
   )
-
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_ncbi_button_1),
-  #       shiny::tags$td(width = "50%", gene_ncbi_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_gtex_button_1),
-  #       shiny::tags$td(width = "50%", gene_gtex_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_uniprot_button_1),
-  #       shiny::tags$td(width = "50%", gene_uniprot_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_hpa_button_1),
-  #       shiny::tags$td(width = "50%", gene_hpa_button_2)
-  #     )
-  #   )
-  # )
-
-
   return(HTML(mycontent))
 }
 
