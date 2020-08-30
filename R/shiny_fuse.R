@@ -26,7 +26,6 @@
 shiny_fuse <- function(out_annofuse = NULL) {
 
   # Checks on the objects provided ---------------------------------------------
-
   if (!is.null(out_annofuse)) {
     if (!is(out_annofuse, "character")) {
       stop("'out_annofuse' has to be a character string")
@@ -39,21 +38,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
   oopt <- options(spinner.type = 6, spinner.color = "#0092AC")
   # play nice with other previously chosen options
   on.exit(options(oopt))
-
-
-  ### TODO: maybe check here that pfam and exons objects are available?
-  ### "slight issue": it takes a while to load, so maybe do this in advance? On the server,
-  ### it would still need to be done at each session
-  ### NOTE: this is not optimal, but it is to give an idea of how it could be ;)
-  # if(!exists("bioMartDataPfam")) {
-  #   message("Loading pfam data...")
-  #   bioMartDataPfam <- readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
-  # }
-  # read in exonsToPlot with exon and gene boundaries from gencode.v27.primary_assembly.annotation.gtf.gz
-  # if(!exists("exons")) {
-  #   message("Loading exons data...")
-  #   exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
-  # }
 
   # UI definition -----------------------------------------------------------
   shinyfuse_ui <- shinydashboard::dashboardPage(
@@ -200,12 +184,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
     values$data_exons <- NULL
     values$data_pfam <- NULL
-    # currently needs some things to replicate the use case situation:
-    #
-    ### TODO: these objects below need to be in the R session - in the final
-    ### implementation, this should happen seamlessly, and ideally the app could check
-    ### upon starting that these are available
-
 
     # Define data file if annoFuse data is not provided ------------------------
     if (is.null(out_annofuse)) {
@@ -467,7 +445,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
       gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
       gene_for_content_2 <- values$annofuse_tbl[row_id, "Gene1B"]
 
-
       tagList(
         h4("External links"),
         p("Click on the buttons below to open their related page in new tabs ",
@@ -523,7 +500,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
             downloadButton("btn_dl_bpboth", label = "", 
                            class = "btn btn-success")
           )
-          
         )
       )
     })
@@ -741,8 +717,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
       print(p)
     })
 
-    # TODO: spinner for when the plot is loading?
-
     output$af_recurrentfusions <- renderPlot({
       validate(
         need(
@@ -941,11 +915,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
 .actionbutton_biocstyle <- "color: #ffffff; background-color: #0092AC"
 
-
-
 ## ENSEMBL? needs species info
 
 
+# Helper functions --------------------------------------------------------
 
 #' Link to NCBI database
 #'
