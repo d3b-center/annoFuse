@@ -138,7 +138,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
                     actionButton("btn_load_pfamdata", "Load pfam")
                   )
                 ),
-                h4("Some content, for example linked to the selected row"),
+                hr(),
                 uiOutput("geneinfo_ui"),
                 uiOutput("geneplots_ui")
               )
@@ -458,7 +458,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       validate(
         need(
           length(input$table_annofuse_rows_selected) > 0,
-          "Please select a row to display the genes info"
+          "Please select a row to display additional information"
         )
       )
 
@@ -468,8 +468,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
       gene_for_content_2 <- values$annofuse_tbl[row_id, "Gene1B"]
 
 
-      doublegeneinfo_2_html(gene_for_content, gene_for_content_2)
-      # geneinfo_2_html(gene_for_content)
+      tagList(
+        h4("External links"),
+        p("Click on the buttons below to open their related page in new tabs ",
+          "with information retrieved from a number of external databases."),
+        doublegeneinfo_2_html(gene_for_content, gene_for_content_2)
+      )
     })
 
     output$geneplots_ui <- renderUI({
@@ -482,7 +486,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
       tagList(
         hr(),
-        h4("Some general info"),
+        h4("Fusion specific plots"),
         radioButtons("bp_plot_mode",
                      label = "Breakpoint plot type:",
                      choices = c("Breakpoint specific" = "bp_bp",
