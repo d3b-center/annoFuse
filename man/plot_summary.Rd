@@ -22,6 +22,6 @@ Function to annotate fusion calls
 }
 \examples{
 out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
-sfc <- read.delim(out_annofuse,stringsAsFactors = F)
+sfc <- read.delim(out_annofuse,stringsAsFactors = FALSE)
 plot_summary(sfc, groupby = "Fusion_Type",outputpdffile = "out.pdf")
 }
