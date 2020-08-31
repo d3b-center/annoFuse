@@ -2,7 +2,7 @@
 
 ## New features
 
-* `shiny_fuse` and `report_fuse`!
+* `shinyFuse` and `reportFuse`!
 
 ## Bug fixes
 
