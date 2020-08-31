@@ -1,4 +1,4 @@
-#' shiny_fuse
+#' shinyFuse
 #'
 #' Exploring interactively the results of the annoFuse pipeline
 #'
@@ -21,9 +21,9 @@
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' if (interactive()) {
-#'   shiny_fuse(out_annofuse)
+#'   shinyFuse(out_annofuse)
 #' }
-shiny_fuse <- function(out_annofuse = NULL) {
+shinyFuse <- function(out_annofuse = NULL) {
 
   # Checks on the objects provided ---------------------------------------------
   if (!is.null(out_annofuse)) {
