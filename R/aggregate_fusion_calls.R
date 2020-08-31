@@ -25,7 +25,7 @@ aggregate_fusion_calls <- function(standardFusioncalls,
       dplyr::select(.data$Sample, .data$FusionName, .data$Caller, .data$Fusion_Type) %>%
       group_by(.data$FusionName, .data$Sample, .data$Fusion_Type) %>%
       unique() %>%
-      dplyr::mutate(CalledBy = toString(.data$Caller), caller.count = n())
+      dplyr::mutate(CalledBy = toString(.data$Caller), caller_count = n())
 
     if (!missing(filterAnnots)) {
       # remove fusion within local rearrangement if required for your project
@@ -48,7 +48,7 @@ aggregate_fusion_calls <- function(standardFusioncalls,
       dplyr::select(.data$Sample, .data$FusionName, .data$Caller, .data$Fusion_Type) %>%
       group_by(.data$FusionName, .data$Sample, .data$Fusion_Type) %>%
       unique() %>%
-      dplyr::mutate(CalledBy = toString(.data$Caller), caller.count = n())
+      dplyr::mutate(CalledBy = toString(.data$Caller), caller_count = n())
 
     if (!missing(filterAnnots)) {
       # remove fusion within local rearrangement if required for your project
