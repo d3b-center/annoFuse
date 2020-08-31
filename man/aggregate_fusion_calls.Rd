@@ -7,11 +7,14 @@
 aggregate_fusion_calls(standardFusioncalls, removeother = FALSE, filterAnnots)
 }
 \arguments{
-\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
+\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized 
+to run through the filtering steps}
 
-\item{removeother}{TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift Default: FALSE}
+\item{removeother}{TRUE to remove Fusion_Type="other" and keep only in-frame and 
+frameshift Default: FALSE}
 
-\item{filterAnnots}{regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION 
+\item{filterAnnots}{regex to remove from annots column eg. 
+LOCAL_REARRANGEMENT|LOCAL_INVERSION 
 ## TODO: should this mentioned above be e.g. the default value?}
 }
 \value{

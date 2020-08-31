@@ -37,13 +37,15 @@ is from FusionAnnotator column "annots"}
 
 \item{junctionReadCountFilter}{An integer threshold for JunctionReadCount}
 
-\item{spanningFragCountFilter}{An integer threshold for (SpanningFragCount - JunctionReadCount)}
+\item{spanningFragCountFilter}{An integer threshold for (SpanningFragCount -
+JunctionReadCount)}
 }
 \value{
 Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 }
 \description{
-Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold
+Performs artifact filter to remove readthroughs,red flags and performs expression
+filtering with user provided expression Matrix and expression threshold
 }
 \examples{
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
