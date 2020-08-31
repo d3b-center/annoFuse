@@ -9,7 +9,8 @@ plot_recurrent_genes(
   groupby,
   plotn = 20,
   countID,
-  palette_rec = NULL
+  palette_rec = NULL,
+  base_size = 20
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ plot_recurrent_genes(
 \item{countID}{column name to count recurrent fusions SampleID/ParticipantID/tumorID}
 
 \item{palette_rec}{colors for grouping variables}
+
+\item{base_size}{Numeric, size of font for plot}
 }
 \value{
 A ggplot object containing an overview on the recurrent fused genes
