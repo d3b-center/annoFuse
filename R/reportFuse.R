@@ -1,10 +1,10 @@
-#' report_fuse
+#' reportFuse
 #'
-#' @details When `report_fuse` is called, a RMarkdown template file could be copied
+#' @details When `reportFuse` is called, a RMarkdown template file could be copied
 #' into the output directory, and [rmarkdown::render()] will be called to
 #' generate the final report.
 #'
-#' As a default template, `report_fuse` uses the one delivered together with the
+#' As a default template, `reportFuse` uses the one delivered together with the
 #' `annoFuse` package. Experienced users can take that as a starting point to further
 #' edit and customize.
 #'
@@ -12,7 +12,7 @@
 #' output by the annoFuse pipeline.
 #' @param project_id A character string, which can be considered as an identifier
 #' for the set/session, and will be e.g. used in the title of the report created
-#' via [report_fuse()]
+#' via [reportFuse()]
 #' @param input_rmd Character string with the path to the RMarkdown (.Rmd) file
 #' that will be used as the template for generating the report. Defaults to NULL,
 #' which will then use the one provided with the `annoFuse` package.
@@ -40,18 +40,18 @@
 #'
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' \dontrun{
-#' report_fuse(out_annofuse = out_annofuse)
+#' reportFuse(out_annofuse = out_annofuse)
 #' }
-report_fuse <- function(out_annofuse,
-                        project_id = "projectID",
-                        input_rmd = NULL,
-                        output_file = "my_first_annoFuse_report.html",
-                        output_dir = tempdir(),
-                        output_format = NULL,
-                        force_overwrite = FALSE,
-                        knitr_show_progress = FALSE,
-                        open_after_creating = TRUE,
-                        ...) {
+reportFuse <- function(out_annofuse,
+                       project_id = "projectID",
+                       input_rmd = NULL,
+                       output_file = "my_first_annoFuse_report.html",
+                       output_dir = tempdir(),
+                       output_format = NULL,
+                       force_overwrite = FALSE,
+                       knitr_show_progress = FALSE,
+                       open_after_creating = TRUE,
+                       ...) {
   # generates a nice number of outputs, plots, and so on, placed in a report. Boom :)
   
   stopifnot(is.character(project_id))
