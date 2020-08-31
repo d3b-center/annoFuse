@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
-#' sfc <- read.delim(out_annofuse)
+#' sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 #' sfc_multifused <- fusion_multifused(sfc, limitMultiFused = 2)
 fusion_multifused <- function(standardFusioncalls,
                               limitMultiFused = 3) {

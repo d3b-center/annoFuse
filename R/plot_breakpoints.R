@@ -26,12 +26,14 @@
 #'                          domainDataFrame = domainDataFrame, 
 #'                          exons = exons, 
 #'                          geneposition = "Left", 
-#'                          fusionname = "ANTXR1--BRAF")
+#'                          fusionname = "ANTXR1--BRAF",
+#'                          leftBreakpoint = "2:69193415")
 #' right <- plot_breakpoints(sampleid = "BS_044XZ8ST", 
 #'                           domainDataFrame = domainDataFrame, 
 #'                           exons = exons, 
 #'                           geneposition = "Right", 
-#'                           fusionname = "ANTXR1--BRAF")
+#'                           fusionname = "ANTXR1--BRAF",
+#'                           rightBreakpoint = "7:140794467")
 #' ggpubr::ggarrange(left, right, align = "h")
 plot_breakpoints <- function(domainDataFrame = NULL,
                              exons,
@@ -68,10 +70,12 @@ plot_breakpoints <- function(domainDataFrame = NULL,
     }
 
     if (!is.null(leftBreakpoint)) {
-      domainDataFrame$Gene1B <- domainDataFrame$Gene1B[which(domainDataFrame$Gene1B$LeftBreakpoint == leftBreakpoint), ]
+      leftBreakpoint <- gsub(".*:","",leftBreakpoint)
+      domainDataFrame$Gene1A <- domainDataFrame$Gene1A[which(domainDataFrame$Gene1A$LeftBreakpoint == leftBreakpoint), ]
     }
     if (!is.null(rightBreakpoint)) {
-      domainDataFrame$Gene1A <- domainDataFrame$Gene1A[which(domainDataFrame$Gene1A$RightBreakpoint == rightBreakpoint), ]
+      rightBreakpoint <- gsub(".*:","",rightBreakpoint)
+      domainDataFrame$Gene1B <- domainDataFrame$Gene1B[which(domainDataFrame$Gene1B$RightBreakpoint == rightBreakpoint), ]
     }
   }
 

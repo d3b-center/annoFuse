@@ -1,8 +1,11 @@
 #' Function to aggregate Caller and read support per fusions calls
 #'
-#' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
-#' @param removeother TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift Default: FALSE
-#' @param filterAnnots regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION 
+#' @param standardFusioncalls A dataframe from star fusion or arriba standardized 
+#' to run through the filtering steps
+#' @param removeother TRUE to remove Fusion_Type="other" and keep only in-frame and 
+#' frameshift Default: FALSE
+#' @param filterAnnots regex to remove from annots column eg. 
+#' LOCAL_REARRANGEMENT|LOCAL_INVERSION 
 #' ## TODO: should this mentioned above be e.g. the default value?
 #'
 #' @export

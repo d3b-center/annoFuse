@@ -51,11 +51,13 @@ left <- plot_breakpoints(sampleid = "BS_044XZ8ST",
                          domainDataFrame = domainDataFrame, 
                          exons = exons, 
                          geneposition = "Left", 
-                         fusionname = "ANTXR1--BRAF")
+                         fusionname = "ANTXR1--BRAF",
+                         leftBreakpoint = "2:69193415")
 right <- plot_breakpoints(sampleid = "BS_044XZ8ST", 
                           domainDataFrame = domainDataFrame, 
                           exons = exons, 
                           geneposition = "Right", 
-                          fusionname = "ANTXR1--BRAF")
+                          fusionname = "ANTXR1--BRAF",
+                          rightBreakpoint = "7:140794467")
 ggpubr::ggarrange(left, right, align = "h")
 }

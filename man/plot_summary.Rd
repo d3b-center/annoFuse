@@ -4,15 +4,15 @@
 \alias{plot_summary}
 \title{Function to annotate fusion calls}
 \usage{
-plot_summary(standardFusioncalls, outputpdffile, groupby)
+plot_summary(standardFusioncalls, groupby, outputpdffile)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
 
+\item{groupby}{column name with grouping variables}
+
 \item{outputpdffile}{Filename to plot image - optional, if not specified, the 
 plot is simply generated}
-
-\item{groupby}{column name with grouping variables}
 }
 \value{
 A ggplot object containing a summary of the standardized fusion calls
@@ -22,6 +22,6 @@ Function to annotate fusion calls
 }
 \examples{
 out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
-sfc <- read.delim(out_annofuse,stringsAsFactors = FALSE)
-plot_summary(sfc, groupby = "Fusion_Type",outputpdffile = "out.pdf")
+sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
+plot_summary(sfc, groupby = "Fusion_Type")
 }

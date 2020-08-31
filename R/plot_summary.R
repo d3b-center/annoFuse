@@ -1,9 +1,9 @@
 #' Function to annotate fusion calls
 
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
+#' @param groupby column name with grouping variables
 #' @param outputpdffile Filename to plot image - optional, if not specified, the 
 #' plot is simply generated
-#' @param groupby column name with grouping variables
 #'
 #' @export
 #'
@@ -11,11 +11,11 @@
 #'
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
-#' sfc <- read.delim(out_annofuse,stringsAsFactors = FALSE)
-#' plot_summary(sfc, groupby = "Fusion_Type",outputpdffile = "out.pdf")
+#' sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
+#' plot_summary(sfc, groupby = "Fusion_Type")
 plot_summary <- function(standardFusioncalls,
-                         outputpdffile,
-                         groupby) {
+                         groupby,
+                         outputpdffile) {
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   if (!missing(outputpdffile))
     stopifnot(is.character(outputpdffile))

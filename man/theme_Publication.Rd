@@ -8,9 +8,9 @@ Publication quality images for summary plots}
 theme_publication(base_size = 12, base_family = "Helvetica")
 }
 \arguments{
-\item{base_size}{size of font for plot default "15"}
+\item{base_size}{size of font for plot default (defaults to 12)}
 
-\item{base_family}{font to be used default "Helvetica"}
+\item{base_family}{font to be used default (defaults to "Helvetica")}
 }
 \value{
 An object of class \code{\link{theme}} for styling the plots.

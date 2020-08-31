@@ -4,6 +4,7 @@
 #'
 #' @importFrom dplyr arrange bind_cols case_when count desc distinct filter
 #' group_by inner_join left_join mutate n rename select summarise ungroup %>%
+#' pull
 #' @importFrom ggplot2 aes coord_flip element_blank element_line element_rect
 #' element_text facet_wrap geom_bar geom_col geom_hline geom_line
 #' geom_linerange geom_point geom_segment ggplot ggtitle guides labs
@@ -26,6 +27,7 @@
 #' @importFrom purrr is_empty
 #' @importFrom rmarkdown render
 #' @importFrom methods is
+#' @importFrom shinycssloaders withSpinner
 #'
 #' @name annoFuse-pkg
 #' @docType package

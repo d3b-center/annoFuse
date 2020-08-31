@@ -9,7 +9,8 @@ plot_recurrent_genes(
   groupby,
   plotn = 20,
   countID,
-  palette_rec = NULL
+  palette_rec = NULL,
+  base_size = 20
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ plot_recurrent_genes(
 \item{countID}{column name to count recurrent fusions SampleID/ParticipantID/tumorID}
 
 \item{palette_rec}{colors for grouping variables}
+
+\item{base_size}{Numeric, size of font for plot}
 }
 \value{
 A ggplot object containing an overview on the recurrent fused genes
@@ -31,8 +34,9 @@ Function to plot recurrent fused genes
 }
 \examples{
 out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
-sfc <- read.delim(out_annofuse,stringsAsFactors = FALSE)
+sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 # keep only in-frame and fusions where both breakpoints are within genes
-sfc <- as.data.frame(sfc[ which(sfc$Fusion_Type == "in-frame" && sfc$BreakpointLocation == "Genic"),])
+sfc <- as.data.frame(
+  sfc[ which(sfc$Fusion_Type == "in-frame" && sfc$BreakpointLocation == "Genic"),])
 plot_recurrent_genes(sfc, groupby = "broad_histology", countID = "Kids_First_Participant_ID")
 }
