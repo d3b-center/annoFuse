@@ -39,7 +39,7 @@ ggplot of gene and breakpoints
 Function to plot breakpoints of a gene in a sample/cohort
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse)
 exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
 bioMartDataPfam <- 
@@ -58,6 +58,6 @@ right <- plot_breakpoints(sampleid = "BS_044XZ8ST",
                           exons = exons, 
                           geneposition = "Right", 
                           fusionname = "ANTXR1--BRAF",
-                          rightBreakpoint = "7:140794467")
+                          rightBreakpoint = "7:140787584")
 ggpubr::ggarrange(left, right, align = "h")
 }

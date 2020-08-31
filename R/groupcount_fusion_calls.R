@@ -9,7 +9,7 @@
 #' @return Fusions found in more than n groups in cohort
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse)
 #' sfc_groupcount <- groupcount_fusion_calls(sfc, group = "Sample", 1)
 groupcount_fusion_calls <- function(standardFusioncalls,

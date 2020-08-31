@@ -6,14 +6,13 @@
 #'
 #' @export
 #'
-#' @return Standardized fusion calls annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
+#' @return Standardized fusion calls as list Gene1A and Gene1B annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse)
 #' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
-#' # TODO: is there an example to show how this was generated? It can be very useful to update this 
-#' # object later on
+#' domain_list_df <- get_Pfam_domain(standardFusioncalls = sfc,bioMartDataPfam = bioMartDataPfam)
 get_Pfam_domain <- function(standardFusioncalls,
                             bioMartDataPfam,
                             keepPartialAnno = FALSE) {

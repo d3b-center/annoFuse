@@ -1,8 +1,8 @@
 #' Single Sample use for annoFuse
 #'
-#'
-#' Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold
-
+#' Performs artifact filter to remove readthroughs,red flags and performs expression
+#' filtering with user provided expression Matrix and expression threshold
+#' 
 #' @param fusionfileArriba A dataframe from arriba fusion caller
 #' @param fusionfileStarFusion A dataframe from starfusion caller
 #' @param expressionFile Expression matrix for samples used in cohort for fusion calls
@@ -13,7 +13,8 @@
 #' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation 
 #' is from FusionAnnotator column "annots"
 #' @param junctionReadCountFilter An integer threshold for JunctionReadCount
-#' @param spanningFragCountFilter An integer threshold for (SpanningFragCount - JunctionReadCount)
+#' @param spanningFragCountFilter An integer threshold for (SpanningFragCount -
+#' JunctionReadCount)
 #'
 #' @export
 #'
@@ -86,15 +87,9 @@ annoFuse_single_sample <- function(fusionfileArriba,
   if (!is_empty(STARFusioninputfile$FusionName) & !is_empty(Arribainputfile$"gene1--gene2")) {
     colnames(Arribainputfile)[27] <- "annots"
 
-    # To have a general column with unique IDs associated with each sample
-    STARFusioninputfile$Sample <- tumorID
-    Arribainputfile$Sample <- tumorID
-    Arribainputfile$Caller <- "Arriba"
-    STARFusioninputfile$Caller <- "StarFusion"
-
     # standardized fusion calls
-    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION")
-    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA")
+    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION",tumorID = tumorID)
+    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA",tumorID = tumorID)
 
     # merge standardized fusion calls
     standardFusioncalls <- rbind(standardizedSTARFusion, standardizedArriba) %>% as.data.frame()
@@ -105,12 +100,10 @@ annoFuse_single_sample <- function(fusionfileArriba,
     warning(paste("No fusion calls in StarFusion "))
 
     colnames(Arribainputfile)[27] <- "annots"
-    # To have a general column with unique IDs associated with each sample
-    Arribainputfile$Sample <- tumorID
-    Arribainputfile$Caller <- "Arriba"
+
 
     # standardized fusion calls
-    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA")
+    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA",tumorID = tumorID)
 
     # standardized fusion calls
     standardFusioncalls <- standardizedArriba %>% as.data.frame()
@@ -120,12 +113,9 @@ annoFuse_single_sample <- function(fusionfileArriba,
   if (!is_empty(STARFusioninputfile$FusionName) & is_empty(Arribainputfile$"gene1--gene2")) {
     warning(paste("No fusion calls in Arriba "))
 
-    # To have a general column with unique IDs associated with each sample
-    STARFusioninputfile$Sample <- tumorID
-    STARFusioninputfile$Caller <- "StarFusion"
 
     # standardized fusion calls
-    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION")
+    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION",tumorID = tumorID)
 
     # standardized fusion calls
     standardFusioncalls <- standardizedSTARFusion %>% as.data.frame()

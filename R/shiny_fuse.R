@@ -19,7 +19,7 @@
 #' @importFrom DT datatable renderDataTable dataTableOutput
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' if (interactive()) {
 #'   shiny_fuse(out_annofuse)
 #' }
@@ -310,7 +310,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
               inputId = "filter_callercount",
               label = "Filter for caller count",
               value = 1,
-              min = 1, max = max(values$annofuse_tbl$caller.count)
+              min = 1, max = max(values$annofuse_tbl$caller_count)
             )
           )
         )
@@ -370,7 +370,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
     # Load demo data
     observeEvent(input$btn_load_demo, {
       message("Loading demo data...")
-      demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+      demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
       values$annofuse_tbl <- 
         .check_annoFuse_calls(read.delim(demodata_location, stringsAsFactors = FALSE))
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
@@ -738,7 +738,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       subset_to_plot <- subset_to_plot[
         subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
       subset_to_plot <- subset_to_plot[
-        subset_to_plot$caller.count >= input$filter_callercount, ]
+        subset_to_plot$caller_count >= input$filter_callercount, ]
       
       message(paste0("nr rows", nrow(subset_to_plot)))
       validate(
@@ -781,7 +781,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       subset_to_plot <- subset_to_plot[
         subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
       subset_to_plot <- subset_to_plot[
-        subset_to_plot$caller.count >= input$filter_callercount, ]
+        subset_to_plot$caller_count >= input$filter_callercount, ]
       
       message(paste0("nr rows", nrow(subset_to_plot)))
       validate(

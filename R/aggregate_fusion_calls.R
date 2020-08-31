@@ -1,8 +1,11 @@
 #' Function to aggregate Caller and read support per fusions calls
 #'
-#' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
-#' @param removeother TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift Default: FALSE
-#' @param filterAnnots regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION 
+#' @param standardFusioncalls A dataframe from star fusion or arriba standardized 
+#' to run through the filtering steps
+#' @param removeother TRUE to remove Fusion_Type="other" and keep only in-frame and 
+#' frameshift Default: FALSE
+#' @param filterAnnots regex to remove from annots column eg. 
+#' LOCAL_REARRANGEMENT|LOCAL_INVERSION 
 #' ## TODO: should this mentioned above be e.g. the default value?
 #'
 #' @export
@@ -10,10 +13,8 @@
 #' @return Standardized fusion calls with aggregated Caller and read support
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
-#' sfc <- read.delim(out_annofuse)
-#' sfc_aggr <- aggregate_fusion_calls(sfc, removeother = TRUE, 
-#'                                    filterAnnots = "LOCAL_REARRANGEMENT|LOCAL_INVERSION")
+#' ## To-do
+#' 
 aggregate_fusion_calls <- function(standardFusioncalls,
                                    removeother = FALSE,
                                    filterAnnots) {
@@ -27,7 +28,7 @@ aggregate_fusion_calls <- function(standardFusioncalls,
       dplyr::select(.data$Sample, .data$FusionName, .data$Caller, .data$Fusion_Type) %>%
       group_by(.data$FusionName, .data$Sample, .data$Fusion_Type) %>%
       unique() %>%
-      dplyr::mutate(CalledBy = toString(.data$Caller), caller.count = n())
+      dplyr::mutate(CalledBy = toString(.data$Caller), caller_count = n())
 
     if (!missing(filterAnnots)) {
       # remove fusion within local rearrangement if required for your project
@@ -50,7 +51,7 @@ aggregate_fusion_calls <- function(standardFusioncalls,
       dplyr::select(.data$Sample, .data$FusionName, .data$Caller, .data$Fusion_Type) %>%
       group_by(.data$FusionName, .data$Sample, .data$Fusion_Type) %>%
       unique() %>%
-      dplyr::mutate(CalledBy = toString(.data$Caller), caller.count = n())
+      dplyr::mutate(CalledBy = toString(.data$Caller), caller_count = n())
 
     if (!missing(filterAnnots)) {
       # remove fusion within local rearrangement if required for your project

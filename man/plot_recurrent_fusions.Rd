@@ -33,31 +33,12 @@ A ggplot object containing an overview on the recurrent fusions
 Function to plot recurrent fused genes
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv",
-  package = "annoFuse"
-)
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
-clinical <- read.delim(
-  system.file("extdata", "pbta-histologies.tsv", package = "annoFuse")
-)
-# Select only in-frame and frameshift
-library("dplyr")
-sfc <- sfc \%>\%
-  dplyr::filter(Fusion_Type \%in\% c("in-frame", "frameshift"))
-sfc <- merge(sfc, clinical[, c("Kids_First_Biospecimen_ID", "broad_histology")],
-  by.x = "Sample", by.y = "Kids_First_Biospecimen_ID"
-)
-# Remove Benign tumor fusions
-sfc <- sfc[-which(sfc$FusionName \%in\%
-  unique(sfc[which(sfc$broad_histology == "Benign tumor"), "FusionName"])), ]
-# Remove GeneA == GeneB
-sfc <- sfc[-which(sfc$Gene1A == sfc$Gene1B |
-  sfc$Gene1A == sfc$Gene2B |
-  sfc$Gene1B == sfc$Gene2A), ]
-# Remove intergenic fusions
-sfc <- sfc[-grep("/", sfc$FusionName), ]
-plot_recurrent_fusions(sfc,
-  groupby = "broad_histology",
-  countID = "Kids_First_Participant_ID"
-)
+# keep only in-frame and fusions where both breakpoints are within genes
+sfc <- as.data.frame(
+  sfc[ which(sfc$Fusion_Type == "in-frame" & sfc$BreakpointLocation == "Genic"),])
+plot_recurrent_fusions(sfc, 
+                       groupby = "broad_histology", 
+                       countID = "Kids_First_Participant_ID")
 }

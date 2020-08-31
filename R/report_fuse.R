@@ -38,7 +38,7 @@
 #'
 #' @examples
 #'
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse_test_v14.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' \dontrun{
 #' report_fuse(out_annofuse = out_annofuse)
 #' }
