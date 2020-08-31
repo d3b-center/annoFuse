@@ -26,7 +26,6 @@
 shiny_fuse <- function(out_annofuse = NULL) {
 
   # Checks on the objects provided ---------------------------------------------
-
   if (!is.null(out_annofuse)) {
     if (!is(out_annofuse, "character")) {
       stop("'out_annofuse' has to be a character string")
@@ -40,28 +39,13 @@ shiny_fuse <- function(out_annofuse = NULL) {
   # play nice with other previously chosen options
   on.exit(options(oopt))
 
-
-  ### TODO: maybe check here that pfam and exons objects are available?
-  ### "slight issue": it takes a while to load, so maybe do this in advance? On the server,
-  ### it would still need to be done at each session
-  ### NOTE: this is not optimal, but it is to give an idea of how it could be ;)
-  # if(!exists("bioMartDataPfam")) {
-  #   message("Loading pfam data...")
-  #   bioMartDataPfam <- readRDS(system.file("extdata","pfamDataBioMart.RDS", package="annoFuse"))
-  # }
-  # read in exonsToPlot with exon and gene boundaries from gencode.v27.primary_assembly.annotation.gtf.gz
-  # if(!exists("exons")) {
-  #   message("Loading exons data...")
-  #   exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
-  # }
-
   # UI definition -----------------------------------------------------------
   shinyfuse_ui <- shinydashboard::dashboardPage(
     skin = "black",
 
     # header definition -------------------------------------------------------
     header = shinydashboard::dashboardHeader(
-      title = "shiny_fuse",
+      title = "shinyFuse",
       titleWidth = 350,
       shinydashboard::dropdownMenu(
         type = "tasks",
@@ -138,7 +122,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
                     actionButton("btn_load_pfamdata", "Load pfam")
                   )
                 ),
-                h4("Some content, for example linked to the selected row"),
+                hr(),
                 uiOutput("geneinfo_ui"),
                 uiOutput("geneplots_ui")
               )
@@ -200,12 +184,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
     values$data_exons <- NULL
     values$data_pfam <- NULL
-    # currently needs some things to replicate the use case situation:
-    #
-    ### TODO: these objects below need to be in the R session - in the final
-    ### implementation, this should happen seamlessly, and ideally the app could check
-    ### upon starting that these are available
-
 
     # Define data file if annoFuse data is not provided ------------------------
     if (is.null(out_annofuse)) {
@@ -230,8 +208,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
       enhanced_annofuse_tbl <- annofuse_tbl
       # enhancing the content of the table
-      enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
-      enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
+      # enhanced_annofuse_tbl$Gene1A <- .multilink(enhanced_annofuse_tbl$Gene1A)
+      # enhanced_annofuse_tbl$Gene1B <- .multilink(enhanced_annofuse_tbl$Gene1B)
       values$enhanced_annofuse_tbl <- enhanced_annofuse_tbl
     }
 
@@ -374,8 +352,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
 
       # enhancing the content of the table
-      values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
-      values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
+      # values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
+      # values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
 
       if (!is.null(values$data_pfam)) {
         message("Creating domain information...")
@@ -398,8 +376,8 @@ shiny_fuse <- function(out_annofuse = NULL) {
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
       
       # enhancing the content of the table
-      values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
-      values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
+      # values$enhanced_annofuse_tbl$Gene1A <- .multilink(values$enhanced_annofuse_tbl$Gene1A)
+      # values$enhanced_annofuse_tbl$Gene1B <- .multilink(values$enhanced_annofuse_tbl$Gene1B)
       
       if (!is.null(values$data_pfam)) {
         message("Creating domain information...")
@@ -458,7 +436,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
       validate(
         need(
           length(input$table_annofuse_rows_selected) > 0,
-          "Please select a row to display the genes info"
+          "Please select a row to display additional information"
         )
       )
 
@@ -467,9 +445,12 @@ shiny_fuse <- function(out_annofuse = NULL) {
       gene_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
       gene_for_content_2 <- values$annofuse_tbl[row_id, "Gene1B"]
 
-
-      doublegeneinfo_2_html(gene_for_content, gene_for_content_2)
-      # geneinfo_2_html(gene_for_content)
+      tagList(
+        h4("External links"),
+        p("Click on the buttons below to open their related page in new tabs ",
+          "with information retrieved from a number of external databases."),
+        doublegeneinfo_2_html(gene_for_content, gene_for_content_2)
+      )
     })
 
     output$geneplots_ui <- renderUI({
@@ -482,7 +463,7 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
       tagList(
         hr(),
-        h4("Some general info"),
+        h4("Fusion specific plots"),
         radioButtons("bp_plot_mode",
                      label = "Breakpoint plot type:",
                      choices = c("Breakpoint specific" = "bp_bp",
@@ -519,7 +500,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
             downloadButton("btn_dl_bpboth", label = "", 
                            class = "btn btn-success")
           )
-          
         )
       )
     })
@@ -737,8 +717,6 @@ shiny_fuse <- function(out_annofuse = NULL) {
       print(p)
     })
 
-    # TODO: spinner for when the plot is loading?
-
     output$af_recurrentfusions <- renderPlot({
       validate(
         need(
@@ -937,11 +915,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
 
 .actionbutton_biocstyle <- "color: #ffffff; background-color: #0092AC"
 
-
-
 ## ENSEMBL? needs species info
 
 
+# Helper functions --------------------------------------------------------
 
 #' Link to NCBI database
 #'
@@ -1003,6 +980,21 @@ shiny_fuse <- function(out_annofuse = NULL) {
   )
 }
 
+#' Link to the COSMIC Portal
+#'
+#' @param val Character, the gene symbol
+#'
+#' @return HTML for an action button
+#' @noRd
+.link2cosmic <- function(val) {
+  sprintf(
+    '<a href = "https://cancer.sanger.ac.uk/cosmic/gene/analysis?ln=%s" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-book-medical"></i>%s</a>',
+    val,
+    .actionbutton_biocstyle,
+    val
+  )
+}
+
 .multilink <- function(val) {
   b1 <- sprintf(
     '<a href = "http://www.ncbi.nlm.nih.gov/gene/?term=%s[sym]" target = "_blank" class = "btn btn-primary" style = "%s"><i class="fa fa-database"></i>%s</a>',
@@ -1044,33 +1036,14 @@ doublegeneinfo_2_html <- function(gene_id1, gene_id2) {
   gene_gtex_button_1 <- .link2gtex(gene_id1)
   gene_uniprot_button_1 <- .link2uniprot(gene_id1)
   gene_hpa_button_1 <- .link2hpa(gene_id1)
-
+  gene_cosmic_button_1 <- .link2cosmic(gene_id1)
+  
   gene_ncbi_button_2 <- .link2ncbi(gene_id2)
   gene_gtex_button_2 <- .link2gtex(gene_id2)
   gene_uniprot_button_2 <- .link2uniprot(gene_id2)
   gene_hpa_button_2 <- .link2hpa(gene_id2)
-
-  # mycontent <- paste0(
-  #   shiny::tags$table(
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_ncbi_button_1),
-  #       shiny::tags$td(width = "50%", gene_ncbi_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_gtex_button_1),
-  #       shiny::tags$td(width = "50%", gene_gtex_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_uniprot_button_1),
-  #       shiny::tags$td(width = "50%", gene_uniprot_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_hpa_button_1),
-  #       shiny::tags$td(width = "50%", gene_hpa_button_2)
-  #     )
-  #   )
-  # )
-
+  gene_cosmic_button_2 <- .link2cosmic(gene_id2)
+  
   mycontent <- paste0(
     "<table><tr>",
     '<td width="33%">', "NCBI", "</td>",
@@ -1094,29 +1067,15 @@ doublegeneinfo_2_html <- function(gene_id1, gene_id2) {
     '<td width="33%">', "HPA", "</td>",
     '<td width="33%">', gene_hpa_button_1, "</td>",
     '<td width="33%">', gene_hpa_button_2, "</td>",
+    "</tr></table>",
+    
+    "<table><tr>",
+    '<td width="33%">', "COSMIC", "</td>",
+    '<td width="33%">', gene_cosmic_button_1, "</td>",
+    '<td width="33%">', gene_cosmic_button_2, "</td>",
     "</tr></table>"
+    
   )
-
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_ncbi_button_1),
-  #       shiny::tags$td(width = "50%", gene_ncbi_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_gtex_button_1),
-  #       shiny::tags$td(width = "50%", gene_gtex_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_uniprot_button_1),
-  #       shiny::tags$td(width = "50%", gene_uniprot_button_2)
-  #     ),
-  #     shiny::tags$tr(
-  #       shiny::tags$td(width = "50%", gene_hpa_button_1),
-  #       shiny::tags$td(width = "50%", gene_hpa_button_2)
-  #     )
-  #   )
-  # )
-
-
   return(HTML(mycontent))
 }
 
