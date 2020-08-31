@@ -14,11 +14,17 @@
 #'
 #' @examples
 #' # read in arriba fusion file
-#' fusionfileArriba = read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuse"),stringsAsFactors = FALSE)
-#' # reas in starfusion file
-#' fusionfileStarFusion = read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),,stringsAsFactors = FALSE)
-#' formattedArriba = fusion_standardization(fusionfileArriba,caller="ARRIBA",tumorID = "tumorID")
-#' formattedStarFusion = fusion_standardization(fusionfileStarFusion,caller="STARFUSION",tumorID = "tumorID")
+#' fusionfileArriba <- read.delim(
+#'   system.file("extdata", "arriba_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
+#' # read in starfusion file
+#' fusionfileStarFusion <- read.delim(
+#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
+#' formattedArriba <- fusion_standardization(fusionfileArriba,
+#'                                           caller = "ARRIBA",
+#'                                           tumorID = "tumorID")
+#' formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
+#'                                               caller = "STARFUSION",
+#'                                               tumorID = "tumorID")
 fusion_standardization <- function(fusion_calls,
                                    caller = c("STARFUSION", "ARRIBA"),
                                    tumorID = "tumorID") {

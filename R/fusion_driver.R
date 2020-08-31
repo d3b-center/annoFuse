@@ -15,9 +15,14 @@
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse)
-#' geneListReferenceDataTab<-read.delim(system.file("extdata", "genelistreference.txt", package="annoFuse"),stringsAsFactors = FALSE)
-#' fusionReferenceDataTab<-read.delim(system.file("extdata", "fusionreference.txt", package="annoFuse"),stringsAsFactors = FALSE)
-#' fusion_driver_df <- fusion_driver(sfc,annotated =TRUE,geneListReferenceDataTab=geneListReferenceDataTab ,fusionReferenceDataTab=fusionReferenceDataTab)
+#' geneListReferenceDataTab <- read.delim(
+#'   system.file("extdata", "genelistreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+#' fusionReferenceDataTab <- read.delim(
+#'   system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+#' fusion_driver_df <- fusion_driver(sfc,
+#'                                   annotated = TRUE,
+#'                                   geneListReferenceDataTab = geneListReferenceDataTab,
+#'                                   fusionReferenceDataTab = fusionReferenceDataTab)
 #' 
 fusion_driver <- function(standardFusioncalls,
                           annotated = TRUE,
