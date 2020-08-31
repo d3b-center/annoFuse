@@ -1,6 +1,7 @@
 #' Function to identify fusions called by at least n callers
-
-#' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
+#' 
+#' @param standardFusioncalls A dataframe from star fusion or arriba standardized 
+#' to run through the filtering steps
 #' @param numCaller Least number of callers that have the fusion
 #'
 #' @export

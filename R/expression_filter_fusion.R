@@ -1,6 +1,7 @@
 #' Expression filtering with user provided expression Matrix and standard fusion calls
-
-#' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
+#' 
+#' @param standardFusioncalls A dataframe from star fusion or arriba standardized to 
+#' run through the filtering steps
 #' @param expressionMatrix Expression matrix for samples used in cohort for fusion calls
 #' @param expressionFilter FPKM/TPM threshold for not expressed
 #'
