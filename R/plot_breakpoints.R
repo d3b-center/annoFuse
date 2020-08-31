@@ -33,7 +33,7 @@
 #'                           exons = exons, 
 #'                           geneposition = "Right", 
 #'                           fusionname = "ANTXR1--BRAF",
-#'                           rightBreakpoint = "7:140794467")
+#'                           rightBreakpoint = "7:140787584")
 #' ggpubr::ggarrange(left, right, align = "h")
 plot_breakpoints <- function(domainDataFrame = NULL,
                              exons,

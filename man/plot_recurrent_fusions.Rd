@@ -37,7 +37,7 @@ out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "
 sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 # keep only in-frame and fusions where both breakpoints are within genes
 sfc <- as.data.frame(
-  sfc[ which(sfc$Fusion_Type == "in-frame" && sfc$BreakpointLocation == "Genic"),])
+  sfc[ which(sfc$Fusion_Type == "in-frame" & sfc$BreakpointLocation == "Genic"),])
 plot_recurrent_fusions(sfc, 
                        groupby = "broad_histology", 
                        countID = "Kids_First_Participant_ID")
