@@ -306,6 +306,17 @@ shiny_fuse <- function(out_annofuse = NULL) {
             } else {
               ""
             },
+            if ("BreakpointLocation" %in% colnames(values$annofuse_tbl)) {
+              selectInput(
+                inputId = "filter_bplocation",
+                label = "Filter for breakpoint location",
+                choices = c("", unique(values$annofuse_tbl$BreakpointLocation)),
+                selectize = TRUE, multiple = TRUE, 
+                selected = unique(values$annofuse_tbl$BreakpointLocation)
+              )
+            } else {
+              ""
+            },
             if ("SpanningFragCount" %in% colnames(values$annofuse_tbl)) {
               numericInput(
                 inputId = "filter_spanningfragcount",
@@ -763,6 +774,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
         subset_to_plot <- subset_to_plot[
         subset_to_plot$Confidence %in% input$filter_confidence, ]
       }
+      if(!is.null(input$filter_bplocation)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$BreakpointLocation %in% input$filter_bplocation, ]
+      }
       if(!is.null(input$filter_spanningfragcount)) {
         subset_to_plot <- subset_to_plot[
         subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
@@ -817,6 +832,10 @@ shiny_fuse <- function(out_annofuse = NULL) {
       if(!is.null(input$filter_confidence)) {
         subset_to_plot <- subset_to_plot[
           subset_to_plot$Confidence %in% input$filter_confidence, ]
+      }
+      if(!is.null(input$filter_bplocation)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$BreakpointLocation %in% input$filter_bplocation, ]
       }
       if(!is.null(input$filter_spanningfragcount)) {
         subset_to_plot <- subset_to_plot[
