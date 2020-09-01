@@ -50,7 +50,6 @@ fusion_filtering_QC <- function(standardFusioncalls,
   stopifnot(is.numeric(spanningFragCountFilter))
   stopifnot(is.logical(readthroughFilter))
   
-
   # formatting dataframe for filtering
   standardFusioncalls <- standardFusioncalls %>%
     # to obtain geneA and geneB for gene search below
