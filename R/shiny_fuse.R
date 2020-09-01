@@ -751,18 +751,30 @@ shiny_fuse <- function(out_annofuse = NULL) {
       
       subset_to_plot <- values$annofuse_tbl
       
-      subset_to_plot <- subset_to_plot[
-        subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      if(!is.null(input$filter_fusion_type)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      }
+      if(!is.null(input$filter_caller)) {
       subset_to_plot <- subset_to_plot[
         subset_to_plot$Caller %in% input$filter_caller, ]
-      subset_to_plot <- subset_to_plot[
+      }
+      if(!is.null(input$filter_confidence)) {
+        subset_to_plot <- subset_to_plot[
         subset_to_plot$Confidence %in% input$filter_confidence, ]
-      subset_to_plot <- subset_to_plot[
+      }
+      if(!is.null(input$filter_spanningfragcount)) {
+        subset_to_plot <- subset_to_plot[
         subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
-      subset_to_plot <- subset_to_plot[
+      }
+      if(!is.null(input$filter_junctionreadcount)) {
+          subset_to_plot <- subset_to_plot[
         subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
-      subset_to_plot <- subset_to_plot[
+      }
+      if(!is.null(input$filter_callercount)) {
+        subset_to_plot <- subset_to_plot[
         subset_to_plot$caller_count >= input$filter_callercount, ]
+      }
       
       message(paste0("nr rows", nrow(subset_to_plot)))
       validate(
@@ -794,18 +806,30 @@ shiny_fuse <- function(out_annofuse = NULL) {
       
       subset_to_plot <- values$annofuse_tbl
       
-      subset_to_plot <- subset_to_plot[
-        subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
-      subset_to_plot <- subset_to_plot[
-        subset_to_plot$Caller %in% input$filter_caller, ]
-      subset_to_plot <- subset_to_plot[
-        subset_to_plot$Confidence %in% input$filter_confidence, ]
-      subset_to_plot <- subset_to_plot[
-        subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
-      subset_to_plot <- subset_to_plot[
-        subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
-      subset_to_plot <- subset_to_plot[
-        subset_to_plot$caller_count >= input$filter_callercount, ]
+      if(!is.null(input$filter_fusion_type)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$Fusion_Type %in% input$filter_fusion_type, ]
+      }
+      if(!is.null(input$filter_caller)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$Caller %in% input$filter_caller, ]
+      }
+      if(!is.null(input$filter_confidence)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$Confidence %in% input$filter_confidence, ]
+      }
+      if(!is.null(input$filter_spanningfragcount)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$SpanningFragCount >= input$filter_spanningfragcount, ]
+      }
+      if(!is.null(input$filter_junctionreadcount)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$JunctionReadCount >= input$filter_junctionreadcount, ]
+      }
+      if(!is.null(input$filter_callercount)) {
+        subset_to_plot <- subset_to_plot[
+          subset_to_plot$caller_count >= input$filter_callercount, ]
+      }
       
       message(paste0("nr rows", nrow(subset_to_plot)))
       validate(
