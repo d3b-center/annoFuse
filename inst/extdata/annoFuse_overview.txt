@@ -16,6 +16,7 @@ element;intro
 #geneinfo_ui;... and see how the info gets propagated to the respective panels, displaying a series of buttons for further exploration and some plots. Plots for the 5' gene, 3' gene, and both genes will be generated to the right of the table.
 #geneplots_ui;Here's the set of buttons for each pair of transcripts involved in the gene fusion event.
 #btn_dl_bpleft;This button can be useful if you want to export to pdf the graphics you are generating in the live session - below each plot you can find one dedicated to the plots just above.
+#export_controls;You can also use this widget to control the size of the exported images (in pdf format). These are the default values, but you can change them to edit the aspect ratio based on the displayed content.
 #navbartab;Time to switch to the content and functionality of FusionSummary, which can e.g. used to analyze recurrent fusions within a cohort of patient samples. Please select now the tab of FusionSummary to proceed with the tour.
 #af_filtercols + .selectize-control;To the left of the table, select a Grouping Column. This will be the column used for analysis of recurrent fusions. For example, if your dataset has multiple histologies and you are interested in recurrent fusions by histology, this value would be histology.
 #af_n_topfusions;Select the number of top fusions to display in the plot.
