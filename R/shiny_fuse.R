@@ -273,45 +273,69 @@ shiny_fuse <- function(out_annofuse = NULL) {
             "Plot filters settings", 
             icon = icon("filter"),
             startExpanded = TRUE,
-            selectInput(
-              inputId = "filter_fusion_type",
-              label = "Filter for fusion type",
-              choices = c("", unique(values$annofuse_tbl$Fusion_Type)),
-              selectize = TRUE, multiple = TRUE, 
-              selected = unique(values$annofuse_tbl$Fusion_Type)
-            ),
-            selectInput(
-              inputId = "filter_caller",
-              label = "Filter for caller",
-              choices = c("", unique(values$annofuse_tbl$Caller)),
-              selectize = TRUE, multiple = TRUE, 
-              selected = unique(values$annofuse_tbl$Caller)
-            ),
-            selectInput(
-              inputId = "filter_confidence",
-              label = "Filter for confidence",
-              choices = c("", unique(values$annofuse_tbl$Confidence)),
-              selectize = TRUE, multiple = TRUE, 
-              selected = unique(values$annofuse_tbl$Confidence)
-            ),
-            numericInput(
-              inputId = "filter_spanningfragcount",
-              label = "Filter for spanning frag count",
-              value = 0,
-              min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
-            ),
-            numericInput(
-              inputId = "filter_junctionreadcount",
-              label = "Filter for junction read count",
-              value = 0,
-              min = 0, max = max(values$annofuse_tbl$JunctionReadCount)
-            ),
-            numericInput(
-              inputId = "filter_callercount",
-              label = "Filter for caller count",
-              value = 1,
-              min = 1, max = max(values$annofuse_tbl$caller_count)
-            )
+            if ("Fusion_Type" %in% colnames(values$annofuse_tbl)) {
+              selectInput(
+                inputId = "filter_fusion_type",
+                label = "Filter for fusion type",
+                choices = c("", unique(values$annofuse_tbl$Fusion_Type)),
+                selectize = TRUE, multiple = TRUE, 
+                selected = unique(values$annofuse_tbl$Fusion_Type)
+              )
+            } else {
+              ""
+            },
+            if ("Caller" %in% colnames(values$annofuse_tbl)) {
+              selectInput(
+                inputId = "filter_caller",
+                label = "Filter for caller",
+                choices = c("", unique(values$annofuse_tbl$Caller)),
+                selectize = TRUE, multiple = TRUE, 
+                selected = unique(values$annofuse_tbl$Caller)
+              )
+            } else {
+              ""
+            },
+            if ("Confidence" %in% colnames(values$annofuse_tbl)) {
+              selectInput(
+                inputId = "filter_confidence",
+                label = "Filter for confidence",
+                choices = c("", unique(values$annofuse_tbl$Confidence)),
+                selectize = TRUE, multiple = TRUE, 
+                selected = unique(values$annofuse_tbl$Confidence)
+              )
+            } else {
+              ""
+            },
+            if ("SpanningFragCount" %in% colnames(values$annofuse_tbl)) {
+              numericInput(
+                inputId = "filter_spanningfragcount",
+                label = "Filter for spanning frag count",
+                value = 0,
+                min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
+              )
+            } else {
+              ""
+            },
+            if ("JunctionReadCount" %in% colnames(values$annofuse_tbl)) {
+              numericInput(
+                inputId = "filter_junctionreadcount",
+                label = "Filter for junction read count",
+                value = 0,
+                min = 0, max = max(values$annofuse_tbl$JunctionReadCount)
+              )
+            } else {
+              ""
+            },
+            if ("caller_count" %in% colnames(values$annofuse_tbl)) {
+              numericInput(
+                inputId = "filter_callercount",
+                label = "Filter for caller count",
+                value = 1,
+                min = 1, max = max(values$annofuse_tbl$caller_count)
+              )
+            } else {
+              ""
+            }
           )
         )
       }
