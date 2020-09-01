@@ -54,19 +54,18 @@
 #' colnames(expressionMatrix.collapsed)[3] <- "tumorID"
 #' expressionFiltered <- expression_filter_fusion(
 #'   standardFusioncalls = fusionQCFiltered, 
-#'   expressionFilter = 1, 
-#'   expressionMatrix = expressionMatrix.collapsed)
+#'   expressionMatrix = expressionMatrix.collapsed,
+#'   expressionFilter = 1)
 #' }
 #' 
 expression_filter_fusion <- function(standardFusioncalls,
                                      expressionMatrix,
                                      expressionFilter) {
-  # TODO: needs to be restored, otherwise the vignette halts
-  # TODO: looks like the file created in the vignette is missing one of the expected columns,
-  # or I did put too many mandatory columns!
-  # standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+
+    standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   
-  # TODO: check if e.g. expressionMatrix is a matrix, and if the filter is a numeric?
+  stopifnot(is.data.frame(expressionMatrix))
+  stopifnot(is.numeric(expressionFilter))
   
   fusion_sample_gene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair

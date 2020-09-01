@@ -42,8 +42,8 @@
 annotate_fusion_calls <- function(standardFusioncalls,
                                   geneListReferenceDataTab,
                                   fusionReferenceDataTab) {
-  # TODO: I think the check here is not to be done!
-  # standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+
   stopifnot(is(geneListReferenceDataTab, "data.frame"))
   stopifnot(is(fusionReferenceDataTab, "data.frame"))
   

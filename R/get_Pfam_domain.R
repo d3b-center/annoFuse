@@ -12,7 +12,7 @@
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
 #' sfc <- read.delim(out_annofuse)
 #' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
-#' domain_list_df <- get_Pfam_domain(standardFusioncalls = sfc,bioMartDataPfam = bioMartDataPfam)
+#' domain_list_df <- get_Pfam_domain(standardFusioncalls = sfc, bioMartDataPfam = bioMartDataPfam)
 get_Pfam_domain <- function(standardFusioncalls,
                             bioMartDataPfam,
                             keepPartialAnno = FALSE) {

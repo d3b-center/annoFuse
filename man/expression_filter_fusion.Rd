@@ -69,8 +69,8 @@ expressionMatrix.collapsed <- expressionMatrix \%>\%
 colnames(expressionMatrix.collapsed)[3] <- "tumorID"
 expressionFiltered <- expression_filter_fusion(
   standardFusioncalls = fusionQCFiltered, 
-  expressionFilter = 1, 
-  expressionMatrix = expressionMatrix.collapsed)
+  expressionMatrix = expressionMatrix.collapsed,
+  expressionFilter = 1)
 }
 
 }

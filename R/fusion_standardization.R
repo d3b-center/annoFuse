@@ -31,8 +31,7 @@ fusion_standardization <- function(fusion_calls,
   stopifnot(is(fusion_calls, "data.frame"))
   stopifnot(is.character(caller))
   stopifnot(is.character(tumorID))
-  # TODO: maybe you want to handle it via match.arg?
-  # say:
+
   # caller <- match.arg(caller, choices = c("STARFUSION", "ARRIBA"))
   
   if (caller == "STARFUSION") {
