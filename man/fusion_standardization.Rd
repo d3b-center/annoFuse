@@ -27,11 +27,11 @@ analysis
 }
 \examples{
 # read in arriba fusion file
-fusionfileArriba <- read.delim(
-  system.file("extdata", "arriba_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
+fusionfileArriba <- read_arriba_calls(
+  system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
 # read in starfusion file
-fusionfileStarFusion <- read.delim(
-  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
+fusionfileStarFusion <- read_starfusion_calls(
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
 formattedArriba <- fusion_standardization(fusionfileArriba,
                                           caller = "ARRIBA",
                                           tumorID = "tumorID")
