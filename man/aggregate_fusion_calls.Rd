@@ -24,6 +24,27 @@ Standardized fusion calls with aggregated Caller and read support
 Function to aggregate Caller and read support per fusions calls
 }
 \examples{
-## To-do
+#' # standardize
+fusionfileArriba <- read.delim(
+  system.file("extdata", "arriba_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
+fusionfileStarFusion <- read.delim(
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
+formattedArriba <- fusion_standardization(fusionfileArriba,
+                                          caller = "ARRIBA",
+                                          tumorID = "tumorID")
+formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
+                                              caller = "STARFUSION",
+                                              tumorID = "tumorID")
+# merge standardized fusion calls
+standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
+fusionQCFiltered <- fusion_filtering_QC(
+  standardFusioncalls = standardFusioncalls, 
+  readingFrameFilter = "in-frame|frameshift|other",
+  artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+  junctionReadCountFilter = 1,
+  spanningFragCountFilter = 10,
+  readthroughFilter = TRUE)
+# aggregate calls 
+aggregate_fusion_calls(fusionQCFiltered)    
 
 }

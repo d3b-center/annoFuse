@@ -5,7 +5,7 @@
 \title{Annotates standardizes fusion calls calls with zscored expression value from either GTEx/cohort}
 \usage{
 zscored_annotation(
-  standardFusionCalls,
+  standardFusioncalls,
   zscoreFilter,
   saveZscoredMatrix,
   normData,
@@ -13,7 +13,7 @@ zscored_annotation(
 )
 }
 \arguments{
-\item{standardFusionCalls}{Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion}
+\item{standardFusioncalls}{Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion}
 
 \item{zscoreFilter}{Zscore value to use as threshold for annotation of differential expression}
 
