@@ -17,6 +17,7 @@
 #' @import rintrojs
 #' @import shinythemes
 #' @importFrom DT datatable renderDataTable dataTableOutput
+#' @importFrom shinyBS bsTooltip
 #'
 #' @examples
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
@@ -161,9 +162,19 @@ shinyFuse <- function(out_annofuse = NULL) {
           )
         ),
         
-        
+        # ui About page --------------------------------------------------------
         tabPanel(
           title = "About", icon = icon("info-circle"),
+          actionButton(
+            "help_format",
+            label = "",
+            icon = icon("question-circle"),
+            style="color: #0092AC; background-color: #ECF0F5; border-color: #ECF0F5"),
+          shinyBS::bsTooltip(
+            "help_format", 
+            "How to provide your input data to shinyFuse",
+            "bottom", options = list(container = "body")
+          ),
           includeMarkdown(
             system.file("extdata", "content_about.md", package = "annoFuse")
           )
@@ -973,6 +984,25 @@ shinyFuse <- function(out_annofuse = NULL) {
                # height = input$export_height, units = "cm"
         )
       })
+    
+    observeEvent(input$help_format, {
+      showModal(
+        modalDialog(
+          title = "Format specifications for shinyFuse",
+          includeMarkdown(
+            system.file("extdata", "howto_datainput.md", package = "annoFuse")
+          ),
+          h4("Example:"),
+          # tags$img(
+          #   src = base64enc::dataURI(file = system.file("www", "help_dataformats.png",package = "annoFuse"), mime = "image/png"),
+          #   width = 750
+          # ),
+          easyClose = TRUE,
+          footer = NULL,
+          size = "l"
+        )
+      )
+    })
     
   }
   shinyApp(ui = shinyfuse_ui, server = shinyfuse_server)
