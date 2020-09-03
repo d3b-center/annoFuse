@@ -14,6 +14,15 @@
 }
 
 
+#' Read in fusion calls from Arriba
+#'
+#' @param arriba_calls TODO
+#'
+#' @return A data.frame object with correct column specifications
+#' @export
+#'
+#' @examples
+#' # TODO
 read_arriba_calls <- function(arriba_calls){
   # set col types
   col_types = readr::cols(
@@ -47,6 +56,15 @@ read_arriba_calls <- function(arriba_calls){
   return(arriba_calls)
 }
 
+#' Read in fusion calls from STAR Fusion
+#'
+#' @param starfusion_calls TODO
+#'
+#' @return A data.frame object with correct column specifications
+#' @export
+#'
+#' @examples
+#' # TODO
 read_starfusion_calls <- function(starfusion_calls) {
   # set col types
   col_types = readr::cols(
