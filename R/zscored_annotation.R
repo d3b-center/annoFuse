@@ -38,7 +38,7 @@ zscored_annotation <- function(standardFusioncalls,
   expressionMatrixMatched <- expressionMatrix %>%
     unique() %>%
     # means for each row per each gene_id
-    dplyr::mutate(means = rowMeans(dplyr::select(.,-gene_id))) %>%
+    dplyr::mutate(means = rowMeans(dplyr::select(.data,-gene_id))) %>%
     # arrange descending mean
     arrange(desc(.data$means)) %>%
     # to keep only first occurence ie. max rowMean per gene_id
@@ -58,7 +58,7 @@ zscored_annotation <- function(standardFusioncalls,
 
   # normData mean and sd
   normData_means <- rowMeans(normData, na.rm = TRUE)
-  normData_sd <- apply(normData, 1, sd, na.rm = TRUE)
+  normData_sd <- apply(normData, 1, stats::sd, na.rm = TRUE)
   # subtract mean
   expressionMatrixzscored <- sweep(expressionMatrixMatched, 1, normData_means, FUN = "-")
   # divide by SD

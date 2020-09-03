@@ -13,10 +13,10 @@
 #' @examples
 #' \dontrun{
 #' # standardize
-#' fusionfileArriba <- read.delim(
-#'   system.file("extdata", "arriba_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
-#' fusionfileStarFusion <- read.delim(
-#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
+#' fusionfileArriba <- read_arriba_calls(
+#'   system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+#' fusionfileStarFusion <- read_starfusion_calls(
+#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
 #' library(dplyr)
 #' formattedArriba <- fusion_standardization(fusionfileArriba,
 #'                                           caller = "ARRIBA",
