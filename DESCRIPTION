@@ -32,6 +32,7 @@ Imports:
     utils,
     stringr,
     shiny,
+    shinyBS,
     shinydashboard,
     shinycssloaders,
     rintrojs,
