@@ -72,8 +72,9 @@ fusion_standardization <- function(fusion_calls,
         RightBreakpoint = gsub("^chr", "", .data$breakpoint2),
         # readthrough information from arriba
         annots = dplyr::case_when(
-          !is_empty(.data$annots) ~ paste(.data$annots, .data$type, sep = ","),
-          is_empty(.data$annots) ~ .data$type),
+          any(colnames(.data)=="annots") ~
+            paste(fusion_calls$annots,fusion_calls$type, sep = ","),
+          TRUE ~ fusion_calls$type),
         # Intergenic gene fusion breakpoints in arriba are annotated as
         # "gene1A,gene2A". As comma is used as a common delimiter in files changing
         # it to "/"
