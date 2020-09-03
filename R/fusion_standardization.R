@@ -37,7 +37,8 @@ fusion_standardization <- function(fusion_calls,
   if (caller == "STARFUSION") {
     fusion_calls <- fusion_calls %>%
       # standardize fusion type column name
-      dplyr::rename(Fusion_Type = .data$PROT_FUSION_TYPE) %>%
+      dplyr::rename(Fusion_Type = PROT_FUSION_TYPE,
+                    FusionName = "#FusionName") %>%
       dplyr::mutate(
         # remove chr notation from breakpoint columns
         LeftBreakpoint = gsub("^chr", "", .data$LeftBreakpoint),
@@ -70,11 +71,13 @@ fusion_standardization <- function(fusion_calls,
         LeftBreakpoint = gsub("^chr", "", .data$breakpoint1),
         RightBreakpoint = gsub("^chr", "", .data$breakpoint2),
         # readthrough information from arriba
-        annots = paste(.data$annots, .data$type, sep = ","),
+        annots = dplyr::case_when(
+          !is_empty(.data$annots) ~ paste(.data$annots, .data$type, sep = ","),
+          is_empty(.data$annots) ~ .data$type),
         # Intergenic gene fusion breakpoints in arriba are annotated as
         # "gene1A,gene2A". As comma is used as a common delimiter in files changing
         # it to "/"
-        FusionName = paste0(gsub(",", "/", .data$gene1), "--", gsub(",", "/", .data$gene2)),
+        FusionName = paste0(gsub(",", "/", .data$`#gene1`), "--", gsub(",", "/", .data$gene2)),
         # JunctionReadCount is equivalent to split reads in Arriba. Arriba however
         # provides split_reads1 and split_reads2 to provide information of reads
         # anchoring in gene1 or gene2
@@ -92,7 +95,37 @@ fusion_standardization <- function(fusion_calls,
   }
 
   # Get standard columns for filtering
-  standard_calls <- unique(fusion_calls[, c("LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample", "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", "annots")])
+  
+  standard_calls <- fusion_calls %>%
+    # select columns for standarda fusion format
+    dplyr::select(c("LeftBreakpoint",
+                    "RightBreakpoint",
+                    "FusionName",
+                    "Sample",
+                    "Caller",
+                    "Fusion_Type",
+                    "JunctionReadCount",
+                    "SpanningFragCount",
+                    "Confidence",
+                    "annots")) %>%
+    # to obtain geneA and geneB for gene search below
+    bind_cols(reshape2::colsplit(fusion_calls$FusionName, pattern = "--", names = c("GeneA", "GeneB"))) %>%
+    # Intergenic fusion will have Gene1A,Gene2A,Gene1B,Gene2B
+    separate(.data$GeneA, sep = "/", into = c("Gene1A", "Gene2A"), remove = FALSE) %>%
+    separate(.data$GeneB, sep = "/", into = c("Gene1B", "Gene2B"), remove = FALSE) %>%
+    # remove distance to fusion breakpoint from gene names in intergenic fusion
+    mutate(
+      Gene1A = gsub("[(].*", "", .data$Gene1A),
+      Gene2A = gsub("[(].*", "", .data$Gene2A),
+      Gene1B = gsub("[(].*", "", .data$Gene1B),
+      Gene2B = gsub("[(].*", "", .data$Gene2B),
+      BreakpointLocation = case_when(
+        Gene1A==Gene1B ~ "Intragenic",
+        grepl("/",FusionName) ~ "Intergenic",
+        TRUE ~ "Genic"),
+      SpanningDelta = SpanningFragCount - JunctionReadCount
+    ) %>%
+    as.data.frame()
 
-  return(standard_calls)
+    return(standard_calls)
 }

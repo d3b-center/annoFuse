@@ -49,22 +49,6 @@ fusion_filtering_QC <- function(standardFusioncalls,
   stopifnot(is.numeric(junctionReadCountFilter))
   stopifnot(is.numeric(spanningFragCountFilter))
   stopifnot(is.logical(readthroughFilter))
-  
-  # formatting dataframe for filtering
-  standardFusioncalls <- standardFusioncalls %>%
-    # to obtain geneA and geneB for gene search below
-    bind_cols(colsplit(standardFusioncalls$FusionName, pattern = "--", names = c("GeneA", "GeneB"))) %>%
-    # Intergenic fusion will have Gene1A,Gene2A,Gene1B,Gene2B
-    separate(.data$GeneA, sep = "/", into = c("Gene1A", "Gene2A"), remove = FALSE) %>%
-    separate(.data$GeneB, sep = "/", into = c("Gene1B", "Gene2B"), remove = FALSE) %>%
-    # remove distance to fusion breakpoint from gene names in intergenic fusion
-    mutate(
-      Gene1A = gsub("[(].*", "", .data$Gene1A),
-      Gene2A = gsub("[(].*", "", .data$Gene2A),
-      Gene1B = gsub("[(].*", "", .data$Gene1B),
-      Gene2B = gsub("[(].*", "", .data$Gene2B)
-    ) %>%
-    as.data.frame()
 
   # filter readthroughs
   if (readthroughFilter & any(grepl("read.*through|NEIGHBORS", standardFusioncalls$annots, ignore.case = TRUE))) {
