@@ -14,15 +14,18 @@
 }
 
 
-#' Read in fusion calls from Arriba
+#' Read in fusion calls from  Arriba v1.1.0 
 #'
-#' @param arriba_calls TODO
+#' @param arriba_calls Please refer to software documenation [fusions.tsv](https://arriba.readthedocs.io/en/latest/output-files/)
 #'
 #' @return A data.frame object with correct column specifications
 #' @export
 #'
 #' @examples
-#' # TODO
+#' fusionfileArriba <- read_arriba_calls(
+#'                         system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+#'                         
+
 read_arriba_calls <- function(arriba_calls){
   # set col types
   col_types = readr::cols(
@@ -56,15 +59,17 @@ read_arriba_calls <- function(arriba_calls){
   return(arriba_calls)
 }
 
-#' Read in fusion calls from STAR Fusion
+#' Read in fusion calls from STAR-Fusion 1.5.0
 #'
-#' @param starfusion_calls TODO
+#' @param starfusion_calls Please refer to software documenation [star-fusion.fusion_predictions.tsv] https://github.com/STAR-Fusion/STAR-Fusion/wiki#output-from-star-fusion
 #'
 #' @return A data.frame object with correct column specifications
 #' @export
 #'
 #' @examples
-#' # TODO
+#' fusionfileStarFusion <- read_starfusion_calls(
+#'                            system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+#'                            
 read_starfusion_calls <- function(starfusion_calls) {
   # set col types
   col_types = readr::cols(
