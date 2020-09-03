@@ -38,5 +38,6 @@ globalVariables(c(
   "gene_position", "type", "FusionName", "gene_id", "FPKM",
   "gene_biotype", "Type.ct", "NAME", "Sample", "Domain",
   "Gene1A_DOMAIN_RETAINED_IN_FUSION", "Gene1B_DOMAIN_RETAINED_IN_FUSION",
-  "Gene1A_anno", "Gene1B_anno", "Annot", "Annot.ct", "Annotation"
+  "Gene1A_anno", "Gene1B_anno", "Annot", "Annot.ct", "Annotation",
+  "JunctionReadCount", "PROT_FUSION_TYPE" ,"SpanningFragCount"
 ))

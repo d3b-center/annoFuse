@@ -63,7 +63,7 @@ zscored_annotation <- function(standardFusioncalls,
   expressionMatrixzscored <- sweep(expressionMatrixMatched, 1, normData_means, FUN = "-")
   # divide by SD
   expressionMatrixzscored <- sweep(expressionMatrixzscored, 1, normData_sd, FUN = "/") %>%
-    rownames_to_column(var="gene_id") %>%
+    tibble::rownames_to_column(var="gene_id") %>%
     na.omit()
 
   # To save GTEx/cohort scored matrix
