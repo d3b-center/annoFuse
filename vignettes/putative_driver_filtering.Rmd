@@ -1,0 +1,128 @@
+---
+title: "Putative Driver filtering"
+output: rmarkdown::html_vignette
+---
+
+In this vignette we demonstrates using annoFuse, to filter putative oncogene fusion from a filtered fusion list (filtered fusion list `FilteredFusionAnnoFuse.tsv` was obtained for v16 OpenPBTA files : fusion_standardization -> fusion_filtering_QC -> annotate_fusion_calls ) and also plot recurrent fusion,recurrently fused genes and summary plot.
+
+These high quality fusion calls are considered known and putative oncogenic driver fusions if the fusion is previously reported in TCGA or fusions containing gene partners that are known oncogenes, tumor suppressor genes, COSMIC genes, or transcription factors. 
+
+Putative Driver Fusions that are found in more than 4 histologies were removed from further processing as these fusions are considered artifact or commonly occuring from manual review.
+Or are recurrent fusions called by both callers and unique to specific histology in this filtered dataset. If fusions are from non-onocgenic genes that are fused more than 5 times per sample we consider these are artifacts and remove them from being further processed  
+
+
+
+```{r}
+#load required packages
+suppressPackageStartupMessages(library("readr"))
+suppressPackageStartupMessages(library("tidyverse"))
+suppressPackageStartupMessages(library("reshape2"))
+suppressPackageStartupMessages(library("qdapRegex"))
+
+fusion_calls<-read_tsv(system.file("extdata", "FilteredFusionAnnoFuse.tsv", package = "annoFuse"))
+
+# distance are being removed here to capture all intergenic fusions in count 
+# distance within () were making them count as unique instead of the same fusion
+fusion_calls$FusionName<-unlist(lapply(fusion_calls$FusionName,function(x) rm_between(x, "(", ")", extract = F)))
+
+print("Raw calls from STARfusion and Arriba for PBTA")
+table(fusion_calls$Caller)
+```
+
+
+```{r}
+# aggreate caller to unique fusion calls per Sample
+fusion_calls<-aggregate_fusion_calls(fusion_calls,removeother=FALSE)
+
+#gene list
+geneListReferenceDataTab<-read.delim(
+  system.file("extdata", "genelistreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+
+#fusion list
+fusionReferenceDataTab<-read.delim(
+  system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+
+# filter for driver fusions
+putative_driver_fusions <-fusion_driver(standardFusioncalls=fusion_calls,annotated=TRUE,geneListReferenceDataTab = geneListReferenceDataTab,fusionReferenceDataTab =fusionReferenceDataTab )
+
+```
+
+
+```{r}
+
+# checking if fusions are called in multiple histologies 
+# this will suggest these fusion calls are artifact or 
+# commonly occuring 
+found_in_morethan_4<-groupcount_fusion_calls(putative_driver_fusions,group = "broad_histology",numGroup = 4) %>% arrange(desc(group.ct))
+
+found_in_morethan_4
+
+```
+
+```{r}
+# To scavenge back non-oncogenic recurrent/unique per broad histology fusions
+scavenge_recurrent_non_onco <- fusion_calls<-aggregate_fusion_calls(fusion_calls,
+                                                                    removeother=TRUE,
+                                                                    filterAnnots ="LOCAL_REARRANGEMENT|LOCAL_INVERSION"  )
+
+#Keep
+# 1. Called by at least n callers
+fusion_calls.summary <- called_by_n_callers(fusion_calls,numCaller = 2)
+
+# OR
+# 2. Found in at least n samples in each group
+sample.count <- samplecount_fusion_calls(fusion_calls,numSample=2,group = "broad_histology")
+
+#Remove
+# 1. non-oncogenic fusions that are in > numGroup
+group.count <- groupcount_fusion_calls(fusion_calls ,group = "broad_histology",numGroup = 1)
+
+# 2. non-oncogenic multi-fused genes
+fusion_recurrent5_per_sample <- fusion_multifused(fusion_calls ,limitMultiFused = 5)
+
+# filter fusion_calls to keep recurrent fusions from above sample.count and fusion_calls.summary
+QCGeneFiltered_recFusion<-fusion_calls %>%
+  dplyr::filter(FusionName %in% unique(c(sample.count$FusionName,fusion_calls.summary$FusionName)))
+
+# filter QCGeneFiltered_recFusion to remove fusions found in more than 1 group and multifused gene per samples
+QCGeneFiltered_recFusionUniq<-QCGeneFiltered_recFusion %>%
+  dplyr::filter(!FusionName %in% group.count$FusionName) %>%
+  dplyr::filter(!Gene1A %in% fusion_recurrent5_per_sample$GeneSymbol |
+                  !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
+                  !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol | 
+                  !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol)
+  
+```
+
+
+```{r}
+putative_driver_fusions<-putative_driver_fusions %>%
+  bind_rows(QCGeneFiltered_recFusionUniq[,colnames(putative_driver_fusions)]) %>%
+  # filter fusions found in more than 4 histologies
+  dplyr::filter(!FusionName %in% found_in_morethan_4$FusionName,
+                # remove intergenic and intragenic fusion
+                BreakpointLocation == "Genic",
+                Fusion_Type == "in-frame") %>%
+  as.data.frame()
+```
+
+
+```{r fig.width=6, fig.height=5}
+# recurrently fused genes
+plot_recurrent_genes(standardFusioncalls = putative_driver_fusions,groupby = "broad_histology",countID = "Kids_First_Participant_ID",plotn = 20)
+```
+
+
+```{r fig.width=6, fig.height=5}
+# recurrent fusions
+plot_recurrent_fusions(standardFusioncalls = putative_driver_fusions,groupby = "broad_histology",countID = "Kids_First_Participant_ID",plotn = 20)
+
+```
+
+
+```{r}
+# PLot summary
+p3<-plot_summary(standardFusioncalls = putative_driver_fusions,groupby = "broad_histology",outputpdffile = "Summary.pdf")
+```
+
+
