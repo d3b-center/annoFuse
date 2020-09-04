@@ -58,6 +58,8 @@ table(fusion_calls$Caller)
 
 
 ```{r}
+library("annoFuse")
+
 # aggreate caller to unique fusion calls per Sample
 fusion_calls <- aggregate_fusion_calls(fusion_calls, removeother = FALSE)
 
