@@ -56,7 +56,6 @@ print("Raw calls from STARfusion and Arriba for PBTA")
 table(fusion_calls$Caller)
 ```
 
-
 ```{r}
 library("annoFuse")
 
@@ -76,41 +75,56 @@ fusionReferenceDataTab <- read.delim(
 )
 
 # filter for driver fusions
-putative_driver_fusions <- fusion_driver(standardFusioncalls = fusion_calls, annotated = TRUE, geneListReferenceDataTab = geneListReferenceDataTab, fusionReferenceDataTab = fusionReferenceDataTab)
+putative_driver_fusions <- fusion_driver(
+  standardFusioncalls = fusion_calls, 
+  annotated = TRUE, 
+  geneListReferenceDataTab = geneListReferenceDataTab, 
+  fusionReferenceDataTab = fusionReferenceDataTab
+)
 ```
 
-
 ```{r}
-
 # checking if fusions are called in multiple histologies
 # this will suggest these fusion calls are artifact or
 # commonly occuring
-found_in_morethan_4 <- groupcount_fusion_calls(putative_driver_fusions, group = "broad_histology", numGroup = 4) %>% arrange(desc(group.ct))
+found_in_morethan_4 <- groupcount_fusion_calls(
+  putative_driver_fusions, 
+  group = "broad_histology", 
+  numGroup = 4
+) %>% 
+  arrange(desc(group.ct))
 
 found_in_morethan_4
 ```
 
 ```{r}
 # To scavenge back non-oncogenic recurrent/unique per broad histology fusions
-scavenge_recurrent_non_onco <- fusion_calls <- aggregate_fusion_calls(fusion_calls,
+scavenge_recurrent_non_onco <- fusion_calls <- aggregate_fusion_calls(
+  fusion_calls,
   removeother = TRUE,
   filterAnnots = "LOCAL_REARRANGEMENT|LOCAL_INVERSION"
 )
 
 # Keep
 # 1. Called by at least n callers
-fusion_calls.summary <- called_by_n_callers(fusion_calls, numCaller = 2)
+fusion_calls.summary <- called_by_n_callers(fusion_calls, 
+                                            numCaller = 2)
 
 # OR
 # 2. Found in at least n samples in each group
-sample.count <- samplecount_fusion_calls(fusion_calls, numSample = 2, group = "broad_histology")
+sample.count <- samplecount_fusion_calls(fusion_calls, 
+                                         numSample = 2, 
+                                         group = "broad_histology")
 
 # Remove
 # 1. non-oncogenic fusions that are in > numGroup
-group.count <- groupcount_fusion_calls(fusion_calls, group = "broad_histology", numGroup = 1)
+group.count <- groupcount_fusion_calls(fusion_calls, 
+                                       group = "broad_histology", 
+                                       numGroup = 1)
 
 # 2. non-oncogenic multi-fused genes
-fusion_recurrent5_per_sample <- fusion_multifused(fusion_calls, limitMultiFused = 5)
+fusion_recurrent5_per_sample <- fusion_multifused(fusion_calls, 
+                                                  limitMultiFused = 5)
 
 # filter fusion_calls to keep recurrent fusions from above sample.count and fusion_calls.summary
 QCGeneFiltered_recFusion <- fusion_calls %>%
@@ -125,7 +139,6 @@ QCGeneFiltered_recFusionUniq <- QCGeneFiltered_recFusion %>%
     !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol)
 ```
 
-
 ```{r}
 putative_driver_fusions <- putative_driver_fusions %>%
   bind_rows(QCGeneFiltered_recFusionUniq[, colnames(putative_driver_fusions)]) %>%
@@ -139,22 +152,32 @@ putative_driver_fusions <- putative_driver_fusions %>%
   as.data.frame()
 ```
 
-
 ```{r fig.width=6, fig.height=5}
 # recurrently fused genes
-plot_recurrent_genes(standardFusioncalls = putative_driver_fusions, groupby = "broad_histology", countID = "Kids_First_Participant_ID", plotn = 20)
+plot_recurrent_genes(standardFusioncalls = putative_driver_fusions, 
+                     groupby = "broad_histology", 
+                     countID = "Kids_First_Participant_ID", 
+                     plotn = 20)
 ```
-
 
 ```{r fig.width=6, fig.height=5}
 # recurrent fusions
-plot_recurrent_fusions(standardFusioncalls = putative_driver_fusions, groupby = "broad_histology", countID = "Kids_First_Participant_ID", plotn = 20)
+plot_recurrent_fusions(standardFusioncalls = putative_driver_fusions, 
+                       groupby = "broad_histology", 
+                       countID = "Kids_First_Participant_ID", 
+                       plotn = 20)
 ```
-
 
 ```{r}
 # PLot summary
-p3 <- plot_summary(standardFusioncalls = putative_driver_fusions, groupby = "broad_histology", outputpdffile = "Summary.pdf")
+p3 <- plot_summary(standardFusioncalls = putative_driver_fusions, 
+                   groupby = "broad_histology", 
+                   outputpdffile = "Summary.pdf")
 ```
 
+# Session info {-}
+
+```{r}
+sessionInfo()
+```
 
