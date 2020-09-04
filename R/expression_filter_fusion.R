@@ -129,7 +129,8 @@ expression_filter_fusion <- function(standardFusioncalls,
     dplyr::select(c(
       "LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample",
       "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount",
-      "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B"
+      "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B",
+      "BreakpointLocation","SpanningDelta"
     ))
 
   return(expression_filtered_fusions)
