@@ -128,5 +128,5 @@ fusion_standardization <- function(fusion_calls,
     ) %>%
     as.data.frame()
 
-    return(standard_calls)
+  return(standard_calls)
 }
