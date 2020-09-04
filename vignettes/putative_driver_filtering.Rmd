@@ -168,11 +168,10 @@ plot_recurrent_fusions(standardFusioncalls = putative_driver_fusions,
                        plotn = 20)
 ```
 
-```{r}
+```{r fig.width=15, fig.height=15}
 # PLot summary
-p3 <- plot_summary(standardFusioncalls = putative_driver_fusions, 
-                   groupby = "broad_histology", 
-                   outputpdffile = "Summary.pdf")
+plot_summary(standardFusioncalls = putative_driver_fusions, 
+             groupby = "broad_histology")
 ```
 
 # Session info {-}
