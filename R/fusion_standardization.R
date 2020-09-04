@@ -121,7 +121,7 @@ fusion_standardization <- function(fusion_calls,
       Gene1B = gsub("[(].*", "", .data$Gene1B),
       Gene2B = gsub("[(].*", "", .data$Gene2B),
       BreakpointLocation = case_when(
-        Gene1A==Gene1B ~ "Intragenic",
+        Gene1A==Gene1B & !grepl("/",FusionName) ~ "Intragenic",
         grepl("/",FusionName) ~ "Intergenic",
         TRUE ~ "Genic"),
       SpanningDelta = SpanningFragCount - JunctionReadCount
