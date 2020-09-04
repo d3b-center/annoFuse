@@ -71,7 +71,7 @@ fusion_standardization <- function(fusion_calls,
         LeftBreakpoint = gsub("^chr", "", .data$breakpoint1),
         RightBreakpoint = gsub("^chr", "", .data$breakpoint2),
         # readthrough information from arriba
-        annots = dplyr::case_when(f
+        annots = dplyr::case_when(
           any(colnames(.data)=="annots") ~
             paste(fusion_calls$annots,fusion_calls$type, sep = ","),
           TRUE ~ fusion_calls$type),
