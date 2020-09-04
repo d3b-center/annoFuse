@@ -13,16 +13,16 @@
 #' @examples
 #' \dontrun{
 #' # standardize
-#' fusionfileArriba <- read.delim(
-#'   system.file("extdata", "arriba_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
-#' fusionfileStarFusion <- read.delim(
-#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuse"), stringsAsFactors = FALSE)
+#' fusionfileArriba <- read_arriba_calls(
+#'   system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+#' fusionfileStarFusion <- read_starfusion_calls(
+#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
 #' library(dplyr)
 #' formattedArriba <- fusion_standardization(fusionfileArriba,
 #'                                           caller = "ARRIBA",
 #'                                           tumorID = "tumorID")
 #' formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
-#'                                               caller = "STARFUSION",
+#'                                               caller = "STARFUSION",e
 #'                                               tumorID = "tumorID")
 #' # merge standardized fusion calls
 #' standardFusioncalls <- rbind(formattedStarFusion, formattedArriba) %>% as.data.frame()
@@ -129,7 +129,8 @@ expression_filter_fusion <- function(standardFusioncalls,
     dplyr::select(c(
       "LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample",
       "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount",
-      "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B"
+      "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B",
+      "BreakpointLocation","SpanningDelta"
     ))
 
   return(expression_filtered_fusions)

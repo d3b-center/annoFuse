@@ -5,7 +5,7 @@
 #' "Sample"  Unique SampleIDs used in your RNAseq dataset
 #' "FusionName" GeneA--GeneB ,or if fusion is intergenic then Gene1A/Gene2A--GeneB
 #'
-#' @param standardFusionCalls Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion
+#' @param standardFusioncalls Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion
 #' @param zscoreFilter  Zscore value to use as threshold for annotation of differential expression
 #' @param saveZscoredMatrix File to save zscored matrix calculated for the normalized data and expression matrix
 #' @param normData normalizing expression dataset to calculate zscore
@@ -16,12 +16,33 @@
 #' @return expression_annotated_fusions is a standardized fusion call set with standard
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
-#' sfc <- read.delim(out_annofuse)
-#' 
-#' # TODOTODO
-#' # example with full call
-zscored_annotation <- function(standardFusionCalls,
+#' standardFusioncalls <- annoFuse::annoFuse_single_sample(
+#' # Example files are provided in extdata, at-least 1 fusionfile is required along 
+#' # with its rsem expression file
+#' fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
+#' fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
+#' expressionFile = system.file(
+#' "extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
+#' tumorID = "BS_W97QQYKQ",
+#' # multiple read flag values for filtering using FusionAnnotator values
+#' artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+#' # keep all in-frame , frameshift and other types of Fusion_Type
+#' readingFrameFilter = "in-frame|frameshift|other",
+#' # keep all fusions with atleast 1 junction read support
+#' junctionReadCountFilter = 1,
+#' # keep only fusions where spanningFragCount-junctionReadCountFilter less than equal to 10
+#' spanningFragCountFilter = 10,
+#' # keep read throughs
+#' readthroughFilter = FALSE
+#' )
+#' expressionMatrix<-readRDS(system.file("extdata", "expr_collapsed.rds", package = "annoFuse"))
+#' normData<-readRDS(system.file("extdata", "gtex_collapsed.rds", package = "annoFuse"))
+#' zscoredStandardFusioncalls<-zscored_annotation(standardFusioncalls,
+#'                                                zscoreFilter=2,
+#'                                                normData=normData,
+#'                                                expressionMatrix=expressionMatrix)
+
+zscored_annotation <- function(standardFusioncalls,
                                zscoreFilter,
                                saveZscoredMatrix,
                                normData,
@@ -34,38 +55,30 @@ zscored_annotation <- function(standardFusionCalls,
     stopifnot(is.character(saveZscoredMatrix))
   # TODO: checks on other params as well
   
-  # expressionMatrix collapsed at gene level like Gtex max rowMean
+  # expect unique gene_id expressionMatrix collapsed at gene level 
   expressionMatrixMatched <- expressionMatrix %>%
-    unique() %>%
-    # means for each row per each gene_id
-    dplyr::mutate(means = rowMeans(dplyr::select(.data$., -.data$GeneSymbol, -.data$gene_id, -.data$EnsembleID))) %>%
-    # arrange descending mean
-    arrange(desc(.data$means)) %>%
-    # to keep only first occurence ie. max rowMean per GeneSymbol
-    distinct(.data$GeneSymbol, .keep_all = TRUE) %>%
-    ungroup() %>%
-    dplyr::select(-.data$means, -.data$gene_id, -.data$EnsembleID) %>%
-    dplyr::filter(.data$GeneSymbol %in% normData$GeneSymbol) %>%
-    tibble::column_to_rownames("GeneSymbol")
+    dplyr::filter(.data$gene_id %in% normData$gene_id) %>%
+    tibble::column_to_rownames("gene_id")
   expressionMatrixMatched <- log2(expressionMatrixMatched + 1)
 
   # gene matched
-  # get log transformed GTEx matrix
+  # expect unique gene_id normData collapsed at gene level   
+  # get log transformed GTEx/cohort matrix
   normData <- normData %>%
-    tibble::column_to_rownames("GeneSymbol") %>%
+    tibble::column_to_rownames("gene_id") %>%
     as.matrix()
   normData <- normData[rownames(expressionMatrixMatched), ]
   normData <- log2(normData + 1)
 
   # normData mean and sd
   normData_means <- rowMeans(normData, na.rm = TRUE)
-  normData_sd <- apply(normData, 1, .data$sd, na.rm = TRUE)
+  normData_sd <- apply(normData, 1, stats::sd, na.rm = TRUE)
   # subtract mean
   expressionMatrixzscored <- sweep(expressionMatrixMatched, 1, normData_means, FUN = "-")
   # divide by SD
   expressionMatrixzscored <- sweep(expressionMatrixzscored, 1, normData_sd, FUN = "/") %>%
-    mutate(GeneSymbol = rownames(.data)) %>%
-    na.omit(.data)
+    tibble::rownames_to_column(var="gene_id") %>%
+    na.omit()
 
   # To save GTEx/cohort scored matrix
   if (!missing(saveZscoredMatrix)) {
@@ -81,15 +94,15 @@ zscored_annotation <- function(standardFusionCalls,
     )
 
   # fusion calls
-  fusion_sample_gene_df <- standardFusionCalls %>%
+  fusion_sample_gene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair
     dplyr::select(.data$Sample, .data$FusionName, .data$Gene1A, .data$Gene1B, .data$Gene2A, .data$Gene2B) %>%
     # We want a single column that contains the gene symbols
-    tidyr::gather(.data$Gene1A, .data$Gene1B, .data$Gene2A, .data$Gene2B,
-      key = .data$gene_position, value = .data$GeneSymbol
+    tidyr::gather(Gene1A, Gene1B, Gene2A, Gene2B,
+      key = gene_position, value = gene_id
     ) %>%
     # Remove columns without gene symbols
-    dplyr::filter(.data$GeneSymbol != "") %>%
+    dplyr::filter(.data$gene_id != "") %>%
     dplyr::arrange(.data$Sample, .data$FusionName) %>%
     # Retain only distinct rows
     dplyr::distinct()
@@ -100,7 +113,7 @@ zscored_annotation <- function(standardFusionCalls,
   expression_annotated_fusions <- fusion_sample_gene_df %>%
     # join the filtered expression values to the data frame keeping track of symbols
     # for each sample-fusion name pair
-    dplyr::left_join(expression_long_df, by = c("Sample", "GeneSymbol")) %>%
+    dplyr::left_join(expression_long_df, by = c("Sample", "gene_id")) %>%
     # for each sample-fusion name pair, are all genes under the expression threshold?
     dplyr::group_by(.data$FusionName, .data$Sample) %>%
     dplyr::select(.data$FusionName, .data$Sample, .data$zscore_value, .data$gene_position) %>%
@@ -123,7 +136,7 @@ zscored_annotation <- function(standardFusionCalls,
     ) %>%
     # unique FusionName-Sample rows
     # use this to filter the QC filtered fusion data frame
-    dplyr::inner_join(standardFusionCalls, by = c("FusionName", "Sample")) %>%
+    dplyr::inner_join(standardFusioncalls, by = c("FusionName", "Sample")) %>%
     dplyr::distinct()
 
   return(expression_annotated_fusions)
