@@ -16,11 +16,32 @@
 #' @return expression_annotated_fusions is a standardized fusion call set with standard
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
-#' sfc <- read.delim(out_annofuse)
-#' 
-#' # TODOTODO
-#' # example with full call
+#' standardFusioncalls <- annoFuse::annoFuse_single_sample(
+#' # Example files are provided in extdata, at-least 1 fusionfile is required along 
+#' # with its rsem expression file
+#' fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
+#' fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
+#' expressionFile = system.file(
+#' "extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
+#' tumorID = "BS_W97QQYKQ",
+#' # multiple read flag values for filtering using FusionAnnotator values
+#' artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+#' # keep all in-frame , frameshift and other types of Fusion_Type
+#' readingFrameFilter = "in-frame|frameshift|other",
+#' # keep all fusions with atleast 1 junction read support
+#' junctionReadCountFilter = 1,
+#' # keep only fusions where spanningFragCount-junctionReadCountFilter less than equal to 10
+#' spanningFragCountFilter = 10,
+#' # keep read throughs
+#' readthroughFilter = FALSE
+#' )
+#' expressionMatrix<-readRDS(system.file("extdata", "expr_collapsed.rds", package = "annoFuse"))
+#' normData<-readRDS(system.file("extdata", "gtex_collapsed.rds", package = "annoFuse"))
+#' zscoredStandardFusioncalls<-zscored_annotation(standardFusioncalls,
+#'                                                zscoreFilter=2,
+#'                                                normData=normData,
+#'                                                expressionMatrix=expressionMatrix)
+
 zscored_annotation <- function(standardFusioncalls,
                                zscoreFilter,
                                saveZscoredMatrix,
@@ -34,21 +55,14 @@ zscored_annotation <- function(standardFusioncalls,
     stopifnot(is.character(saveZscoredMatrix))
   # TODO: checks on other params as well
   
-  # expressionMatrix collapsed at gene level 
+  # expect unique gene_id expressionMatrix collapsed at gene level 
   expressionMatrixMatched <- expressionMatrix %>%
-    unique() %>%
-    # means for each row per each gene_id
-    dplyr::mutate(means = rowMeans(dplyr::select(.data,-gene_id))) %>%
-    # arrange descending mean
-    arrange(desc(.data$means)) %>%
-    # to keep only first occurence ie. max rowMean per gene_id
-    distinct(.data$gene_id, .keep_all = TRUE) %>%
-    ungroup() %>%
     dplyr::filter(.data$gene_id %in% normData$gene_id) %>%
     tibble::column_to_rownames("gene_id")
   expressionMatrixMatched <- log2(expressionMatrixMatched + 1)
 
   # gene matched
+  # expect unique gene_id normData collapsed at gene level   
   # get log transformed GTEx/cohort matrix
   normData <- normData %>%
     tibble::column_to_rownames("gene_id") %>%
