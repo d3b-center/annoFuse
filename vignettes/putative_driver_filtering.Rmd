@@ -31,6 +31,7 @@ vignette: >
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
+# Introduction
 
 In this vignette we demonstrate using annoFuse, to filter putative oncogene fusion from a filtered fusion list (filtered fusion list `FilteredFusionAnnoFuse.tsv` was obtained for v16 OpenPBTA files : `fusion_standardization` -> `fusion_filtering_QC` -> `annotate_fusion_calls` ) and also plot recurrent fusion, recurrently fused genes, and summary plot.
 
@@ -39,13 +40,19 @@ These high quality fusion calls are considered known and putative oncogenic driv
 Putative Driver Fusions that are found in more than 4 histologies were removed from further processing as these fusions are considered artifact or commonly occurring from manual review.
 Or are recurrent fusions called by both callers and unique to specific histology in this filtered dataset. If fusions are from non-oncogenic genes that are fused more than 5 times per sample we consider these are artifacts and remove them from being further processed  
 
-```{r}
-# load required packages
-suppressPackageStartupMessages(library("readr"))
-suppressPackageStartupMessages(library("tidyverse"))
-suppressPackageStartupMessages(library("reshape2"))
-suppressPackageStartupMessages(library("qdapRegex"))
+# Step by step analysis
 
+We start by loading `annoFuse` and the other required packages in the chunk below
+
+```{r}
+library("annoFuse")
+suppressPackageStartupMessages(library("readr"))
+suppressPackageStartupMessages(library("dplyr"))
+suppressPackageStartupMessages(library("qdapRegex"))
+```
+
+
+```{r}
 fusion_calls <- read_tsv(system.file("extdata", "FilteredFusionAnnoFuse.tsv", package = "annoFuse"))
 
 # distance are being removed here to capture all intergenic fusions in count
@@ -57,8 +64,6 @@ table(fusion_calls$Caller)
 ```
 
 ```{r}
-library("annoFuse")
-
 # aggreate caller to unique fusion calls per Sample
 fusion_calls <- aggregate_fusion_calls(fusion_calls, removeother = FALSE)
 
@@ -141,7 +146,7 @@ QCGeneFiltered_recFusionUniq <- QCGeneFiltered_recFusion %>%
 
 ```{r}
 putative_driver_fusions <- putative_driver_fusions %>%
-  bind_rows(QCGeneFiltered_recFusionUniq[, colnames(putative_driver_fusions)]) %>%
+  dplyr::bind_rows(QCGeneFiltered_recFusionUniq[, colnames(putative_driver_fusions)]) %>%
   # filter fusions found in more than 4 histologies
   dplyr::filter(
     !FusionName %in% found_in_morethan_4$FusionName,
@@ -150,6 +155,9 @@ putative_driver_fusions <- putative_driver_fusions %>%
     Fusion_Type == "in-frame"
   ) %>%
   as.data.frame()
+
+
+head(putative_driver_fusions)
 ```
 
 ```{r fig.width=6, fig.height=5}
