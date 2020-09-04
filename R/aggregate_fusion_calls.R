@@ -13,7 +13,7 @@
 #' @return Standardized fusion calls with aggregated Caller and read support
 #'
 #' @examples
-#' #' # standardize
+#' # standardize
 #' fusionfileArriba <- read_arriba_calls(
 #'   system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
 #' fusionfileStarFusion <- read_starfusion_calls(
