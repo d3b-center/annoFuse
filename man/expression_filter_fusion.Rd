@@ -37,7 +37,7 @@ formattedArriba <- fusion_standardization(fusionfileArriba,
                                           caller = "ARRIBA",
                                           tumorID = "tumorID")
 formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
-                                              caller = "STARFUSION",
+                                              caller = "STARFUSION",e
                                               tumorID = "tumorID")
 # merge standardized fusion calls
 standardFusioncalls <- rbind(formattedStarFusion, formattedArriba) \%>\% as.data.frame()
