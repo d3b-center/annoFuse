@@ -98,7 +98,7 @@ fusion_standardization <- function(fusion_calls,
   # Get standard columns for filtering
   
   standard_calls <- fusion_calls %>%
-    # select columns for standarda fusion format
+    # select columns for standard fusion format
     dplyr::select(c("LeftBreakpoint",
                     "RightBreakpoint",
                     "FusionName",
