@@ -57,7 +57,10 @@ fusion_calls <- read_tsv(system.file("extdata", "FilteredFusionAnnoFuse.tsv", pa
 
 # distance are being removed here to capture all intergenic fusions in count
 # distance within () were making them count as unique instead of the same fusion
-fusion_calls$FusionName <- unlist(lapply(fusion_calls$FusionName, function(x) rm_between(x, "(", ")", extract = F)))
+fusion_calls$FusionName <- unlist(lapply(
+  fusion_calls$FusionName, 
+  function(x) rm_between(x, "(", ")", extract = FALSE)
+))
 
 print("Raw calls from STARfusion and Arriba for PBTA")
 table(fusion_calls$Caller)
