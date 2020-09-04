@@ -16,6 +16,7 @@
 #' @import shinydashboard
 #' @import rintrojs
 #' @import shinythemes
+#' @importFrom base64enc dataURI
 #' @importFrom DT datatable renderDataTable dataTableOutput
 #' @importFrom shinyBS bsTooltip
 #'

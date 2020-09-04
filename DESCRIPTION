@@ -37,6 +37,7 @@ Imports:
     shinycssloaders,
     rintrojs,
     shinythemes,
+    base64enc,
     DT,
     rmarkdown,
     methods
