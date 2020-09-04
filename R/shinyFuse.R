@@ -68,10 +68,23 @@ shinyFuse <- function(out_annofuse = NULL) {
     sidebar = shinydashboard::dashboardSidebar(
       width = 250,
       collapsed = !is.null(out_annofuse),
-      
-      actionButton(inputId = "btn_load_demo",
-                   label = "Load demo data"),
-
+      div(
+        style="display:inline-block;vertical-align:top;",
+        actionButton(inputId = "btn_load_demo",
+                     label = "Load demo data")),
+      div(
+        style="display:inline-block;vertical-align:top;",
+        actionButton(
+          "help_format",
+          label = "",
+          icon = icon("question-circle"),
+          style="color: #0092AC; background-color: #222222; border-color: #222222"),
+        shinyBS::bsTooltip(
+          "help_format", 
+          "How to provide your input data to shinyFuse",
+          "bottom", options = list(container = "body")
+        )
+      ),
       uiOutput("choose_annofusedata_file"),
       uiOutput("plot_controls"),
       uiOutput("plot_filters"),
@@ -165,16 +178,7 @@ shinyFuse <- function(out_annofuse = NULL) {
         # ui About page --------------------------------------------------------
         tabPanel(
           title = "About", icon = icon("info-circle"),
-          actionButton(
-            "help_format",
-            label = "",
-            icon = icon("question-circle"),
-            style="color: #0092AC; background-color: #ECF0F5; border-color: #ECF0F5"),
-          shinyBS::bsTooltip(
-            "help_format", 
-            "How to provide your input data to shinyFuse",
-            "bottom", options = list(container = "body")
-          ),
+          
           includeMarkdown(
             system.file("extdata", "content_about.md", package = "annoFuse")
           )
