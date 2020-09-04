@@ -997,10 +997,11 @@ shinyFuse <- function(out_annofuse = NULL) {
             system.file("extdata", "howto_datainput.md", package = "annoFuse")
           ),
           h4("Example:"),
-          # tags$img(
-          #   src = base64enc::dataURI(file = system.file("www", "help_dataformats.png",package = "annoFuse"), mime = "image/png"),
-          #   width = 750
-          # ),
+          tags$img(
+            src = base64enc::dataURI(
+              file = system.file("www", "help_dataformats.png", package = "annoFuse"), mime = "image/png"),
+            width = "100%"
+          ),
           easyClose = TRUE,
           footer = NULL,
           size = "l"
