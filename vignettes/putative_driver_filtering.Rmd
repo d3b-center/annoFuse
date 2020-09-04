@@ -32,14 +32,12 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
 
-In this vignette we demonstrate using annoFuse, to filter putative oncogene fusion from a filtered fusion list (filtered fusion list `FilteredFusionAnnoFuse.tsv` was obtained for v16 OpenPBTA files : fusion_standardization -> fusion_filtering_QC -> annotate_fusion_calls ) and also plot recurrent fusion,recurrently fused genes and summary plot.
+In this vignette we demonstrate using annoFuse, to filter putative oncogene fusion from a filtered fusion list (filtered fusion list `FilteredFusionAnnoFuse.tsv` was obtained for v16 OpenPBTA files : `fusion_standardization` -> `fusion_filtering_QC` -> `annotate_fusion_calls` ) and also plot recurrent fusion, recurrently fused genes, and summary plot.
 
 These high quality fusion calls are considered known and putative oncogenic driver fusions if the fusion is previously reported in TCGA or fusions containing gene partners that are known oncogenes, tumor suppressor genes, COSMIC genes, or transcription factors. 
 
-Putative Driver Fusions that are found in more than 4 histologies were removed from further processing as these fusions are considered artifact or commonly occuring from manual review.
-Or are recurrent fusions called by both callers and unique to specific histology in this filtered dataset. If fusions are from non-onocgenic genes that are fused more than 5 times per sample we consider these are artifacts and remove them from being further processed  
-
-
+Putative Driver Fusions that are found in more than 4 histologies were removed from further processing as these fusions are considered artifact or commonly occurring from manual review.
+Or are recurrent fusions called by both callers and unique to specific histology in this filtered dataset. If fusions are from non-oncogenic genes that are fused more than 5 times per sample we consider these are artifacts and remove them from being further processed  
 
 ```{r}
 # load required packages
