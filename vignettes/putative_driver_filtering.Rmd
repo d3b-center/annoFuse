@@ -190,13 +190,9 @@ plot_recurrent_fusions(standardFusioncalls = putative_driver_fusions,
                        plotn = 20)
 ```
 
-<<<<<<< HEAD
 The summary of fusions called can provide an overview of the genomic rearrangements within cohort in-terms of intra or inter chromosomal changes and biotypes of genes fused. We also provide distribution of kinase domain retained in 5` and 3` genes as well as overall distribution of annotation in each group. Here we've used broad_histology to graoup our cohorts. 
 
-```{r}
-=======
 ```{r fig.width=15, fig.height=15}
->>>>>>> 93aa555939d033dce9a3c132e8045e758995d731
 # PLot summary
 plot_summary(standardFusioncalls = putative_driver_fusions, 
              groupby = "broad_histology")
