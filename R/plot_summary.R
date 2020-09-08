@@ -64,7 +64,7 @@ plot_summary <- function(standardFusioncalls,
   p2 <- ggplot(standardFusioncalls, aes(fill = .data$Fusion_Type, x = .data$Caller, alpha = 0.75)) +
     geom_bar(aes(y = log2(stat(count)))) +
     rotate() +
-    xlab("Caller") +
+    xlab("Fusion Caller") +
     ylab("Count (log2)") +
     theme_publication(base_size = base_size) +
     theme(legend.position = "top") +
@@ -225,7 +225,7 @@ plot_summary <- function(standardFusioncalls,
     p2 <- ggplot(standardFusioncalls, aes(fill = .data$Fusion_Type, x = .data$Caller, alpha = 0.75)) +
       geom_bar(aes(y = log2(stat(count)))) +
       rotate() +
-      xlab("Caller") +
+      xlab("Fusion Caller") +
       ylab("Count (log2)") +
       theme_publication(base_size = base_size) +
       theme(legend.position = "top") +
