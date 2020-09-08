@@ -34,10 +34,6 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 In this vignette we demonstrate using annoFuse, to filter putative oncogene fusion from a filtered fusion list (filtered fusion list `FilteredFusionAnnoFuse.tsv` was obtained for v16 OpenPBTA files : `fusion_standardization` -> `fusion_filtering_QC` -> `annotate_fusion_calls` ) and also plot recurrent fusion, recurrently fused genes, and summary plot.
 
-These high quality fusion calls are considered known and putative oncogenic driver fusions if the fusion is previously reported in TCGA or fusions containing gene partners that are known oncogenes, tumor suppressor genes, COSMIC genes, or transcription factors. 
-
-Putative Driver Fusions that are found in more than 4 histologies were removed from further processing as these fusions are considered artifact or commonly occurring from manual review.
-Or are recurrent fusions called by both callers and unique to specific histology in this filtered dataset. If fusions are from non-oncogenic genes that are fused more than 5 times per sample we consider these are artifacts and remove them from being further processed  
 
 ```{r}
 # load required packages
@@ -55,6 +51,9 @@ fusion_calls$FusionName <- unlist(lapply(fusion_calls$FusionName, function(x) rm
 print("Raw calls from STARfusion and Arriba for PBTA")
 table(fusion_calls$Caller)
 ```
+
+These high quality fusion calls are considered known and putative oncogenic driver fusions if the fusion is previously reported in TCGA or fusions containing gene partners that are known oncogenes, tumor suppressor genes, COSMIC genes, or transcription factors. 
+
 
 ```{r}
 library("annoFuse")
@@ -83,6 +82,8 @@ putative_driver_fusions <- fusion_driver(
 )
 ```
 
+Putative Driver Fusions that are found in more than 4 histologies were removed from further processing as these fusions are considered artifact or commonly occurring from manual review.
+
 ```{r}
 # checking if fusions are called in multiple histologies
 # this will suggest these fusion calls are artifact or
@@ -96,6 +97,11 @@ found_in_morethan_4 <- groupcount_fusion_calls(
 
 found_in_morethan_4
 ```
+
+Other non-oncogenic (not annotated as oncogene/transcription factor/ TSG /kinase) fusions that are recurrent fusions called by both callers and unique to specific histology in this filtered dataset were of interest as well. 
+
+However, non-oncogenic genes that are fused more than 5 times per sample were removed since we consider these are artifacts within our dataset from manual review of these fusions. 
+
 
 ```{r}
 # To scavenge back non-oncogenic recurrent/unique per broad histology fusions
@@ -139,6 +145,9 @@ QCGeneFiltered_recFusionUniq <- QCGeneFiltered_recFusion %>%
     !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol)
 ```
 
+We were interested in visualizing fusion distributions that are within 2 different genes which is annotated as "Genic" in our standard fusion format.
+Fusions that are in-frame technically should translate into proteins so we will also filter for only in-frame fusions for visualization
+
 ```{r}
 putative_driver_fusions <- putative_driver_fusions %>%
   bind_rows(QCGeneFiltered_recFusionUniq[, colnames(putative_driver_fusions)]) %>%
@@ -151,6 +160,8 @@ putative_driver_fusions <- putative_driver_fusions %>%
   ) %>%
   as.data.frame()
 ```
+
+Recurrent fusions and genes fused provide insigths into subtypes of samples within a cohort. Here we choose broad_histology as the grouping variable and plot the `n` participants (Kids_First_Participant_ID) with these fusions. 
 
 ```{r fig.width=6, fig.height=5}
 # recurrently fused genes
@@ -167,6 +178,8 @@ plot_recurrent_fusions(standardFusioncalls = putative_driver_fusions,
                        countID = "Kids_First_Participant_ID", 
                        plotn = 20)
 ```
+
+The summary of fusions called can provide an overview of the genomic rearrangements within cohort in-terms of intra or inter chromosomal changes and biotypes of genes fused. We also provide distribution of kinase domain retained in 5` and 3` genes as well as overall distribution of annotation in each group. Here we've used broad_histology to graoup our cohorts. 
 
 ```{r}
 # PLot summary
