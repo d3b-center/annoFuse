@@ -81,7 +81,7 @@ DT::datatable(
 # General summary on the standardized fusion file
 
 ```{r, fig.width=30, fig.height=15}
-plot_summary(annofuse_tbl)
+plot_summary(annofuse_tbl, base_size = 8)
 ```
 
 
