@@ -33,8 +33,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 # Introduction
 
-In this vignette we demonstrate using annoFuse, to filter putative oncogene fusion from a filtered fusion list (filtered fusion list `FilteredFusionAnnoFuse.tsv` was obtained for v16 OpenPBTA files : `fusion_standardization` -> `fusion_filtering_QC` -> `annotate_fusion_calls` ) and also plot recurrent fusion, recurrently fused genes, and summary plot.
-
+In this vignette we demonstrate using annoFuse, to filter putative oncogene fusion from a filtered fusion list and also plot recurrent fusion, recurrently fused genes, and a summary plot across a large cancer cohort. We are using OpenPBTA data,which has 1028 pediatric RNA-seq samples spanning 19 different broad histologies.
 
 # Step by step analysis
 
@@ -47,6 +46,24 @@ suppressPackageStartupMessages(library("dplyr"))
 suppressPackageStartupMessages(library("qdapRegex"))
 ```
 
+# Overview of the package
+Here, we present annoFuse, an R package developed to annotate and filter expressed gene fusions, along with highlighting artifact filtered novel fusions.
+
+ * Filtered fusion list `FilteredFusionAnnoFuse.tsv` was obtained from v16 OpenPBTA Star-Fusion, arriba and rsem expression (fpkm) files. 
+ We used [FusionAnnotator](https://github.com/FusionAnnotator/FusionAnnotator/tree/v0.2.0) to annotate arriba files to specifically identify “red flag” fusions found in healthy tissues or in gene homology databases saved as column "annots" to match annotation in STAR-Fusion calls. 
+ The merged dataset was processed using the following functions `fusion_standardization` -> `fusion_filtering_QC` -> `expression_filter_fusion` -> `annotate_fusion_calls` ). 
+ Please refer to the filtering criterias available per function below:
+
+![](Figure 1.png)
+
+# Standard fusion call format requirements
+
+  - Mandatory fields : "Sample","LeftBreakpoint", "RightBreakpoint", "FusionName","Gene1A", "Gene1B"
+  
+  For OpenPBTA samples we will also require some project specific fields to visualize and explore the data
+  
+  - Additional fields required for OpenPBTA project specific filter : "Kids_First_Biospecimen_ID","BreakpointLocation","broad_histology"
+
 
 ```{r}
 fusion_calls <- read_tsv(system.file("extdata", "FilteredFusionAnnoFuse.tsv", package = "annoFuse"))
@@ -58,16 +75,17 @@ fusion_calls$FusionName <- unlist(lapply(
   function(x) rm_between(x, "(", ")", extract = FALSE)
 ))
 
-print("Raw calls from STARfusion and Arriba for PBTA")
-table(fusion_calls$Caller)
+cols_fusioncalls <- c("LeftBreakpoint", "RightBreakpoint", "FusionName",
+                      "Gene1A", "Gene1B","Sample")
+
+head(fusion_calls[,cols_fusioncalls])
+
 ```
 
 These high quality fusion calls are considered known and putative oncogenic driver fusions if the fusion is previously reported in TCGA or fusions containing gene partners that are known oncogenes, tumor suppressor genes, COSMIC genes, or transcription factors. 
 
 
 ```{r}
-# aggreate caller to unique fusion calls per Sample
-fusion_calls <- aggregate_fusion_calls(fusion_calls, removeother = FALSE)
 
 # gene list
 geneListReferenceDataTab <- read.delim(
@@ -113,7 +131,7 @@ However, non-oncogenic genes that are fused more than 5 times per sample were re
 
 ```{r}
 # To scavenge back non-oncogenic recurrent/unique per broad histology fusions
-scavenge_recurrent_non_onco <- fusion_calls <- aggregate_fusion_calls(
+fusion_calls <- aggregate_fusion_calls(
   fusion_calls,
   removeother = TRUE,
   filterAnnots = "LOCAL_REARRANGEMENT|LOCAL_INVERSION"
@@ -172,9 +190,17 @@ putative_driver_fusions <- putative_driver_fusions %>%
 head(putative_driver_fusions)
 ```
 
+The summary of fusions called can provide an overview of the genomic rearrangements within cohort in-terms of intra or inter chromosomal changes and biotypes of genes fused. We also provide distribution of kinase domain retained in 5` and 3` genes as well as overall distribution of annotation in each group. Here we've used broad_histology to graoup our cohorts. 
+
+```{r fig.width=15, fig.height=15}
+# PLot summary
+plot_summary(standardFusioncalls = putative_driver_fusions, 
+             groupby = "broad_histology")
+```
+
 Recurrent fusions and genes fused provide insigths into subtypes of samples within a cohort. Here we choose broad_histology as the grouping variable and plot the `n` participants (Kids_First_Participant_ID) with these fusions. 
 
-```{r fig.width=6, fig.height=5}
+```{r fig.width=6, fig.height=6}
 # recurrently fused genes
 plot_recurrent_genes(standardFusioncalls = putative_driver_fusions, 
                      groupby = "broad_histology", 
@@ -182,20 +208,12 @@ plot_recurrent_genes(standardFusioncalls = putative_driver_fusions,
                      plotn = 20)
 ```
 
-```{r fig.width=6, fig.height=5}
+```{r fig.width=6, fig.height=8}
 # recurrent fusions
 plot_recurrent_fusions(standardFusioncalls = putative_driver_fusions, 
                        groupby = "broad_histology", 
                        countID = "Kids_First_Participant_ID", 
                        plotn = 20)
-```
-
-The summary of fusions called can provide an overview of the genomic rearrangements within cohort in-terms of intra or inter chromosomal changes and biotypes of genes fused. We also provide distribution of kinase domain retained in 5` and 3` genes as well as overall distribution of annotation in each group. Here we've used broad_histology to graoup our cohorts. 
-
-```{r fig.width=15, fig.height=15}
-# PLot summary
-plot_summary(standardFusioncalls = putative_driver_fusions, 
-             groupby = "broad_histology")
 ```
 
 # Session info {-}
