@@ -4,7 +4,7 @@
 \alias{plot_summary}
 \title{Function to annotate fusion calls}
 \usage{
-plot_summary(standardFusioncalls, groupby, outputpdffile)
+plot_summary(standardFusioncalls, groupby, outputpdffile, base_size = 20)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -13,6 +13,8 @@ plot_summary(standardFusioncalls, groupby, outputpdffile)
 
 \item{outputpdffile}{Filename to plot image - optional, if not specified, the 
 plot is simply generated}
+
+\item{base_size}{size for text in plots, defalt 20 for pdf outputs}
 }
 \value{
 A ggplot object containing a summary of the standardized fusion calls
