@@ -24,7 +24,9 @@ groupcount_fusion_calls <- function(standardFusioncalls,
     dplyr::select(.data$FusionName, !!as.name(group)) %>%
     unique() %>%
     group_by(.data$FusionName) %>%
-    dplyr::mutate(group.ct = n(), Sample = toString(!!(as.name(group)))) %>%
+    dplyr::mutate(group.ct = n(), Groups = toString(!!(as.name(group)))) %>%
+    dplyr::select(-group) %>%
+    unique() %>%
     dplyr::filter(.data$group.ct > numGroup)
 
   return(group.count)
