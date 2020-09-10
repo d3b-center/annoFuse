@@ -61,31 +61,23 @@ annoFuse_single_sample <- function(fusionfileArriba,
   stopifnot(is.numeric(spanningFragCountFilter))
   
   # read files
-  STARFusioninputfile <- read_tsv(fusionfileStarFusion)
-  Arribainputfile <- read_tsv(fusionfileArriba, col_types = readr::cols(breakpoint1 = readr::col_character(), breakpoint2 = readr::col_character()))
+  STARFusioninputfile <- read_starfusion_calls(fusionfileStarFusion)
+  Arribainputfile <- read_arriba_calls(fusionfileArriba)
 
   # read in gene and fusion reference tab
   geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
-  geneListReferenceDataTab <- geneListReferenceDataTab %>%
-    dplyr::group_by(Gene_Symbol) %>%
-    dplyr::mutate(type = toString(type)) %>%
-    dplyr::distinct(Gene_Symbol, type, file) %>%
-    as.data.frame()
-
+  
   # column 1 as FusionName 2 source file 3 type; collapse to summarize type
   fusionReferenceDataTab <- read.delim(system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
-  fusionReferenceDataTab <- fusionReferenceDataTab %>%
-    dplyr::distinct(FusionName, type, file) %>%
-    as.data.frame()
+  
 
   # if StarFusion and Arriba files empty execution stops
-  if (is_empty(STARFusioninputfile$FusionName) & is_empty(Arribainputfile$"gene1--gene2")) {
+  if (is_empty(STARFusioninputfile$`#FusionName`) & is_empty(Arribainputfile$`#gene1`)) {
     stop("StarFusion and Arriba files empty")
   }
 
   # if StarFusion and Arriba files are not empty
-  if (!is_empty(STARFusioninputfile$FusionName) & !is_empty(Arribainputfile$"gene1--gene2")) {
-    colnames(Arribainputfile)[27] <- "annots"
+  if (!is_empty(STARFusioninputfile$`#FusionName`) & !is_empty(Arribainputfile$`#gene1`)) {
 
     # standardized fusion calls
     standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION",tumorID = tumorID)
@@ -96,10 +88,8 @@ annoFuse_single_sample <- function(fusionfileArriba,
   }
 
   # if StarFusion file is empty only run standardization for Arriba calls
-  if (is_empty(STARFusioninputfile$FusionName) & !is_empty(Arribainputfile$"gene1--gene2")) {
+  if (is_empty(STARFusioninputfile$`#FusionName`) & !is_empty(Arribainputfile$`#gene1`)) {
     warning(paste("No fusion calls in StarFusion "))
-
-    colnames(Arribainputfile)[27] <- "annots"
 
 
     # standardized fusion calls
@@ -110,7 +100,7 @@ annoFuse_single_sample <- function(fusionfileArriba,
   }
 
   # if Arriba file is empty only run standardization for StarFusion calls
-  if (!is_empty(STARFusioninputfile$FusionName) & is_empty(Arribainputfile$"gene1--gene2")) {
+  if (!is_empty(STARFusioninputfile$`#FusionName`) & is_empty(Arribainputfile$`#gene1`)) {
     warning(paste("No fusion calls in Arriba "))
 
 
@@ -131,7 +121,6 @@ annoFuse_single_sample <- function(fusionfileArriba,
     # split gene id and symbol
     expressionMatrix <- expressionMatrix %>%
       dplyr::mutate(gene_id = str_replace(gene_id, "_PAR_Y_", "_"))
-
 
     expressionMatrix <- cbind(expressionMatrix, colsplit(expressionMatrix$gene_id, pattern = "_", names = c("EnsembleID", "GeneSymbol")))
 
