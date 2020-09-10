@@ -34,8 +34,8 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 # Introduction
 
-In this vignette we demonstrates using annoFuse, to filter out fusions known to be artifactual or with low read support and retain high-quality fusion calls from STAR-Fusion and Arriba for a single sample.
-We also annotate these high quality fusion calls and capture known and putative oncogenic driver fusions previously reported in TCGA or fusions containing gene partners that are known oncogenes, tumor suppressor genes, COSMIC genes, or transcription factors.
+In this vignette, we demonstrate how to use _annoFuse_ for single samples to filter out fusions known to be artifactual or with low read support as well as retain high-quality fusion calls from STAR-Fusion and Arriba.
+We also annotate high quality fusion calls and capture known and putative oncogenic driver fusions previously reported in TCGA or fusions containing gene partners that are known oncogenes, tumor suppressor genes, COSMIC genes, and/or transcription factors.
 
 ## Generating StarFusion and arriba files
   * [STAR-Fusion](https://github.com/STAR-Fusion/STAR-Fusion/wiki)
@@ -50,18 +50,19 @@ We also annotate these high quality fusion calls and capture known and putative 
   * RSEM genes.results.gz
 
 # Overview of the package
-Here, we present annoFuse, an R package developed to annotate and filter expressed gene fusions, along with highlighting artifact filtered novel fusions.
+Here, we present annoFuse, an R package developed to annotate and retain expressed known and novel gene fusions, while removing artifactual fusions.
 
- * We used [FusionAnnotator](https://github.com/FusionAnnotator/FusionAnnotator/tree/v0.2.0) to annotate arriba files to specifically identify “red flag” fusions found in healthy tissues or in gene homology databases saved as column "annots" to match annotation in STAR-Fusion calls. 
- Users can provide any annotation they seem useful for their dataset to this field and filter using the param `artifactFilter` in `annoFuse_single_sample()`
+ * We used [FusionAnnotator](https://github.com/FusionAnnotator/FusionAnnotator/tree/v0.2.0) to annotate Arriba files to specifically identify “red flag” fusions found in healthy tissues or in gene homology databases, which are then added as the column "annots" to match the annotation in STAR-Fusion calls. 
+ Users can add any annotation they deem useful for their dataset to this field and filter using the param `artifactFilter` in `annoFuse_single_sample()`
 
 `annoFuse_single_sample()` runs the following functions for the given sample:
 `fusion_standardization` -> `fusion_filtering_QC` -> `expression_filter_fusion` -> `annotate_fusion_calls`. 
-Please refer to the filtering criterias available per function below:
+Please refer to the filtering criteria available per the function below:
 
 ![](Figure_1.png)
 
-Additionally, in the vignette we annotate filtered fusion with pfam domains per Gene1A (Gene 5') and Gene1B (Gene 3') by running `get_Pfam_domain()` and visualize the breakpoint in BRAF causing the KIAA1549--BRAF fusion in this sample by running `plot_breakpoints()`
+Additionally, in the vignette we annotate filtered fusions with Pfam domains in Gene1A (Gene 5') and Gene1B (Gene 3') by running `get_Pfam_domain()`.
+We visualize the breakpoint in _BRAF_ causing the _KIAA1549--BRAF_ fusion in this sample by running `plot_breakpoints()`.
 
 
 ## Single sample Star Fusion and arriba standardization, annotation and filtering.
@@ -120,5 +121,4 @@ ggpubr::ggarrange(kiaa1549, braf, align = "h")
 ```{r}
 sessionInfo()
 ```
-
 
