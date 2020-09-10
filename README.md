@@ -30,7 +30,7 @@ devtools::install_github("d3b-center/annoFuse", dependencies = TRUE)
 
 ## Overview of package
 
-![](inst/extdata/Figure 1.png)
+![](vignettes/Figure 1.png)
 
 
 ## Vignette
