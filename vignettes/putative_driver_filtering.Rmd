@@ -105,6 +105,10 @@ putative_driver_fusions <- fusion_driver(
   geneListReferenceDataTab = geneListReferenceDataTab, 
   fusionReferenceDataTab = fusionReferenceDataTab
 )
+
+# aggregate caller
+putative_driver_fusions<-aggregate_fusion_calls(putative_driver_fusions,removeother=FALSE)
+
 ```
 
 Putative Driver Fusions found in more than four distinct histologies were filtered out, as these fusions were considered likely artifactual.
