@@ -18,8 +18,8 @@ devtools::install_github("d3b-center/annoFuse", dependencies = TRUE)
 
 ### Prerequisites for cohort level analysis
 
- - merge calls from each caller for you cohort and add tumor_id to each file before merging to be able to differentiate between the calls and a column annots with additional annotation (eg from FusionAnnotator or caller specific annotation)
- - reference folder  with a gene [genelistreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/genelistreference.txt) and [fusionreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/fusionreference.txt)
+ - merge calls from each caller for you cohort and a column `annots` with additional annotation (eg from FusionAnnotator or caller specific annotation we have used FusionAnnotator in our vignettes)
+ - reference folder  with a gene [genelistreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/genelistreference.txt) and [fusionreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/fusionreference.txt) inst/extdata has reference files we've used in our vignettes
  - expression matrix with GeneSymbol per row and samples as columns
  
 ### Prerequisites for single sample analysis
@@ -28,9 +28,14 @@ devtools::install_github("d3b-center/annoFuse", dependencies = TRUE)
  - [Arriba fusions.tsv](https://arriba.readthedocs.io/en/latest/output-files/)
  - RSEM genes.results.gz
 
+## Overview of package
+
+![](vignettes/Figure_1.png)
+
+
 ## Vignette
 
-To browse vignette to see example of **Single Sample run** 
+To browse vignettes
 
 ```
 devtools::install_github("d3b-center/annoFuse", build_vignettes=TRUE, dependencies = TRUE)
@@ -38,10 +43,9 @@ browseVignettes("annoFuse")
 ```
 
 
-Please find detailed information regarding the functionalities [here](https://github.com/d3b-center/annoFuse/wiki)
 
 ## Authors
-Krutika S. Gaonkar, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
+Krutika S. Gaonkar,Federico Marini, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
 
 ## License
 

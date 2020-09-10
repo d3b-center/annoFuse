@@ -137,8 +137,10 @@ plot_breakpoints <- function(domainDataFrame = NULL,
 
   # add domain level information
   if (!all(is.na(geneExons$DESC))) {
-    p1 <- p1 + geom_linerange(ymin = geneExons$domain_start, ymax = geneExons$domain_end, size = 6, aes(col = .data$DESC, x = gene)) + labs(color = "Domain") + theme(legend.position = "bottom") +
-      ggplot2::scale_colour_discrete(na.translate = F)
+    p1 <- p1 + geom_linerange(ymin = geneExons$domain_start, ymax = geneExons$domain_end, size = 6, aes(col = .data$DESC, x = gene)) + 
+    labs(color = "Domain") + 
+    theme(legend.position = "bottom") +
+      ggplot2::scale_colour_discrete(na.translate = FALSE)
   }
 
   # add direction of strand

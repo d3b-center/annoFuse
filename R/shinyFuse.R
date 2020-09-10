@@ -744,7 +744,7 @@ shinyFuse <- function(out_annofuse = NULL) {
     output$af_overview <- renderPlot({
       withProgress(
         {
-          p <- plot_summary(values$annofuse_tbl)
+          p <- plot_summary(values$annofuse_tbl, base_size = 10)
         },
         message = "Rendering summary..."
       )
