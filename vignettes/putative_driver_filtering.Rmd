@@ -53,7 +53,7 @@ Here, we present annoFuse, an R package developed to annotate and filter express
  The merged dataset was processed using the following steps `fusion_standardization` -> `fusion_filtering_QC` -> `expression_filter_fusion` -> `annotate_fusion_calls` ). 
  Please refer to the filtering criterias available per function below:
 
-![](Figure 1.png)
+![](Figure_1.png)
 
 # Standard fusion call format requirements
 

@@ -59,7 +59,7 @@ Here, we present annoFuse, an R package developed to annotate and filter express
 `fusion_standardization` -> `fusion_filtering_QC` -> `expression_filter_fusion` -> `annotate_fusion_calls`. 
 Please refer to the filtering criterias available per function below:
 
-![](Figure 1.png)
+![](Figure_1.png)
 
 Additionally, in the vignette we annotate filtered fusion with pfam domains per Gene1A (Gene 5') and Gene1B (Gene 3') by running `get_Pfam_domain()` and visualize the breakpoint in BRAF causing the KIAA1549--BRAF fusion in this sample by running `plot_breakpoints()`
 
