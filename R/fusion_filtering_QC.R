@@ -34,13 +34,13 @@
 #'   readingFrameFilter = "in-frame|frameshift|other",
 #'   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
 #'   junctionReadCountFilter = 1,
-#'   spanningFragCountFilter = 10,
+#'   spanningFragCountFilter = 100,
 #'   readthroughFilter = TRUE)
 fusion_filtering_QC <- function(standardFusioncalls,
                                 readingFrameFilter = "in-frame|frameshift|other",
                                 artifactFilter,
                                 junctionReadCountFilter,
-                                spanningFragCountFilter,
+                                spanningFragCountFilter = 100,
                                 readthroughFilter = TRUE) {
   
   ## TODO: will need to double check this one
