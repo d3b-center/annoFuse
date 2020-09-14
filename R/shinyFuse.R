@@ -454,6 +454,15 @@ shinyFuse <- function(out_annofuse = NULL) {
       
       display_tbl <- values$enhanced_annofuse_tbl
       display_tbl <- display_tbl[, input$af_filtercols]
+      
+      # if("BreakpointLocation" %in% colnames(display_tbl)) {
+        # display_tbl$BreakpointLocation <- factor(display_tbl$BreakpointLocation)
+      # }
+      
+      for (i in seq_len(ncol(display_tbl))) {
+        if (class(display_tbl[[i]]) == "character")
+          display_tbl[[i]] <- factor(display_tbl[[i]])
+      }
         
       DT::datatable(
         display_tbl,
