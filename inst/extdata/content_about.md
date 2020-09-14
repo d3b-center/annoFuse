@@ -12,7 +12,9 @@ FusionExplorer is an interactive way to explore the putative oncogenic fusion re
 
 **Features:** 
 
-_Filtering_: Select a column and enter one or more attributes on which to filter the rows. <br>
+_Filtering_: On the left, select columns to display.
+1. If filtering a non-numeric column, select a level from the dropdown on which to filter rows.
+2. If filtering a numeric column, use the sliding scale or enter numeric logic according to the following (Eg: to filter for a fusion `SpanningFragCount` greater than 10, write `10 ... max` (number, space, ellipsis, space, number) in the filter box, where `max` is the highest number on the sliding scale). <br>
 _Data export_: Export the filtered table using the download button above.<br>
 _Fusion visualization_: To view the gene fusion, exons, protein domains, and breakpoints:
 

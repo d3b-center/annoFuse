@@ -4,6 +4,7 @@ Title: annoFuse: an R Package to annotate, prioritize, and interactively explore
 Version: 0.3.0
 Authors@R: c(person("Krutika", "Gaonkar", role = c("aut", "cre"), 
     email = "gaonkark@chop.email.edu"),
+    comment = c(ORCID = "0000-0003-0838-2405")))
     person("Federico", "Marini", role = "ctb", 
     email = "marinif@uni-mainz.de",
     comment = c(ORCID = "0000-0003-3252-7758")))
