@@ -1,7 +1,7 @@
 Package: annoFuse
 Type: Package
-Title: Annotation And Filtering Analysis For Fusion Calls
-Version: 0.2
+Title: annoFuse: an R Package to annotate, prioritize, and interactively explore putative oncogenic RNA fusions
+Version: 0.3.0
 Authors@R: c(person("Krutika", "Gaonkar", role = c("aut", "cre"), 
     email = "gaonkark@chop.email.edu"),
     person("Federico", "Marini", role = "ctb", 
