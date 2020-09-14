@@ -5,24 +5,72 @@
 \title{Expression filtering with user provided expression Matrix and standard fusion calls}
 \usage{
 expression_filter_fusion(
-  standardFusioncalls = standardFusioncalls,
-  expressionMatrix = expressionMatrix,
-  expressionFilter = expressionFilter
+  standardFusioncalls,
+  expressionMatrix,
+  expressionFilter
 )
 }
 \arguments{
-\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
+\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to 
+run through the filtering steps}
 
 \item{expressionMatrix}{Expression matrix for samples used in cohort for fusion calls}
 
 \item{expressionFilter}{FPKM/TPM threshold for not expressed}
 }
 \value{
-Standardized fusion calls annotated with gene list and fusion list provided in reference folder
+Standardized fusion calls annotated with gene list and fusion list provided 
+in reference folder
 }
 \description{
 Expression filtering with user provided expression Matrix and standard fusion calls
 }
 \examples{
-# TODOTODO
+\dontrun{
+# standardize
+fusionfileArriba <- read_arriba_calls(
+  system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+fusionfileStarFusion <- read_starfusion_calls(
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+library(dplyr)
+formattedArriba <- fusion_standardization(fusionfileArriba,
+                                          caller = "ARRIBA",
+                                          tumorID = "tumorID")
+formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
+                                              caller = "STARFUSION",e
+                                              tumorID = "tumorID")
+# merge standardized fusion calls
+standardFusioncalls <- rbind(formattedStarFusion, formattedArriba) \%>\% as.data.frame()
+fusionQCFiltered <- fusion_filtering_QC(
+  standardFusioncalls = standardFusioncalls, 
+  readingFrameFilter = "in-frame|frameshift|other",
+  artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+  junctionReadCountFilter = 1,
+  spanningFragCountFilter = 10,
+  readthroughFilter = TRUE)
+# expression based filter to capture only fusions where atleast 1 gene is expressed
+                    
+expressionFile <- system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse")
+expressionMatrix <- read_tsv(expressionFile)
+library(reshape2)
+# split gene id and symbol
+expressionMatrix <- cbind(expressionMatrix, 
+  colsplit(expressionMatrix$gene_id, pattern = "_", names = c("EnsembleID", "GeneSymbol")))
+# collapse to matrix of HUGO symbols x Sample identifiers
+# take max expression per row and use the max value for duplicated gene symbols
+expressionMatrix.collapsed <- expressionMatrix \%>\%
+  arrange(desc(FPKM)) \%>\% # arrange decreasing by FPKM
+  distinct(GeneSymbol, .keep_all = TRUE) \%>\% # keep the ones with greatest FPKM value. 
+                                             # If ties occur, keep the first occurencce
+  unique() \%>\%
+  remove_rownames() \%>\%
+  dplyr::select(.data$EnsembleID, .data$GeneSymbol, .data$FPKM, .data$gene_id)
+# rename columns
+colnames(expressionMatrix.collapsed)[3] <- "tumorID"
+expressionFiltered <- expression_filter_fusion(
+  standardFusioncalls = fusionQCFiltered, 
+  expressionMatrix = expressionMatrix.collapsed,
+  expressionFilter = 1)
+}
+
 }

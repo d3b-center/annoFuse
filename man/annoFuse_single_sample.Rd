@@ -5,8 +5,8 @@
 \title{Single Sample use for annoFuse}
 \usage{
 annoFuse_single_sample(
-  fusionfileArriba = fusionfileArriba,
-  fusionfileStarFusion = fusionfileStarFusion,
+  fusionfileArriba,
+  fusionfileStarFusion,
   expressionFile = NULL,
   expressionFilter = 1,
   tumorID = "tumorID",
@@ -32,37 +32,38 @@ annoFuse_single_sample(
 
 \item{readthroughFilter}{Boolean for filtering readthroughs}
 
-\item{artifactFilter}{A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"}
+\item{artifactFilter}{A red flag filter from Annotation ; in OpenPBTA annotation 
+is from FusionAnnotator column "annots"}
 
 \item{junctionReadCountFilter}{An integer threshold for JunctionReadCount}
 
-\item{spanningFragCountFilter}{An integer threshold for (SpanningFragCount - JunctionReadCount)}
+\item{spanningFragCountFilter}{An integer threshold for (SpanningFragCount -
+JunctionReadCount)}
 }
 \value{
 Standardized fusion calls annotated with gene list and fusion list provided in reference folder
 }
 \description{
-Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold
+Performs artifact filter to remove readthroughs,red flags and performs expression
+filtering with user provided expression Matrix and expression threshold
 }
 \examples{
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
-# Example files are provided in extdata, at-least 1 fusionfile is required along with it's rsem expression file
-fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
-fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
-expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
-tumorID = "BS_W97QQYKQ",
-# multiple read flag values for filtering using FusionAnnotator values
-artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
-# keep all in-frame , frameshift and other types of Fusion_Type
-readingFrameFilter = "in-frame|frameshift|other",
-# keep all fusions with atleast 1 junction read support
-junctionReadCountFilter = 1,
-# keep only fusions where spanningFragCount-junctionReadCountFilter less than equal to 10
-spanningFragCountFilter = 10,
-# keep read throughs
-readthroughFilter = FALSE
+  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+  # with its rsem expression file
+  fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
+  fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
+  expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
+  tumorID = "BS_W97QQYKQ",
+  # multiple read flag values for filtering using FusionAnnotator values
+  artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+  # keep all in-frame , frameshift and other types of Fusion_Type
+  readingFrameFilter = "in-frame|frameshift|other",
+  # keep all fusions with atleast 1 junction read support
+  junctionReadCountFilter = 1,
+  # keep only fusions where spanningFragCount-junctionReadCountFilter less than equal to 10
+  spanningFragCountFilter = 10,
+  # keep read throughs
+  readthroughFilter = FALSE
 )
-
-
-
 }

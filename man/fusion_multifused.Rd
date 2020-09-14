@@ -4,10 +4,7 @@
 \alias{fusion_multifused}
 \title{Function to identify fusions called by at least n callers}
 \usage{
-fusion_multifused(
-  standardFusioncalls = standardFusioncalls,
-  limitMultiFused = limitMultiFused
-)
+fusion_multifused(standardFusioncalls, limitMultiFused = 3)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
@@ -21,5 +18,7 @@ Fusions where gene partner(s) is multifused per sample
 Function to identify fusions called by at least n callers
 }
 \examples{
-# TODOTODO
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
+sfc_multifused <- fusion_multifused(sfc, limitMultiFused = 2)
 }

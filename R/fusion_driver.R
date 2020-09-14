@@ -13,11 +13,26 @@
 #' @return Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder
 #'
 #' @examples
-#' # TODOTODO
-fusion_driver <- function(standardFusioncalls = standardFusioncalls,
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' geneListReferenceDataTab <- read.delim(
+#'   system.file("extdata", "genelistreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+#' fusionReferenceDataTab <- read.delim(
+#'   system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+#' fusion_driver_df <- fusion_driver(sfc,
+#'                                   annotated = TRUE,
+#'                                   geneListReferenceDataTab = geneListReferenceDataTab,
+#'                                   fusionReferenceDataTab = fusionReferenceDataTab)
+#' 
+fusion_driver <- function(standardFusioncalls,
                           annotated = TRUE,
-                          geneListReferenceDataTab = geneListReferenceDataTab,
-                          fusionReferenceDataTab = fusionReferenceDataTab) {
+                          geneListReferenceDataTab,
+                          fusionReferenceDataTab) {
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is.logical(annotated))
+  stopifnot(is(geneListReferenceDataTab, "data.frame"))
+  stopifnot(is(fusionReferenceDataTab, "data.frame"))
+  
   # fusion_recurrent5_per_sample <- fusion_multifused(standardFusioncalls,limitMultiFused)
 
   if (annotated) {

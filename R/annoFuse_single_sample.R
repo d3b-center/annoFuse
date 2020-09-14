@@ -1,8 +1,8 @@
 #' Single Sample use for annoFuse
 #'
-#'
-#' Performs artifact filter to remove readthroughs,red flags and performs expression filtering with user provided expression Matrix and expression threshold
-
+#' Performs artifact filter to remove readthroughs,red flags and performs expression
+#' filtering with user provided expression Matrix and expression threshold
+#' 
 #' @param fusionfileArriba A dataframe from arriba fusion caller
 #' @param fusionfileStarFusion A dataframe from starfusion caller
 #' @param expressionFile Expression matrix for samples used in cohort for fusion calls
@@ -10,9 +10,11 @@
 #' @param tumorID Sample name to be used
 #' @param readingFrameFilter A regex to capture readingframe (eg. in-frame|frameshift|other)
 #' @param readthroughFilter Boolean for filtering readthroughs
-#' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation is from FusionAnnotator column "annots"
+#' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation 
+#' is from FusionAnnotator column "annots"
 #' @param junctionReadCountFilter An integer threshold for JunctionReadCount
-#' @param spanningFragCountFilter An integer threshold for (SpanningFragCount - JunctionReadCount)
+#' @param spanningFragCountFilter An integer threshold for (SpanningFragCount -
+#' JunctionReadCount)
 #'
 #' @export
 #'
@@ -20,7 +22,8 @@
 #'
 #' @examples
 #' standardFusioncalls <- annoFuse::annoFuse_single_sample(
-#'   # Example files are provided in extdata, at-least 1 fusionfile is required along with it's rsem expression file
+#'   # Example files are provided in extdata, at-least 1 fusionfile is required along 
+#'   # with its rsem expression file
 #'   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
 #'   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
 #'   expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
@@ -36,8 +39,8 @@
 #'   # keep read throughs
 #'   readthroughFilter = FALSE
 #' )
-annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
-                                   fusionfileStarFusion = fusionfileStarFusion,
+annoFuse_single_sample <- function(fusionfileArriba,
+                                   fusionfileStarFusion,
                                    expressionFile = NULL,
                                    expressionFilter = 1,
                                    tumorID = "tumorID",
@@ -46,74 +49,63 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
                                    artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
                                    junctionReadCountFilter = 1,
                                    spanningFragCountFilter = 10) {
-
+  
+  stopifnot(is.character(fusionfileArriba))
+  stopifnot(is.character(fusionfileStarFusion))
+  stopifnot(is.numeric(expressionFilter))
+  stopifnot(is.character(tumorID))
+  stopifnot(is.character(readingFrameFilter))
+  stopifnot(is.logical(readthroughFilter))
+  stopifnot(is.character(artifactFilter))
+  stopifnot(is.numeric(junctionReadCountFilter))
+  stopifnot(is.numeric(spanningFragCountFilter))
+  
   # read files
-  STARFusioninputfile <- read_tsv(fusionfileStarFusion)
-  Arribainputfile <- read_tsv(fusionfileArriba, col_types = readr::cols(breakpoint1 = readr::col_character(), breakpoint2 = readr::col_character()))
+  STARFusioninputfile <- read_starfusion_calls(fusionfileStarFusion)
+  Arribainputfile <- read_arriba_calls(fusionfileArriba)
 
   # read in gene and fusion reference tab
   geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
-  geneListReferenceDataTab <- geneListReferenceDataTab %>%
-    dplyr::group_by(Gene_Symbol) %>%
-    dplyr::mutate(type = toString(type)) %>%
-    dplyr::distinct(Gene_Symbol, type, file) %>%
-    as.data.frame()
-
+  
   # column 1 as FusionName 2 source file 3 type; collapse to summarize type
   fusionReferenceDataTab <- read.delim(system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
-  fusionReferenceDataTab <- fusionReferenceDataTab %>%
-    dplyr::distinct(FusionName, type, file) %>%
-    as.data.frame()
+  
 
   # if StarFusion and Arriba files empty execution stops
-  if (is_empty(STARFusioninputfile$FusionName) & is_empty(Arribainputfile$"gene1--gene2")) {
+  if (is_empty(STARFusioninputfile$`#FusionName`) & is_empty(Arribainputfile$`#gene1`)) {
     stop("StarFusion and Arriba files empty")
   }
 
   # if StarFusion and Arriba files are not empty
-  if (!is_empty(STARFusioninputfile$FusionName) & !is_empty(Arribainputfile$"gene1--gene2")) {
-    colnames(Arribainputfile)[27] <- "annots"
-
-    # To have a general column with unique IDs associated with each sample
-    STARFusioninputfile$Sample <- tumorID
-    Arribainputfile$Sample <- tumorID
-    Arribainputfile$Caller <- "Arriba"
-    STARFusioninputfile$Caller <- "StarFusion"
+  if (!is_empty(STARFusioninputfile$`#FusionName`) & !is_empty(Arribainputfile$`#gene1`)) {
 
     # standardized fusion calls
-    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION")
-    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA")
+    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION",tumorID = tumorID)
+    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA",tumorID = tumorID)
 
     # merge standardized fusion calls
     standardFusioncalls <- rbind(standardizedSTARFusion, standardizedArriba) %>% as.data.frame()
   }
 
   # if StarFusion file is empty only run standardization for Arriba calls
-  if (is_empty(STARFusioninputfile$FusionName) & !is_empty(Arribainputfile$"gene1--gene2")) {
+  if (is_empty(STARFusioninputfile$`#FusionName`) & !is_empty(Arribainputfile$`#gene1`)) {
     warning(paste("No fusion calls in StarFusion "))
 
-    colnames(Arribainputfile)[27] <- "annots"
-    # To have a general column with unique IDs associated with each sample
-    Arribainputfile$Sample <- tumorID
-    Arribainputfile$Caller <- "Arriba"
 
     # standardized fusion calls
-    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA")
+    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA",tumorID = tumorID)
 
     # standardized fusion calls
     standardFusioncalls <- standardizedArriba %>% as.data.frame()
   }
 
   # if Arriba file is empty only run standardization for StarFusion calls
-  if (!is_empty(STARFusioninputfile$FusionName) & is_empty(Arribainputfile$"gene1--gene2")) {
+  if (!is_empty(STARFusioninputfile$`#FusionName`) & is_empty(Arribainputfile$`#gene1`)) {
     warning(paste("No fusion calls in Arriba "))
 
-    # To have a general column with unique IDs associated with each sample
-    STARFusioninputfile$Sample <- tumorID
-    STARFusioninputfile$Caller <- "StarFusion"
 
     # standardized fusion calls
-    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION")
+    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION",tumorID = tumorID)
 
     # standardized fusion calls
     standardFusioncalls <- standardizedSTARFusion %>% as.data.frame()
@@ -130,7 +122,6 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
     expressionMatrix <- expressionMatrix %>%
       dplyr::mutate(gene_id = str_replace(gene_id, "_PAR_Y_", "_"))
 
-
     expressionMatrix <- cbind(expressionMatrix, colsplit(expressionMatrix$gene_id, pattern = "_", names = c("EnsembleID", "GeneSymbol")))
 
 
@@ -141,7 +132,7 @@ annoFuse_single_sample <- function(fusionfileArriba = fusionfileArriba,
       distinct(GeneSymbol, .keep_all = TRUE) %>% # keep the ones with greatest FPKM value. If ties occur, keep the first occurencce
       unique() %>%
       remove_rownames() %>%
-      dplyr::select(EnsembleID, GeneSymbol, FPKM, gene_id)
+      dplyr::select(.data$EnsembleID, .data$GeneSymbol, .data$FPKM, .data$gene_id)
 
     # rename columns
     colnames(expressionMatrix.collapsed)[3] <- tumorID

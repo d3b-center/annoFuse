@@ -8,10 +8,15 @@
 #' @return Fusions where gene partner(s) is multifused per sample
 #'
 #' @examples
-#' # TODOTODO
-fusion_multifused <- function(standardFusioncalls = standardFusioncalls,
-                              limitMultiFused = limitMultiFused) {
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
+#' sfc_multifused <- fusion_multifused(sfc, limitMultiFused = 2)
+fusion_multifused <- function(standardFusioncalls,
+                              limitMultiFused = 3) {
 
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is.numeric(limitMultiFused))
+  
   # remove multi-fused genes
   fusion_multifused_per_sample <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair

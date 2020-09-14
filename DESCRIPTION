@@ -1,9 +1,10 @@
 Package: annoFuse
 Type: Package
-Title: Annotation And Filtering Analysis For Fusion Calls
-Version: 0.2
-Authors@R: c(person("Krutika", "Gaonkark", role = c("aut", "cre"), 
-    email = "gaonkark@chop.email.edu"),
+Title: annoFuse: an R Package to annotate, prioritize, and interactively explore putative oncogenic RNA fusions
+Version: 0.3.0
+Authors@R: c(person("Krutika", "Gaonkar", role = c("aut", "cre"), 
+    email = "gaonkark@chop.email.edu",
+    comment = c(ORCID = "0000-0003-0838-2405")),
     person("Federico", "Marini", role = "ctb", 
     email = "marinif@uni-mainz.de",
     comment = c(ORCID = "0000-0003-3252-7758")))
@@ -32,9 +33,12 @@ Imports:
     utils,
     stringr,
     shiny,
+    shinyBS,
     shinydashboard,
+    shinycssloaders,
     rintrojs,
     shinythemes,
+    base64enc,
     DT,
     rmarkdown,
     methods
@@ -44,5 +48,5 @@ VignetteBuilder: knitr
 NeedsCompilation: no
 biocViews:
     Software, Transcription, Visualization, GeneExpression, Annotation,
-    GeneFusionDetection
+    GeneFusionDetection, GUI, ReportWriting
     

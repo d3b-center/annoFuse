@@ -5,15 +5,15 @@
 \title{Annotates standardizes fusion calls calls with zscored expression value from either GTEx/cohort}
 \usage{
 zscored_annotation(
-  standardFusionCalls = standardFusionCalls,
-  zscoreFilter = zscoreFilter,
-  saveZscoredMatrix = saveZscoredMatrix,
-  normData = normData,
-  expressionMatrix = expressionMatrix
+  standardFusioncalls,
+  zscoreFilter,
+  saveZscoredMatrix,
+  normData,
+  expressionMatrix
 )
 }
 \arguments{
-\item{standardFusionCalls}{Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion}
+\item{standardFusioncalls}{Annotates standardizes fusion calls from callers STARfusion| Arriba or QC filtered fusion}
 
 \item{zscoreFilter}{Zscore value to use as threshold for annotation of differential expression}
 
@@ -33,5 +33,29 @@ columns to run through this GTEx/cohort normalization function
 "FusionName" GeneA--GeneB ,or if fusion is intergenic then Gene1A/Gene2A--GeneB
 }
 \examples{
-# TODOTODO
+standardFusioncalls <- annoFuse::annoFuse_single_sample(
+# Example files are provided in extdata, at-least 1 fusionfile is required along 
+# with its rsem expression file
+fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
+fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
+expressionFile = system.file(
+"extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
+tumorID = "BS_W97QQYKQ",
+# multiple read flag values for filtering using FusionAnnotator values
+artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+# keep all in-frame , frameshift and other types of Fusion_Type
+readingFrameFilter = "in-frame|frameshift|other",
+# keep all fusions with atleast 1 junction read support
+junctionReadCountFilter = 1,
+# keep only fusions where spanningFragCount-junctionReadCountFilter less than equal to 10
+spanningFragCountFilter = 10,
+# keep read throughs
+readthroughFilter = FALSE
+)
+expressionMatrix<-readRDS(system.file("extdata", "expr_collapsed.rds", package = "annoFuse"))
+normData<-readRDS(system.file("extdata", "gtex_collapsed.rds", package = "annoFuse"))
+zscoredStandardFusioncalls<-zscored_annotation(standardFusioncalls,
+                                               zscoreFilter=2,
+                                               normData=normData,
+                                               expressionMatrix=expressionMatrix)
 }

@@ -5,9 +5,9 @@
 \title{Function to annotate fusion calls}
 \usage{
 annotate_fusion_calls(
-  standardFusioncalls = standardFusioncalls,
-  geneListReferenceDataTab = geneListReferenceDataTab,
-  fusionReferenceDataTab = fusionReferenceDataTab
+  standardFusioncalls,
+  geneListReferenceDataTab,
+  fusionReferenceDataTab
 )
 }
 \arguments{
@@ -24,5 +24,34 @@ Standardized fusion calls annotated with gene list and fusion list provided in r
 Function to annotate fusion calls
 }
 \examples{
-# TODOTODO
+# standardize
+fusionfileArriba <- read_arriba_calls(
+  system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+fusionfileStarFusion <- read_starfusion_calls(
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+formattedArriba <- fusion_standardization(fusionfileArriba,
+                                          caller="ARRIBA", 
+                                          tumorID = "tumorID")
+formattedStarFusion <- fusion_standardization(fusionfileStarFusion, 
+                                              caller="STARFUSION",
+                                              tumorID = "tumorID")
+# merge standardized fusion calls
+standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
+fusionQCFiltered <- fusion_filtering_QC(standardFusioncalls = standardFusioncalls, 
+                    readingFrameFilter = "in-frame|frameshift|other",
+                    artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+                    junctionReadCountFilter = 1,
+                    spanningFragCountFilter = 10,
+                    readthroughFilter = TRUE)
+# annotated from gene and fusion refrence list
+# read in gene and fusion reference tab
+geneListReferenceDataTab <- read.delim(
+  system.file("extdata", "genelistreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+# column 1 as FusionName 2 source file 3 type; collapse to summarize type
+fusionReferenceDataTab <- read.delim(
+ system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+filteredFusionAnnotated <- annotate_fusion_calls(
+ standardFusioncalls = fusionQCFiltered,
+ geneListReferenceDataTab = geneListReferenceDataTab, 
+ fusionReferenceDataTab = fusionReferenceDataTab)                                   
 }

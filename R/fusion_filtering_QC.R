@@ -16,29 +16,39 @@
 #' @return Standardized fusion calls filtered to pass QC and remove calls with insufficient read-support and annotation red-flags
 #'
 #' @examples
-#' # TODOTODO
-fusion_filtering_QC <- function(standardFusioncalls = standardFusioncalls,
-                                readingFrameFilter = readingFrameFilter,
-                                artifactFilter = artifactFilter,
-                                junctionReadCountFilter = junctionReadCountFilter,
-                                spanningFragCountFilter = spanningFragCountFilter,
+#' # standardize
+#' fusionfileArriba <- read_arriba_calls(
+#'   system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+#' fusionfileStarFusion <- read_starfusion_calls(
+#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+#' formattedArriba <- fusion_standardization(fusionfileArriba,
+#'                                           caller = "ARRIBA",
+#'                                           tumorID = "tumorID")
+#' formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
+#'                                               caller="STARFUSION",
+#'                                               tumorID = "tumorID")
+#' # merge standardized fusion calls
+#' standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
+#' fusionQCFiltered <- fusion_filtering_QC(
+#'   standardFusioncalls = standardFusioncalls, 
+#'   readingFrameFilter = "in-frame|frameshift|other",
+#'   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+#'   junctionReadCountFilter = 1,
+#'   spanningFragCountFilter = 10,
+#'   readthroughFilter = TRUE)
+fusion_filtering_QC <- function(standardFusioncalls,
+                                readingFrameFilter = "in-frame|frameshift|other",
+                                artifactFilter,
+                                junctionReadCountFilter,
+                                spanningFragCountFilter,
                                 readthroughFilter = TRUE) {
-
-  # formatting dataframe for filtering
-  standardFusioncalls <- standardFusioncalls %>%
-    # to obtain geneA and geneB for gene search below
-    bind_cols(colsplit(standardFusioncalls$FusionName, pattern = "--", names = c("GeneA", "GeneB"))) %>%
-    # Intergenic fusion will have Gene1A,Gene2A,Gene1B,Gene2B
-    separate(.data$GeneA, sep = "/", into = c("Gene1A", "Gene2A"), remove = FALSE) %>%
-    separate(.data$GeneB, sep = "/", into = c("Gene1B", "Gene2B"), remove = FALSE) %>%
-    # remove distance to fusion breakpoint from gene names in intergenic fusion
-    mutate(
-      Gene1A = gsub("[(].*", "", .data$Gene1A),
-      Gene2A = gsub("[(].*", "", .data$Gene2A),
-      Gene1B = gsub("[(].*", "", .data$Gene1B),
-      Gene2B = gsub("[(].*", "", .data$Gene2B)
-    ) %>%
-    as.data.frame()
+  
+  ## TODO: will need to double check this one
+  # standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is.character(readingFrameFilter))
+  stopifnot(is.numeric(junctionReadCountFilter))
+  stopifnot(is.numeric(spanningFragCountFilter))
+  stopifnot(is.logical(readthroughFilter))
 
   # filter readthroughs
   if (readthroughFilter & any(grepl("read.*through|NEIGHBORS", standardFusioncalls$annots, ignore.case = TRUE))) {

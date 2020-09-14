@@ -2,17 +2,24 @@
 
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param bioMartDataPfam A dataframe with gene and domain coordinate information with chromosome_name,gene_start,gene_end,domain_chr,domain_start,domain_end,hgnc_symbol
-#' @param keepPartialAnno TRUE or FALSE to keep partial status
+#' @param keepPartialAnno TRUE or FALSE to keep partial status; defaults to FALSE
 #'
 #' @export
 #'
-#' @return Standardized fusion calls annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
+#' @return Standardized fusion calls as list Gene1A and Gene1B annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
 #'
 #' @examples
-#' # TODOTODO
-get_Pfam_domain <- function(standardFusioncalls = standardFusioncalls,
-                            bioMartDataPfam = bioMartDataPfam,
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
+#' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+#' domain_list_df <- get_Pfam_domain(standardFusioncalls = sfc, bioMartDataPfam = bioMartDataPfam)
+get_Pfam_domain <- function(standardFusioncalls,
+                            bioMartDataPfam,
                             keepPartialAnno = FALSE) {
+  standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
+  stopifnot(is(bioMartDataPfam, "data.frame"))
+  stopifnot(is.logical(keepPartialAnno))
+  
   # get loci and chromosome as different columns
   standardFusioncalls$RightBreakpoint <- gsub("^.*:", "", standardFusioncalls$RightBreakpoint)
   standardFusioncalls$RightBreakpointChr <- gsub(":.*$", "", standardFusioncalls$RightBreakpoint)
