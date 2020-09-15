@@ -30,9 +30,15 @@ vignette: >
 
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-library(tidyverse)
-
 ```
+
+
+```{r}
+suppressPackageStartupMessages(library("readr"))
+suppressPackageStartupMessages(library("dplyr"))
+suppressPackageStartupMessages(library("qdapRegex"))
+```
+
 
 # Introduction
 To assess our filtering strategy, we analyzed a subset of samples from TCGA and compared fusions retained with annoFuse filtering and prioritization to those deemed the final call set in a previously published analysis by The Fusion Analysis Working Group.
