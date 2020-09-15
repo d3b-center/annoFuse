@@ -50,16 +50,15 @@ A group of 160 samples were randomly selected BLCA(10), BRCA(11), CESC(5), COAD(
 
 ```{r }
 # manifest was obtained from CAVATICA Data browser TCGA files copied to working project
-tcga_manifest <- read_tsv("../inst/extdata/sample_aliquot_tcga.tsv")
-
+tcga_manifest <- read_tsv(system.file("extdata", "sample_aliquot_tcga.tsv", package = "annoFuse"))
 # Final fusion calls from https://www.sciencedirect.com/science/article/pii/S2211124718303954
-final_fusion <- read_tsv("../inst/extdata/final_fusion_mmc2.txt") %>%
-  # subset of final fusions in overlapping samples 
+final_fusion <- read_tsv(system.file("extdata", "final_fusion_mmc2.txt", package = "annoFuse")) %>%
+  # subset of final fusions in overlapping samples
   dplyr::filter(
-    Sample %in% tcga_manifest$aliquot_id ) %>% 
-  as.data.frame() %>% 
+    Sample %in% tcga_manifest$aliquot_id
+  ) %>%
+  as.data.frame() %>%
   unique()
-
 ```
 
 We ran [kf-rnaseq-workflow](https://github.com/kids-first/kf-rnaseq-workflow) to obtain fusion calls from STAR-Fusion and Arriba and rna quantification from RSEM . We then standardized STAR-Fusion and Arriba fusion calls using `fusion_standardization`. 
@@ -68,115 +67,114 @@ We ran [kf-rnaseq-workflow](https://github.com/kids-first/kf-rnaseq-workflow) to
 ```{r }
 
 # merged STAR-Fusion and arriba calls
-tcga_arriba_df <- read_tsv("../inst/extdata/merged_arriba_tcga.tsv")
-tcga_starfusion_df <-read_tsv("../inst/extdata/merged_starfusion_tcga.tsv")
+tcga_arriba_df <- read_tsv(system.file("extdata", "merged_arriba_tcga.tsv", package = "annoFuse"))
+tcga_starfusion_df <- read_tsv(system.file("extdata", "merged_starfusion_tcga.tsv", package = "annoFuse"))
 
 # format
-fomatted_starfusion<-annoFuse::fusion_standardization(fusion_calls = tcga_starfusion_df,caller = "STARFUSION",tumorID = tcga_starfusion_df$Sample)
+fomatted_starfusion <- annoFuse::fusion_standardization(fusion_calls = tcga_starfusion_df, caller = "STARFUSION", tumorID = tcga_starfusion_df$Sample)
 
 # format
-fomatted_arriba<-annoFuse::fusion_standardization(fusion_calls = tcga_arriba_df,caller = "ARRIBA",tumorID = tcga_arriba_df$Sample)
+fomatted_arriba <- annoFuse::fusion_standardization(fusion_calls = tcga_arriba_df, caller = "ARRIBA", tumorID = tcga_arriba_df$Sample)
 
 
 # Merge starfusion and arriba
-formatted_calls<- rbind(fomatted_starfusion,fomatted_arriba)
-
+formatted_calls <- rbind(fomatted_starfusion, fomatted_arriba)
 ```
 
 Artifact and QC filtering was performed using `fusion_filtering_QC`. We filtered fusion using a wide range of spanningDelta : 10,20,30,40,50,100,150 and 200 
 
 ```{r}
 
-merged_10<-annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls,readthroughFilter = FALSE,readingFrameFilter = "in-frame|frameshift|other",artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",junctionReadCountFilter = 1, spanningFragCountFilter = 10)
+merged_10 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 10)
 
-merged_20<-annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls,readthroughFilter = FALSE,readingFrameFilter = "in-frame|frameshift|other",artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",junctionReadCountFilter = 1, spanningFragCountFilter = 20)
+merged_20 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 20)
 
-merged_30<-annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls,readthroughFilter = FALSE,readingFrameFilter = "in-frame|frameshift|other",artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",junctionReadCountFilter = 1, spanningFragCountFilter = 30)
+merged_30 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 30)
 
-merged_40<-annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls,readthroughFilter = FALSE,readingFrameFilter = "in-frame|frameshift|other",artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",junctionReadCountFilter = 1, spanningFragCountFilter = 40)
+merged_40 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 40)
 
-merged_50<-annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls,readthroughFilter = FALSE,readingFrameFilter = "in-frame|frameshift|other",artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",junctionReadCountFilter = 1, spanningFragCountFilter = 50)
+merged_50 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 50)
 
-merged_100<-annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls,readthroughFilter = FALSE,readingFrameFilter = "in-frame|frameshift|other",artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",junctionReadCountFilter = 1, spanningFragCountFilter = 100)
+merged_100 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 100)
 
-merged_150<-annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls,readthroughFilter = FALSE,readingFrameFilter = "in-frame|frameshift|other",artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",junctionReadCountFilter = 1, spanningFragCountFilter = 150)
+merged_150 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 150)
 
-merged_200<-annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls,readthroughFilter = FALSE,readingFrameFilter = "in-frame|frameshift|other",artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",junctionReadCountFilter = 1, spanningFragCountFilter = 200)
-
-
+merged_200 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 200)
 ```
 
 
 
 ```{r}
 # get overlap with sample_id/aliquot_id with completed tasks
-get_tcga_overlap<-function(x,tcga_manifest,final_fusion){
-    
-  samples_in_final_fusion <- x %>% 
-    left_join(tcga_manifest,by=c("Sample"="sample_id")) %>%
+get_tcga_overlap <- function(x, tcga_manifest, final_fusion) {
+  samples_in_final_fusion <- x %>%
+    left_join(tcga_manifest, by = c("Sample" = "sample_id")) %>%
     dplyr::filter(aliquot_id %in% final_fusion$Sample) %>%
-    dplyr::select(aliquot_id,FusionName) %>% unique()
-  
-  final_fusion_subset <- final_fusion %>% dplyr::filter(Sample %in% samples_in_final_fusion$aliquot_id & Fusion %in% samples_in_final_fusion$FusionName) %>% nrow()
-  return(final_fusion_subset)
-  
-}
+    dplyr::select(aliquot_id, FusionName) %>%
+    unique()
 
+  final_fusion_subset <- final_fusion %>%
+    dplyr::filter(Sample %in% samples_in_final_fusion$aliquot_id & Fusion %in% samples_in_final_fusion$FusionName) %>%
+    nrow()
+  return(final_fusion_subset)
+}
 ```
 
  We then calculated overlaps of the subsetted published final fusion to our filtered fusion calls across all the cutoffs
 
 
 ```{r}
-# get merged files for cutoff 10,20,30,40,50,100,150,200 with sensitivity 
+# get merged files for cutoff 10,20,30,40,50,100,150,200 with sensitivity
 length_final_fusion_subset <- final_fusion$Fusion %>% length() # 603
-hist_df<-merged_10 %>%
-  dplyr::mutate("cutoff"=10,"sensitivity"=get_tcga_overlap(merged_10,tcga_manifest ,final_fusion )/length_final_fusion_subset) %>%
-  dplyr::bind_rows(merged_20 %>% 
-                     dplyr::mutate("cutoff" = 20,"sensitivity"=get_tcga_overlap(merged_20,tcga_manifest ,final_fusion )/length_final_fusion_subset) ) %>%
-  dplyr::bind_rows(merged_30 %>% 
-                     dplyr::mutate("cutoff" = 30,"sensitivity"=get_tcga_overlap(merged_30,tcga_manifest ,final_fusion )/length_final_fusion_subset) ) %>%
-  dplyr::bind_rows(merged_40 %>% 
-                     dplyr::mutate("cutoff" = 40, "sensitivity"=get_tcga_overlap(merged_40,tcga_manifest ,final_fusion )/length_final_fusion_subset) ) %>%
-  dplyr::bind_rows(merged_50 %>% 
-                     dplyr::mutate("cutoff" = 50,"sensitivity"=get_tcga_overlap(merged_50,tcga_manifest ,final_fusion )/length_final_fusion_subset) ) %>%
-  dplyr::bind_rows(merged_100 %>% 
-                     dplyr::mutate("cutoff" = 100, "sensitivity"=get_tcga_overlap(merged_100,tcga_manifest ,final_fusion )/length_final_fusion_subset) ) %>%
-  dplyr::bind_rows(merged_150 %>% 
-                     dplyr::mutate("cutoff" = 150, "sensitivity"=get_tcga_overlap(merged_150,tcga_manifest ,final_fusion )/length_final_fusion_subset) ) %>%
-  dplyr::bind_rows(merged_200 %>% 
-                     dplyr::mutate("cutoff" = 200, "sensitivity"=get_tcga_overlap(merged_200,tcga_manifest ,final_fusion )/length_final_fusion_subset) ) %>%
-  dplyr::mutate("change_spanning"=.$SpanningFragCount-.$JunctionReadCount)
+hist_df <- merged_10 %>%
+  dplyr::mutate("cutoff" = 10, "sensitivity" = get_tcga_overlap(merged_10, tcga_manifest, final_fusion) / length_final_fusion_subset) %>%
+  dplyr::bind_rows(merged_20 %>%
+    dplyr::mutate("cutoff" = 20, "sensitivity" = get_tcga_overlap(merged_20, tcga_manifest, final_fusion) / length_final_fusion_subset)) %>%
+  dplyr::bind_rows(merged_30 %>%
+    dplyr::mutate("cutoff" = 30, "sensitivity" = get_tcga_overlap(merged_30, tcga_manifest, final_fusion) / length_final_fusion_subset)) %>%
+  dplyr::bind_rows(merged_40 %>%
+    dplyr::mutate("cutoff" = 40, "sensitivity" = get_tcga_overlap(merged_40, tcga_manifest, final_fusion) / length_final_fusion_subset)) %>%
+  dplyr::bind_rows(merged_50 %>%
+    dplyr::mutate("cutoff" = 50, "sensitivity" = get_tcga_overlap(merged_50, tcga_manifest, final_fusion) / length_final_fusion_subset)) %>%
+  dplyr::bind_rows(merged_100 %>%
+    dplyr::mutate("cutoff" = 100, "sensitivity" = get_tcga_overlap(merged_100, tcga_manifest, final_fusion) / length_final_fusion_subset)) %>%
+  dplyr::bind_rows(merged_150 %>%
+    dplyr::mutate("cutoff" = 150, "sensitivity" = get_tcga_overlap(merged_150, tcga_manifest, final_fusion) / length_final_fusion_subset)) %>%
+  dplyr::bind_rows(merged_200 %>%
+    dplyr::mutate("cutoff" = 200, "sensitivity" = get_tcga_overlap(merged_200, tcga_manifest, final_fusion) / length_final_fusion_subset)) %>%
+  dplyr::mutate("change_spanning" = .$SpanningFragCount - .$JunctionReadCount)
 
 hist_df <- as.data.frame(hist_df)
 dat_text <- data.frame(
-  label = c(paste("Mean",round(mean(hist_df[which(hist_df$cutoff==10),"change_spanning"]))), 
-            paste("Mean",round(mean(hist_df[which(hist_df$cutoff==20),"change_spanning"]))),
-            paste("Mean",round(mean(hist_df[which(hist_df$cutoff==30),"change_spanning"]))),
-            paste("Mean",round(mean(hist_df[which(hist_df$cutoff==40),"change_spanning"]))), 
-            paste("Mean",round(mean(hist_df[which(hist_df$cutoff==50),"change_spanning"]))), 
-            paste("Mean",round(mean(hist_df[which(hist_df$cutoff==100),"change_spanning"]))), 
-            paste("Mean",round(mean(hist_df[which(hist_df$cutoff==150),"change_spanning"]))),
-            paste("Mean",round(mean(hist_df[which(hist_df$cutoff==200),"change_spanning"])))),
-  cutoff   = c(10,20,30,40,50,100,150,200)
+  label = c(
+    paste("Mean", round(mean(hist_df[which(hist_df$cutoff == 10), "change_spanning"]))),
+    paste("Mean", round(mean(hist_df[which(hist_df$cutoff == 20), "change_spanning"]))),
+    paste("Mean", round(mean(hist_df[which(hist_df$cutoff == 30), "change_spanning"]))),
+    paste("Mean", round(mean(hist_df[which(hist_df$cutoff == 40), "change_spanning"]))),
+    paste("Mean", round(mean(hist_df[which(hist_df$cutoff == 50), "change_spanning"]))),
+    paste("Mean", round(mean(hist_df[which(hist_df$cutoff == 100), "change_spanning"]))),
+    paste("Mean", round(mean(hist_df[which(hist_df$cutoff == 150), "change_spanning"]))),
+    paste("Mean", round(mean(hist_df[which(hist_df$cutoff == 200), "change_spanning"])))
+  ),
+  cutoff = c(10, 20, 30, 40, 50, 100, 150, 200)
 )
-
-
 ```
 
 Here, we visualize the distribution of spanningDelta (spanningFragCount - JunctionReadCount) across fusions called from the TCG to assess a cutoff for spanningDelta
 
 ```{r fig.height= 4 }
-ggplot(hist_df,aes(x=change_spanning))+geom_histogram(binwidth = 5) + 
-  scale_x_continuous(limits = c(0,200)) + facet_wrap(.~cutoff) + 
-  theme_publication(base_size = 20) +  
+ggplot(hist_df, aes(x = change_spanning)) +
+  geom_histogram(binwidth = 5) +
+  scale_x_continuous(limits = c(0, 200)) +
+  facet_wrap(. ~ cutoff) +
+  theme_publication(base_size = 20) +
   geom_text(
-  data    = dat_text,
-  mapping = aes(x = 100, y = 1200, label = label),
-  hjust   = -0.1,
-  vjust   = -1
-)+ theme(axis.title.x = element_text(size = 15),axis.title.y = element_text(size = 15))
-
+    data = dat_text,
+    mapping = aes(x = 100, y = 1200, label = label),
+    hjust = -0.1,
+    vjust = -1
+  ) +
+  theme(axis.title.x = element_text(size = 15), axis.title.y = element_text(size = 15))
 ```
 
 
@@ -184,17 +182,17 @@ We find that sensitivity reaches 96% at cutoff of 100
 
 ```{r fig.height= 3, fig.width= 3}
 
-extra_breaks <- c(0.7, 0.8,.85, 0.92, 0.96, 1.00)
+extra_breaks <- c(0.7, 0.8, .85, 0.92, 0.96, 1.00)
 breaks <- sort(c(extra_breaks, with(hist_df, pretty(range(sensitivity)))))
 
-ggplot(hist_df,aes(x=cutoff,y=sensitivity))+
-  geom_line() + ylab("sensitivity")+
-  theme_publication(base_size = 20)+
+ggplot(hist_df, aes(x = cutoff, y = sensitivity)) +
+  geom_line() +
+  ylab("sensitivity") +
+  theme_publication(base_size = 20) +
   scale_y_continuous(
     breaks = breaks,
     limits = range(breaks)
-  )+ theme(axis.title.x = element_text(size = 15),axis.title.y = element_text(size = 15))
-
-
+  ) +
+  theme(axis.title.x = element_text(size = 15), axis.title.y = element_text(size = 15))
 ```
 
