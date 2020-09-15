@@ -21,10 +21,11 @@ get_Pfam_domain <- function(standardFusioncalls,
   stopifnot(is.logical(keepPartialAnno))
   
   # get loci and chromosome as different columns
-  standardFusioncalls$RightBreakpoint <- gsub("^.*:", "", standardFusioncalls$RightBreakpoint)
   standardFusioncalls$RightBreakpointChr <- gsub(":.*$", "", standardFusioncalls$RightBreakpoint)
-  standardFusioncalls$LeftBreakpoint <- gsub("^.*:", "", standardFusioncalls$LeftBreakpoint)
+  standardFusioncalls$RightBreakpoint <- gsub("^.*:", "", standardFusioncalls$RightBreakpoint)
   standardFusioncalls$LeftBreakpointChr <- gsub(":.*$", "", standardFusioncalls$LeftBreakpoint)
+  standardFusioncalls$LeftBreakpoint <- gsub("^.*:", "", standardFusioncalls$LeftBreakpoint)
+  
 
   # merge fusion and gene + domain information
   standardFusioncallsGene1A <- standardFusioncalls %>%
@@ -94,11 +95,16 @@ get_Pfam_domain <- function(standardFusioncalls,
   }
 
   # need to add back genes that were not mapped using bioMart dataframe
+  if (nrow(standardFusioncallsGene1A[is.na(standardFusioncallsGene1A$strand), ])>0){
   standardFusioncallsGene1ANotMapped <- standardFusioncallsGene1A[is.na(standardFusioncallsGene1A$strand), ]
   standardFusioncallsGene1ANotMapped[, "Gene1A_DOMAIN_RETAINED_IN_FUSION"] <- NA
+  }
+  
+  if (nrow(standardFusioncallsGene1B[is.na(standardFusioncallsGene1B$strand), ])>0){
   standardFusioncallsGene1BNotMapped <- standardFusioncallsGene1B[is.na(standardFusioncallsGene1B$strand), ]
   standardFusioncallsGene1BNotMapped[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- NA
-
+  }
+  
   # merge mapped and unmapped df
   standardFusioncallsGene1A <- rbind(standardFusioncallsGene1AMapped, standardFusioncallsGene1ANotMapped)
   standardFusioncallsGene1B <- rbind(standardFusioncallsGene1BMapped, standardFusioncallsGene1BNotMapped)
