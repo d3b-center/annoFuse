@@ -164,7 +164,7 @@ dat_text <- data.frame(
 
 Here, we visualize the distribution of spanningDelta (spanningFragCount - JunctionReadCount) across fusions called from the TCG to assess a cutoff for spanningDelta
 
-```{r fig.height= 4 }
+```{r fig.height=8}
 ggplot(hist_df, aes(x = change_spanning)) +
   geom_histogram(binwidth = 5) +
   scale_x_continuous(limits = c(0, 200)) +
@@ -182,8 +182,7 @@ ggplot(hist_df, aes(x = change_spanning)) +
 
 We find that sensitivity reaches 96% at cutoff of 100 
 
-```{r fig.height= 3, fig.width= 3}
-
+```{r fig.height=5, fig.width=5}
 extra_breaks <- c(0.7, 0.8, .85, 0.92, 0.96, 1.00)
 breaks <- sort(c(extra_breaks, with(hist_df, pretty(range(sensitivity)))))
 
@@ -204,3 +203,4 @@ ggplot(hist_df, aes(x = cutoff, y = sensitivity)) +
 ```{r}
 sessionInfo()
 ```
+
