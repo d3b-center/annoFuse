@@ -9,7 +9,7 @@ fusion_filtering_QC(
   readingFrameFilter = "in-frame|frameshift|other",
   artifactFilter,
   junctionReadCountFilter,
-  spanningFragCountFilter,
+  spanningFragCountFilter = 100,
   readthroughFilter = TRUE
 )
 }
@@ -53,6 +53,6 @@ fusionQCFiltered <- fusion_filtering_QC(
   readingFrameFilter = "in-frame|frameshift|other",
   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
   junctionReadCountFilter = 1,
-  spanningFragCountFilter = 10,
+  spanningFragCountFilter = 100,
   readthroughFilter = TRUE)
 }
