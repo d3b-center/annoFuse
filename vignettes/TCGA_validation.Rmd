@@ -198,3 +198,9 @@ ggplot(hist_df, aes(x = cutoff, y = sensitivity)) +
   theme(axis.title.x = element_text(size = 15), axis.title.y = element_text(size = 15))
 ```
 
+
+# Session info {-}
+
+```{r}
+sessionInfo()
+```
