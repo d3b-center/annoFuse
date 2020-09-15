@@ -62,7 +62,7 @@ final_fusion <- read_tsv(system.file("extdata", "final_fusion_mmc2.txt", package
   unique()
 ```
 
-We ran [kf-rnaseq-workflow](https://github.com/kids-first/kf-rnaseq-workflow) to obtain fusion calls from STAR-Fusion and Arriba and rna quantification from RSEM. 
+We ran [kf-rnaseq-workflow](https://github.com/kids-first/kf-rnaseq-workflow) to obtain fusion calls from STAR-Fusion and Arriba and the expression level quantifications from RSEM. 
 We then standardized STAR-Fusion and Arriba fusion calls using `fusion_standardization`. 
 
 
