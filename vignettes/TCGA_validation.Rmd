@@ -43,6 +43,7 @@ library("annoFuse")
 
 
 # Introduction
+
 To assess our filtering strategy, we analyzed a subset of samples from TCGA and compared fusions retained with annoFuse filtering and prioritization to those deemed the final call set in a previously published analysis by The Fusion Analysis Working Group.
 
 A group of 160 samples were randomly selected BLCA(10), BRCA(11), CESC(5), COAD(11),  ESCA(5) , GBM(7), HNSC(10), KIRP(9), LGG(9), LIHC(9), LUAD(5), LUSC(11), OV(9), PAAD(8), PCPG(2), PRAD(14), SARC(6), SKCM(9), TGCT(6), THCA(4). 
@@ -61,7 +62,8 @@ final_fusion <- read_tsv(system.file("extdata", "final_fusion_mmc2.txt", package
   unique()
 ```
 
-We ran [kf-rnaseq-workflow](https://github.com/kids-first/kf-rnaseq-workflow) to obtain fusion calls from STAR-Fusion and Arriba and rna quantification from RSEM . We then standardized STAR-Fusion and Arriba fusion calls using `fusion_standardization`. 
+We ran [kf-rnaseq-workflow](https://github.com/kids-first/kf-rnaseq-workflow) to obtain fusion calls from STAR-Fusion and Arriba and rna quantification from RSEM. 
+We then standardized STAR-Fusion and Arriba fusion calls using `fusion_standardization`. 
 
 
 ```{r }
