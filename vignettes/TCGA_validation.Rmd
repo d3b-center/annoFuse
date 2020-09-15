@@ -1,6 +1,6 @@
 ---
 title: > 
-  TCGA validation
+  annoFuse technical validation using TCGA Fusion calls
 author:
 - name: Krutika Gaonkar
   affiliation: 
@@ -44,15 +44,15 @@ library("annoFuse")
 
 # Introduction
 
-To assess our filtering strategy, we analyzed a subset of samples from TCGA and compared fusions retained with annoFuse filtering and prioritization to those deemed the final call set in a previously published analysis by The Fusion Analysis Working Group.
+To assess filtering sensitivity of _annoFuse_, we analyzed a subset of samples from TCGA and compared fusions retained with _annoFuse_ filtering and oncogenic prioritization to those deemed the final call set in a previously published analysis by The Fusion Analysis Working Group [PMID: 29617662](https://pubmed.ncbi.nlm.nih.gov/29617662/).
 
-A group of 160 samples were randomly selected BLCA(10), BRCA(11), CESC(5), COAD(11),  ESCA(5) , GBM(7), HNSC(10), KIRP(9), LGG(9), LIHC(9), LUAD(5), LUSC(11), OV(9), PAAD(8), PCPG(2), PRAD(14), SARC(6), SKCM(9), TGCT(6), THCA(4). 
+A group of 160 samples were randomly selected from the following cancers: BLCA(10), BRCA(11), CESC(5), COAD(11),  ESCA(5) , GBM(7), HNSC(10), KIRP(9), LGG(9), LIHC(9), LUAD(5), LUSC(11), OV(9), PAAD(8), PCPG(2), PRAD(14), SARC(6), SKCM(9), TGCT(6), THCA(4). 
 
 
 ```{r }
-# manifest was obtained from CAVATICA Data browser TCGA files copied to working project
+# Sample manifest was obtained from CAVATICA Data browser and TCGA files were copied to working project.
 tcga_manifest <- read_tsv(system.file("extdata", "sample_aliquot_tcga.tsv", package = "annoFuse"))
-# Final fusion calls from https://www.sciencedirect.com/science/article/pii/S2211124718303954
+# Load [Final Fusion Call Set tab of Supplemental Table S1 of PMID: 29617662](https://pubmed.ncbi.nlm.nih.gov/29617662/)
 final_fusion <- read_tsv(system.file("extdata", "final_fusion_mmc2.txt", package = "annoFuse")) %>%
   # subset of final fusions in overlapping samples
   dplyr::filter(
@@ -73,17 +73,17 @@ tcga_arriba_df <- read_tsv(system.file("extdata", "merged_arriba_tcga.tsv", pack
 tcga_starfusion_df <- read_tsv(system.file("extdata", "merged_starfusion_tcga.tsv", package = "annoFuse"))
 
 # format
-fomatted_starfusion <- annoFuse::fusion_standardization(fusion_calls = tcga_starfusion_df, caller = "STARFUSION", tumorID = tcga_starfusion_df$Sample)
+formatted_starfusion <- annoFuse::fusion_standardization(fusion_calls = tcga_starfusion_df, caller = "STARFUSION", tumorID = tcga_starfusion_df$Sample)
 
 # format
-fomatted_arriba <- annoFuse::fusion_standardization(fusion_calls = tcga_arriba_df, caller = "ARRIBA", tumorID = tcga_arriba_df$Sample)
+formatted_arriba <- annoFuse::fusion_standardization(fusion_calls = tcga_arriba_df, caller = "ARRIBA", tumorID = tcga_arriba_df$Sample)
 
 
 # Merge starfusion and arriba
-formatted_calls <- rbind(fomatted_starfusion, fomatted_arriba)
+formatted_calls <- rbind(formatted_starfusion, formatted_arriba)
 ```
 
-Artifact and QC filtering was performed using `fusion_filtering_QC`. We filtered fusion using a wide range of spanningDelta : 10,20,30,40,50,100,150 and 200 
+Artifact and QC filtering was performed using `fusion_filtering_QC`. We filtered fusions using the following range of spanningDelta : 10, 20, 30, 40, 50, 100, 150, and 200. 
 
 ```{r}
 
@@ -122,7 +122,7 @@ get_tcga_overlap <- function(x, tcga_manifest, final_fusion) {
 }
 ```
 
- We then calculated overlaps of the subsetted published final fusion to our filtered fusion calls across all the cutoffs
+ We then calculated overlaps of the subsetted published final fusions with our filtered fusion calls across all spanningDelta cutoffs.
 
 
 ```{r}
@@ -162,7 +162,7 @@ dat_text <- data.frame(
 )
 ```
 
-Here, we visualize the distribution of spanningDelta (spanningFragCount - JunctionReadCount) across fusions called from the TCG to assess a cutoff for spanningDelta
+Here, we visualize the distribution of `spanningDelta` (spanningFragCount - JunctionReadCount) across fusions called from the TCGA to assess a cutoff for spanningDelta
 
 ```{r fig.height=8}
 ggplot(hist_df, aes(x = change_spanning)) +
@@ -180,7 +180,7 @@ ggplot(hist_df, aes(x = change_spanning)) +
 ```
 
 
-We find that sensitivity reaches 96% at cutoff of 100 
+We find that sensitivity reaches 96% at a spanningDelta cutoff of 100 
 
 ```{r fig.height=5, fig.width=5}
 extra_breaks <- c(0.7, 0.8, .85, 0.92, 0.96, 1.00)
@@ -203,4 +203,3 @@ ggplot(hist_df, aes(x = cutoff, y = sensitivity)) +
 ```{r}
 sessionInfo()
 ```
-
