@@ -38,6 +38,7 @@ suppressPackageStartupMessages(library("readr"))
 suppressPackageStartupMessages(library("ggplot2"))
 suppressPackageStartupMessages(library("dplyr"))
 suppressPackageStartupMessages(library("qdapRegex"))
+suppressPackageStartupMessages(library("tibble"))
 library("annoFuse")
 ```
 
