@@ -98,16 +98,18 @@ get_Pfam_domain <- function(standardFusioncalls,
   if (nrow(standardFusioncallsGene1A[is.na(standardFusioncallsGene1A$strand), ]) > 0) {
     standardFusioncallsGene1ANotMapped <- standardFusioncallsGene1A[is.na(standardFusioncallsGene1A$strand), ]
     standardFusioncallsGene1ANotMapped[, "Gene1A_DOMAIN_RETAINED_IN_FUSION"] <- NA
+    standardFusioncallsGene1A <- rbind(standardFusioncallsGene1AMapped, standardFusioncallsGene1ANotMapped)
   }
   
   if (nrow(standardFusioncallsGene1B[is.na(standardFusioncallsGene1B$strand), ]) > 0) {
     standardFusioncallsGene1BNotMapped <- standardFusioncallsGene1B[is.na(standardFusioncallsGene1B$strand), ]
     standardFusioncallsGene1BNotMapped[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- NA
+    standardFusioncallsGene1B <- rbind(standardFusioncallsGene1BMapped, standardFusioncallsGene1BNotMapped)
   }
   
   # merge mapped and unmapped df
-  standardFusioncallsGene1A <- rbind(standardFusioncallsGene1AMapped, standardFusioncallsGene1ANotMapped)
-  standardFusioncallsGene1B <- rbind(standardFusioncallsGene1BMapped, standardFusioncallsGene1BNotMapped)
+  standardFusioncallsGene1A <- standardFusioncallsGene1AMapped
+  standardFusioncallsGene1B <- standardFusioncallsGene1BMapped
 
   domain <- list("Gene1A" = standardFusioncallsGene1A, "Gene1B" = standardFusioncallsGene1B)
 
