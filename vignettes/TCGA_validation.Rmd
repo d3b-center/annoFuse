@@ -87,21 +87,21 @@ Artifact and QC filtering was performed using `fusion_filtering_QC`. We filtered
 
 ```{r}
 
-merged_10 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 10)
+merged_10 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap", junctionReadCountFilter = 1, spanningFragCountFilter = 10)
 
-merged_20 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 20)
+merged_20 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap", junctionReadCountFilter = 1, spanningFragCountFilter = 20)
 
-merged_30 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 30)
+merged_30 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap", junctionReadCountFilter = 1, spanningFragCountFilter = 30)
 
-merged_40 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 40)
+merged_40 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap", junctionReadCountFilter = 1, spanningFragCountFilter = 40)
 
-merged_50 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 50)
+merged_50 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap", junctionReadCountFilter = 1, spanningFragCountFilter = 50)
 
-merged_100 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 100)
+merged_100 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap", junctionReadCountFilter = 1, spanningFragCountFilter = 100)
 
-merged_150 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 150)
+merged_150 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap", junctionReadCountFilter = 1, spanningFragCountFilter = 150)
 
-merged_200 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG", junctionReadCountFilter = 1, spanningFragCountFilter = 200)
+merged_200 <- annoFuse::fusion_filtering_QC(standardFusioncalls = formatted_calls, readthroughFilter = FALSE, readingFrameFilter = "in-frame|frameshift|other", artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap", junctionReadCountFilter = 1, spanningFragCountFilter = 200)
 ```
 
 
@@ -127,7 +127,12 @@ get_tcga_overlap <- function(x, tcga_manifest, final_fusion) {
 
 ```{r}
 # get merged files for cutoff 10,20,30,40,50,100,150,200 with sensitivity
-length_final_fusion_subset <- final_fusion$Fusion %>% length() # 603
+length_final_fusion_subset <- final_fusion$Fusion[
+  # only keep fusions from raw merged fusion calls
+  # since other callers were also used in the TCGA publication which captured other fusions
+  which(final_fusion$Fusion %in% formatted_calls$FusionName)] %>% 
+  length() # 603
+
 hist_df <- merged_10 %>%
   dplyr::mutate("cutoff" = 10, "sensitivity" = get_tcga_overlap(merged_10, tcga_manifest, final_fusion) / length_final_fusion_subset) %>%
   dplyr::bind_rows(merged_20 %>%
@@ -195,6 +200,13 @@ ggplot(hist_df, aes(x = cutoff, y = sensitivity)) +
     limits = range(breaks)
   ) +
   theme(axis.title.x = element_text(size = 15), axis.title.y = element_text(size = 15))
+```
+
+```{r}
+hist_df %>% select(cutoff,sensitivity) %>% 
+  unique() %>%
+  remove_rownames()
+
 ```
 
 
