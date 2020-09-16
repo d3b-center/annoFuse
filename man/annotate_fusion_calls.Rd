@@ -7,7 +7,10 @@
 annotate_fusion_calls(
   standardFusioncalls,
   geneListReferenceDataTab,
-  fusionReferenceDataTab
+  fusionReferenceDataTab,
+  checkReciprocal = FALSE,
+  checkDomainStatus = FALSE,
+  domainsToCheck
 )
 }
 \arguments{
@@ -16,9 +19,15 @@ annotate_fusion_calls(
 \item{geneListReferenceDataTab}{A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type}
 
 \item{fusionReferenceDataTab}{A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type}
+
+\item{checkReciprocal}{Logical value to check if fusion also has reciprocal fusion in Sample, default to FALSE}
+
+\item{checkDomainStatus}{Logical value to check if domain status in fused gene for given domansToCheck, default to FALSE,}
+
+\item{domainsToCheck}{pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz}
 }
 \value{
-Standardized fusion calls annotated with gene list and fusion list provided in reference folder
+Standardized fusion calls annotated with gene list and fusion list provided in reference folder. If checkReciprocal ==TRUE reciprocal status of fusion is also provided . If checkDomainStatus =TRUE and domain retention status for given pfamID is also provided along with the gene location corresponding to the domain retention status
 }
 \description{
 Function to annotate fusion calls
@@ -50,8 +59,14 @@ geneListReferenceDataTab <- read.delim(
 # column 1 as FusionName 2 source file 3 type; collapse to summarize type
 fusionReferenceDataTab <- read.delim(
  system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+
+# to check status of "Pkinase" domain per fused gene
+kinaseid <-"PF00069"
+
 filteredFusionAnnotated <- annotate_fusion_calls(
  standardFusioncalls = fusionQCFiltered,
  geneListReferenceDataTab = geneListReferenceDataTab, 
- fusionReferenceDataTab = fusionReferenceDataTab)                                   
+ fusionReferenceDataTab = fusionReferenceDataTab,
+ checkReciprocal = TRUE,checkDomainStatus = TRUE,
+ domainsToCheck=kinaseid)                                   
 }
