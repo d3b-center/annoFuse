@@ -23,8 +23,8 @@
 #' fusionReferenceDataTab <- read.delim(
 #'   system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
 #'   
-#'   bioMartDataPfam<-readRDS("~/Downloads/pfamDataBioMart.RDS")
-#'   kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
+#' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+#' kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
 #' fusion_driver_df <- fusion_driver(sfc,
 #'                                   annotated = TRUE,
 #'                                   geneListReferenceDataTab = geneListReferenceDataTab,
