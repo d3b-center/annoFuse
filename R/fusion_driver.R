@@ -9,7 +9,7 @@
 #' @param geneListReferenceDataTab A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type
 #' @param fusionReferenceDataTab A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type
 #' @param checkDomainStatus Logical value to check if domain status in fused gene for given domansToCheck, default to FALSE
-#' @param domainsToCheck pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz, deafults to using kinase pfam IDs since the fusions with kinase domain are more relevant for therapy
+#' @param domainsToCheck pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz, defaults to using kinase pfam IDs since the fusions with kinase domain are more relevant for therapy
 #' 
 #'
 #' @export
