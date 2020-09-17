@@ -59,7 +59,7 @@ annotate_fusion_calls <- function(standardFusioncalls,
       Gene1A <- strsplit(FusionName,"--")[[1]][1]
       Gene1B <- strsplit(FusionName,"--")[[1]][2]
       reciprocal <- paste0(Gene1B,"--",Gene1A)
-      check <- any(grepl(reciprocal,standardFusioncalls$FusionName[standardFusioncalls$Sample==Sample]))
+      check <- any(standardFusioncalls$FusionName[standardFusioncalls$Sample==Sample] == reciprocal)
       df <- data.frame("FusionName"=FusionName,"Sample"=Sample,"reciprocal_exists"=check)
     }
     
