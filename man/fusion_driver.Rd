@@ -8,7 +8,9 @@ fusion_driver(
   standardFusioncalls,
   annotated = TRUE,
   geneListReferenceDataTab,
-  fusionReferenceDataTab
+  fusionReferenceDataTab,
+  checkDomainStatus = FALSE,
+  domainsToCheck
 )
 }
 \arguments{
@@ -19,9 +21,13 @@ fusion_driver(
 \item{geneListReferenceDataTab}{A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type}
 
 \item{fusionReferenceDataTab}{A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type}
+
+\item{checkDomainStatus}{Logical value to check if domain status in fused gene for given domansToCheck, default to FALSE}
+
+\item{domainsToCheck}{pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz}
 }
 \value{
-Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder
+Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder.If checkDomainStatus =TRUE and domain retention status for given pfamID is also provided along with the gene location corresponding to the domain retention status
 }
 \description{
 If standardized fusion calls are annotated using the geneListReferenceDataTab and fusionReferenceDataTab filters out fusion calls where partner genes are not annotated.

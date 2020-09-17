@@ -7,7 +7,8 @@
 annotate_fusion_calls(
   standardFusioncalls,
   geneListReferenceDataTab,
-  fusionReferenceDataTab
+  fusionReferenceDataTab,
+  checkReciprocal = FALSE
 )
 }
 \arguments{
@@ -16,9 +17,11 @@ annotate_fusion_calls(
 \item{geneListReferenceDataTab}{A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type}
 
 \item{fusionReferenceDataTab}{A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type}
+
+\item{checkReciprocal}{Logical value to check if fusion also has reciprocal fusion in Sample, default to FALSE}
 }
 \value{
-Standardized fusion calls annotated with gene list and fusion list provided in reference folder
+Standardized fusion calls annotated with gene list and fusion list provided in reference folder. If checkReciprocal ==TRUE reciprocal status of fusion is also provided .
 }
 \description{
 Function to annotate fusion calls
@@ -50,8 +53,10 @@ geneListReferenceDataTab <- read.delim(
 # column 1 as FusionName 2 source file 3 type; collapse to summarize type
 fusionReferenceDataTab <- read.delim(
  system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+
 filteredFusionAnnotated <- annotate_fusion_calls(
  standardFusioncalls = fusionQCFiltered,
  geneListReferenceDataTab = geneListReferenceDataTab, 
- fusionReferenceDataTab = fusionReferenceDataTab)                                   
+ fusionReferenceDataTab = fusionReferenceDataTab,
+ checkReciprocal = TRUE)                                   
 }
