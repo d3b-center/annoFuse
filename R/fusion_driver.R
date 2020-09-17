@@ -9,7 +9,7 @@
 #' @param geneListReferenceDataTab A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type
 #' @param fusionReferenceDataTab A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type
 #' @param checkDomainStatus Logical value to check if domain status in fused gene for given domansToCheck, default to FALSE
-#' @param domainsToCheck pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz
+#' @param domainsToCheck pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz, deafults to using kinase pfam IDs since the fusions with kinase domain are more relevant for therapy
 #' 
 #'
 #' @export
@@ -45,11 +45,27 @@ fusion_driver <- function(standardFusioncalls,
   stopifnot(is.logical(checkDomainStatus))
    
   if(checkDomainStatus){
-    stopifnot(is.character(domainsToCheck))
-    
     # load bioMart Pfam dataframe
     bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
-    bioMartDataPfam <- bioMartDataPfam %>% 
+    
+    if(missing(domainsToCheck)){
+      message("domainsToCheck was not provided; Using default kinase pfam ids to checkDomainStatus")
+      domainsToCheck<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
+      colnameDomainRetained <- "kinaseDomainRetained"
+    }
+    
+    if(!is.character(domainsToCheck) | !(any(domainsToCheck %in% bioMartDataPfam$pfam_id))){
+      message("domainsToCheck was not character types or not found in pfam; Using default kinase pfam ids to checkDomainStatus")
+      domainsToCheck<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
+      colnameDomainRetained <- "kinaseDomainRetained"
+    }
+    
+    if(is.character(domainsToCheck)){
+      found<-paste(intersect(domainsToCheck,bioMartDataPfam$pfam_id),collapse = ",")
+      warning(paste(found," pfamIDs were found in our pfam list"))
+    }
+    
+      bioMartDataPfam <- bioMartDataPfam %>% 
       # keep only pfamIDs to check
       dplyr::filter(pfam_id %in% domainsToCheck)
     
@@ -84,6 +100,13 @@ fusion_driver <- function(standardFusioncalls,
       unique()
     
     standardFusionDomain <- full_join(standardFusionGene1ADomain,standardFusionGene1BDomain )
+    
+    if (colnameDomainRetained == "kinaseDomainRetained"){
+      # default to always print kinase domain retention
+      standardFusionDomain <- standardFusionDomain %>% 
+        dplyr::rename("kinaseDomainRetainedGene1A"="DomainRetainedInGene1A",
+                      "kinaseDomainRetainedGene1B"="DomainRetainedInGene1B")
+    }
     
     standardFusioncalls <- standardFusioncalls %>%
       # add status for given pfamIDs
