@@ -6,6 +6,7 @@
 \usage{
 fusion_driver(
   standardFusioncalls,
+  filterPutativeDriver = TRUE,
   annotated = TRUE,
   geneListReferenceDataTab,
   fusionReferenceDataTab,
@@ -16,7 +17,9 @@ fusion_driver(
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba (more callers to be added)}
 
-\item{annotated}{Boolean if annotated}
+\item{filterPutativeDriver}{filter out fusion calls where partner genes are not annotated from with gene and fusion reference list by annnoFuse::annotate_fusion_calls()}
+
+\item{annotated}{Logical value to specify if input if annotated by annnoFuse::annotate_fusion_calls()}
 
 \item{geneListReferenceDataTab}{A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type}
 

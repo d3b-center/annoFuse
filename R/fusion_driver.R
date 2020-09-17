@@ -4,12 +4,13 @@
 #' If standardized fusion is not annotated it will be annotated with geneListReferenceDataTab and fusionReferenceDataTab provided
 #'
 #' @param standardFusioncalls A dataframe from star fusion or arriba (more callers to be added)
-#' @param annotated Boolean if annotated
+#' @param filterPutativeDriver filter out fusion calls where partner genes are not annotated from with gene and fusion reference list by annnoFuse::annotate_fusion_calls()
+#' @param annotated Logical value to specify if input if annotated by annnoFuse::annotate_fusion_calls()
 #' @param geneListReferenceDataTab A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type
 #' @param fusionReferenceDataTab A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type
 #' @param checkDomainStatus Logical value to check if domain status in fused gene for given domansToCheck, default to FALSE
 #' @param domainsToCheck pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz
-#'
+#' 
 #'
 #' @export
 #'
@@ -33,6 +34,7 @@
 #'                                   domainsToCheck=kinaseid)
 #' 
 fusion_driver <- function(standardFusioncalls,
+                          filterPutativeDriver=TRUE,
                           annotated = TRUE,
                           geneListReferenceDataTab,
                           fusionReferenceDataTab,
@@ -40,9 +42,8 @@ fusion_driver <- function(standardFusioncalls,
                           domainsToCheck) {
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is.logical(annotated))
-  stopifnot(is(geneListReferenceDataTab, "data.frame"))
-  stopifnot(is(fusionReferenceDataTab, "data.frame"))
-  
+  stopifnot(is.logical(checkDomainStatus))
+   
   if(checkDomainStatus){
     stopifnot(is.character(domainsToCheck))
     
@@ -90,22 +91,23 @@ fusion_driver <- function(standardFusioncalls,
       unique()
   } 
 
-  if (annotated) {
-    putative_driver_fusions <- standardFusioncalls %>%
+  if (!annotated) {
+    # check reference input
+    stopifnot(is(geneListReferenceDataTab, "data.frame"))
+    stopifnot(is(fusionReferenceDataTab, "data.frame"))
+    
+    #annotate
+    standardFusioncalls <- annotate_fusion_calls(standardFusioncalls = standardFusioncalls, geneListReferenceDataTab = geneListReferenceDataTab, fusionReferenceDataTab = fusionReferenceDataTab)
+  }
+  
+  if (filterPutativeDriver) {
+    standardFusioncalls <- standardFusioncalls %>%
       #  dplyr::filter(!Gene1A %in% fusion_recurrent5_per_sample$GeneSymbol |
       #                  !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
       #                  !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol |
       #                  !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol) %>%
       dplyr::filter(!is.na(.data$Gene1A_anno) | !is.na(.data$Gene1B_anno) | !is.na(.data$Gene2A_anno) | !is.na(.data$Gene2B_anno))
-  } else {
-    standardFusioncalls <- annotate_fusion_calls(standardFusioncalls = standardFusioncalls, geneListReferenceDataTab = geneListReferenceDataTab, fusionReferenceDataTab = fusionReferenceDataTab)
-    putative_driver_fusions <- standardFusioncalls %>%
-      #    dplyr::filter(!Gene1A %in% fusion_recurrent5_per_sample$GeneSymbol |
-      #                    !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
-      #                    !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol |
-      #                    !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol) %>%
-      dplyr::filter(!is.na(.data$Gene1A_anno) | !is.na(.data$Gene1B_anno) | !is.na(.data$Gene2A_anno) | !is.na(.data$Gene2B_anno))
   }
 
-  return(putative_driver_fusions)
+  return(standardFusioncalls)
 }
