@@ -8,7 +8,7 @@ annotate_fusion_calls(
   standardFusioncalls,
   geneListReferenceDataTab,
   fusionReferenceDataTab,
-  checkReciprocal = FALSE
+  checkReciprocal = TRUE
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ annotate_fusion_calls(
 
 \item{fusionReferenceDataTab}{A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type}
 
-\item{checkReciprocal}{Logical value to check if fusion also has reciprocal fusion in Sample, default to FALSE}
+\item{checkReciprocal}{Logical value to check if fusion also has reciprocal fusion in Sample, default to TRUE}
 }
 \value{
 Standardized fusion calls annotated with gene list and fusion list provided in reference folder. If checkReciprocal ==TRUE reciprocal status of fusion is also provided .

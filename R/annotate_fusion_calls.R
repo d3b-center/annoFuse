@@ -3,7 +3,7 @@
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param geneListReferenceDataTab A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type
 #' @param fusionReferenceDataTab A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type
-#' @param checkReciprocal Logical value to check if fusion also has reciprocal fusion in Sample, default to FALSE
+#' @param checkReciprocal Logical value to check if fusion also has reciprocal fusion in Sample, default to TRUE
 #' 
 #' @export
 #'
@@ -45,7 +45,7 @@
 annotate_fusion_calls <- function(standardFusioncalls,
                                   geneListReferenceDataTab,
                                   fusionReferenceDataTab,
-                                  checkReciprocal=FALSE) {
+                                  checkReciprocal=TRUE) {
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
 
   stopifnot(is(geneListReferenceDataTab, "data.frame"))
