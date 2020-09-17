@@ -40,9 +40,14 @@ geneListReferenceDataTab <- read.delim(
   system.file("extdata", "genelistreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
 fusionReferenceDataTab <- read.delim(
   system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+  
+  bioMartDataPfam<-readRDS("~/Downloads/pfamDataBioMart.RDS")
+  kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
 fusion_driver_df <- fusion_driver(sfc,
                                   annotated = TRUE,
                                   geneListReferenceDataTab = geneListReferenceDataTab,
-                                  fusionReferenceDataTab = fusionReferenceDataTab)
+                                  fusionReferenceDataTab = fusionReferenceDataTab,
+                                  checkDomainStatus=FALSE,
+                                  domainsToCheck=kinaseid)
 
 }
