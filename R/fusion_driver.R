@@ -22,10 +22,15 @@
 #'   system.file("extdata", "genelistreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
 #' fusionReferenceDataTab <- read.delim(
 #'   system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+#'   
+#'   bioMartDataPfam<-readRDS("~/Downloads/pfamDataBioMart.RDS")
+#'   kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
 #' fusion_driver_df <- fusion_driver(sfc,
 #'                                   annotated = TRUE,
 #'                                   geneListReferenceDataTab = geneListReferenceDataTab,
-#'                                   fusionReferenceDataTab = fusionReferenceDataTab)
+#'                                   fusionReferenceDataTab = fusionReferenceDataTab,
+#'                                   checkDomainStatus=FALSE,
+#'                                   domainsToCheck=kinaseid)
 #' 
 fusion_driver <- function(standardFusioncalls,
                           annotated = TRUE,
@@ -61,7 +66,7 @@ fusion_driver <- function(standardFusioncalls,
       dplyr::mutate(LeftBreakpoint=paste(LeftBreakpointChr,LeftBreakpoint,sep=":"),
                     RightBreakpoint=paste(RightBreakpointChr,RightBreakpoint,sep = ":")) %>%
       # select only columns required
-      dplyr::select("LeftBreakpoint","RightBreakpoint","FusionName","Gene1A","Sample","DomainRetainedInGene1A") %>%
+      dplyr::select("LeftBreakpoint","RightBreakpoint","FusionName","Fusion_Type","Gene1A","Sample","DomainRetainedInGene1A") %>%
       unique()
     
     standardFusionGene1BDomain<-annDomain$Gene1B %>% 
@@ -74,7 +79,7 @@ fusion_driver <- function(standardFusioncalls,
       dplyr::mutate(LeftBreakpoint=paste(LeftBreakpointChr,LeftBreakpoint,sep=":"),
                     RightBreakpoint=paste(RightBreakpointChr,RightBreakpoint,sep = ":")) %>%
       # select only columns required
-      dplyr::select("LeftBreakpoint","RightBreakpoint","FusionName","Sample","Gene1B","DomainRetainedInGene1B") %>%
+      dplyr::select("LeftBreakpoint","RightBreakpoint","FusionName","Fusion_Type","Sample","Gene1B","DomainRetainedInGene1B") %>%
       unique()
     
     standardFusionDomain <- full_join(standardFusionGene1ADomain,standardFusionGene1BDomain )
