@@ -582,7 +582,6 @@ shinyFuse <- function(out_annofuse = NULL) {
       breakpointspec_right <- values$annofuse_tbl[row_id, "RightBreakpoint"]
 
       if(input$bp_plot_mode == "bp_bp") {
-        message("producing right plot: breakpoint specific")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -593,7 +592,6 @@ shinyFuse <- function(out_annofuse = NULL) {
         ) 
       }
       if(input$bp_plot_mode == "bp_sample") {
-        message("producing right plot: sample specific")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -603,7 +601,6 @@ shinyFuse <- function(out_annofuse = NULL) {
         )
       }
       if(input$bp_plot_mode == "bp_allsamples") {
-        message("producing right plot: general")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -633,18 +630,16 @@ shinyFuse <- function(out_annofuse = NULL) {
       breakpointspec_left <- values$annofuse_tbl[row_id, "LeftBreakpoint"]
       
       if(input$bp_plot_mode == "bp_bp") {
-        message("producing left plot: breakpoint specific")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
           geneposition = "Left",
           sampleid = samplespec,
-          rightBreakpoint = breakpointspec_left,
+          leftBreakpoint = breakpointspec_left,
           fusionname = fusion_for_content
         ) 
       }
       if(input$bp_plot_mode == "bp_sample") {
-        message("producing left plot: sample specific")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -654,7 +649,6 @@ shinyFuse <- function(out_annofuse = NULL) {
         )
       }
       if(input$bp_plot_mode == "bp_allsamples") {
-        message("producing left plot: general")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -686,18 +680,16 @@ shinyFuse <- function(out_annofuse = NULL) {
       # left plot
       leftfused_for_content <- values$annofuse_tbl[row_id, "Gene1A"]
       if(input$bp_plot_mode == "bp_bp") {
-        message("producing both plot, left: breakpoint specific")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
           geneposition = "Left",
           sampleid = samplespec,
-          rightBreakpoint = breakpointspec_left,
+          leftBreakpoint = breakpointspec_left,
           fusionname = fusion_for_content
         ) 
       }
       if(input$bp_plot_mode == "bp_sample") {
-        message("producing both plot, left: sample specific")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -707,7 +699,6 @@ shinyFuse <- function(out_annofuse = NULL) {
         )
       }
       if(input$bp_plot_mode == "bp_allsamples") {
-        message("producing both plot, left: general")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -720,7 +711,6 @@ shinyFuse <- function(out_annofuse = NULL) {
       # right plot
       rightfused_for_content <- values$annofuse_tbl[row_id, "Gene1B"]
       if(input$bp_plot_mode == "bp_bp") {
-        message("producing both plot, right: breakpoint specific")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -731,7 +721,6 @@ shinyFuse <- function(out_annofuse = NULL) {
         ) 
       }
       if(input$bp_plot_mode == "bp_sample") {
-        message("producing both plot, right: sample specific")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
@@ -741,7 +730,6 @@ shinyFuse <- function(out_annofuse = NULL) {
         )
       }
       if(input$bp_plot_mode == "bp_allsamples") {
-        message("producing both plot, right: general")
         p <- plot_breakpoints(
           domainDataFrame = values$ann_domain,
           exons = values$data_exons,
