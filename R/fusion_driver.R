@@ -75,7 +75,7 @@ fusion_driver <- function(standardFusioncalls,
     
     # domain annotation
     standardFusionGene1ADomain<-annDomain$Gene1A %>% 
-      dplyr::rename("DomainRetainedInGene1A"="Gene1A_DOMAIN_RETAINED_IN_FUSION") %>% 
+      dplyr::rename("DomainRetainedGene1A"="Gene1A_DOMAIN_RETAINED_IN_FUSION") %>% 
       # mutated Left and Right Breakpoints since the get_Pfam_domain separtaes the 
       # chromosome and genomic location into LeftBreakpointChr,LeftBreakpoint
       # and RightBreakpointChr,RightBreakpoint
@@ -84,11 +84,11 @@ fusion_driver <- function(standardFusioncalls,
       dplyr::mutate(LeftBreakpoint=paste(LeftBreakpointChr,LeftBreakpoint,sep=":"),
                     RightBreakpoint=paste(RightBreakpointChr,RightBreakpoint,sep = ":")) %>%
       # select only columns required
-      dplyr::select("LeftBreakpoint","RightBreakpoint","FusionName","Fusion_Type","Gene1A","Sample","DomainRetainedInGene1A") %>%
+      dplyr::select("LeftBreakpoint","RightBreakpoint","FusionName","Fusion_Type","Gene1A","Sample","DomainRetainedGene1A") %>%
       unique()
     
     standardFusionGene1BDomain<-annDomain$Gene1B %>% 
-      dplyr::rename("DomainRetainedInGene1B"="Gene1B_DOMAIN_RETAINED_IN_FUSION") %>% 
+      dplyr::rename("DomainRetainedGene1B"="Gene1B_DOMAIN_RETAINED_IN_FUSION") %>% 
       # mutated Left and Right Breakpoints since the get_Pfam_domain separtaes the 
       # chromosome and genomic location into LeftBreakpointChr,LeftBreakpoint
       # and RightBreakpointChr,RightBreakpoint
@@ -97,7 +97,7 @@ fusion_driver <- function(standardFusioncalls,
       dplyr::mutate(LeftBreakpoint=paste(LeftBreakpointChr,LeftBreakpoint,sep=":"),
                     RightBreakpoint=paste(RightBreakpointChr,RightBreakpoint,sep = ":")) %>%
       # select only columns required
-      dplyr::select("LeftBreakpoint","RightBreakpoint","FusionName","Fusion_Type","Sample","Gene1B","DomainRetainedInGene1B") %>%
+      dplyr::select("LeftBreakpoint","RightBreakpoint","FusionName","Fusion_Type","Sample","Gene1B","DomainRetainedGene1B") %>%
       unique()
     
     standardFusionDomain <- full_join(standardFusionGene1ADomain,standardFusionGene1BDomain )
@@ -105,8 +105,8 @@ fusion_driver <- function(standardFusioncalls,
     if (exists("kinaseDomainRetained") ){
       # default to always print kinase domain retention
       standardFusionDomain <- standardFusionDomain %>% 
-        dplyr::rename("kinaseDomainRetainedGene1A"="DomainRetainedInGene1A",
-                      "kinaseDomainRetainedGene1B"="DomainRetainedInGene1B")
+        dplyr::rename("kinaseDomainRetainedGene1A"="DomainRetainedGene1A",
+                      "kinaseDomainRetainedGene1B"="DomainRetainedGene1B")
     }
     
     standardFusioncalls <- standardFusioncalls %>%
