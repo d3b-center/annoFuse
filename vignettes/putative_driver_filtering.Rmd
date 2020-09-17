@@ -103,7 +103,7 @@ putative_driver_fusions <- fusion_driver(
   standardFusioncalls = fusion_calls, 
   annotated = TRUE, 
   geneListReferenceDataTab = geneListReferenceDataTab, 
-  fusionReferenceDataTab = fusionReferenceDataTab
+  fusionReferenceDataTab = fusionReferenceDataTab,checkDomainStatus = TRUE
 )
 
 # aggregate caller
@@ -171,6 +171,19 @@ QCGeneFiltered_recFusionUniq <- QCGeneFiltered_recFusion %>%
     !Gene2A %in% fusion_recurrent5_per_sample$GeneSymbol |
     !Gene1B %in% fusion_recurrent5_per_sample$GeneSymbol |
     !Gene2B %in% fusion_recurrent5_per_sample$GeneSymbol)
+
+# Check for domain retention
+QCGeneFiltered_recFusionUniq <- fusion_driver(
+  standardFusioncalls = QCGeneFiltered_recFusionUniq, 
+  geneListReferenceDataTab = geneListReferenceDataTab, 
+  fusionReferenceDataTab = fusionReferenceDataTab,
+  # don't filter because these are non-oncogenic fusions
+  filterPutativeDriver = FALSE,
+  checkDomainStatus = TRUE,
+  annotated = TRUE
+)
+
+
 ```
 
 Here, we visualize the distribution of fusions within two different genes that are annotated as "Genic" in our standard fusion format.
