@@ -1,7 +1,8 @@
 #' Filter standardized fusion calls for driver fusions
 #'
 #' If standardized fusion calls are annotated using the geneListReferenceDataTab and fusionReferenceDataTab filters out fusion calls where partner genes are not annotated.
-#' If standardized fusion is not annotated it will be annotated with geneListReferenceDataTab and fusionReferenceDataTab provided
+#' If standardized fusion is not annotated it will be annotated with geneListReferenceDataTab and fusionReferenceDataTab provided.
+#' Domain retention status for Gene1A and Gene1B for the given pfamIDs is also annotated; defaults to kinase domain retention status information
 #'
 #' @param standardFusioncalls A dataframe from star fusion or arriba (more callers to be added)
 #' @param filterPutativeDriver filter out fusion calls where partner genes are not annotated from with gene and fusion reference list by annnoFuse::annotate_fusion_calls()
