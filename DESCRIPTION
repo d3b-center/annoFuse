@@ -55,4 +55,3 @@ NeedsCompilation: no
 biocViews:
     Software, Transcription, Visualization, GeneExpression, Annotation,
     GeneFusionDetection, GUI, ReportWriting
-    
