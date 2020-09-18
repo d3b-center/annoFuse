@@ -1,5 +1,9 @@
 # annoFuse
 
+<!-- badges: start -->
+[![R build status](https://github.com/d3b-center/annoFuse/workflows/R-CMD-check/badge.svg)](https://github.com/d3b-center/annoFuse/actions)
+<!-- badges: end -->
+
 Using annoFuse, users can filter out fusions known to be artifactual and retained high-quality fusion calls using support of at least one junction read and remove false calls if there is disproportionate spanning fragment support of more than 100 reads compared to the junction read count. 
 
 For prioritization, users can capture known as well as putative driver fusions reported in TCGA, or fusions containing gene partners that are known oncogenes, tumor suppressor genes, or COSMIC genes. 
