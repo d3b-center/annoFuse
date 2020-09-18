@@ -4,24 +4,54 @@
 \alias{fusion_driver}
 \title{Filter standardized fusion calls for driver fusions}
 \usage{
-fusion_driver(standardFusioncalls = standardFusioncalls,
+fusion_driver(
+  standardFusioncalls,
+  filterPutativeDriver = TRUE,
   annotated = TRUE,
-  geneListReferenceDataTab = geneListReferenceDataTab,
-  fusionReferenceDataTab = fusionReferenceDataTab)
+  geneListReferenceDataTab,
+  fusionReferenceDataTab,
+  checkDomainStatus = FALSE,
+  domainsToCheck
+)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba (more callers to be added)}
 
-\item{annotated}{Boolean if annotated}
+\item{filterPutativeDriver}{filter out fusion calls where partner genes are not annotated from with gene and fusion reference list by annnoFuse::annotate_fusion_calls()}
+
+\item{annotated}{Logical value to specify if input if annotated by annnoFuse::annotate_fusion_calls()}
 
 \item{geneListReferenceDataTab}{A dataframe with column 1 as GeneName 2 source file 3 type; collapse to summarize type}
 
 \item{fusionReferenceDataTab}{A dataframe with column 1 as FusionName 2 source file 3 type; collapse to summarize type}
+
+\item{checkDomainStatus}{Logical value to check if domain status in fused gene for given domansToCheck, default to FALSE}
+
+\item{domainsToCheck}{pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz, defaults to using kinase pfam IDs since the fusions with kinase domain are more relevant for therapy}
 }
 \value{
-Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder
+Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder.If checkDomainStatus =TRUE and domain retention status for given pfamID is also provided along with the gene location corresponding to the domain retention status
 }
 \description{
 If standardized fusion calls are annotated using the geneListReferenceDataTab and fusionReferenceDataTab filters out fusion calls where partner genes are not annotated.
-If standardized fusion is not annotated it will be annotated with geneListReferenceDataTab and fusionReferenceDataTab provided
+If standardized fusion is not annotated it will be annotated with geneListReferenceDataTab and fusionReferenceDataTab provided.
+Domain retention status for Gene1A and Gene1B for the given pfamIDs is also annotated; defaults to kinase domain retention status information
+}
+\examples{
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+geneListReferenceDataTab <- read.delim(
+  system.file("extdata", "genelistreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+fusionReferenceDataTab <- read.delim(
+  system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+  
+bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
+fusion_driver_df <- fusion_driver(sfc,
+                                  annotated = TRUE,
+                                  geneListReferenceDataTab = geneListReferenceDataTab,
+                                  fusionReferenceDataTab = fusionReferenceDataTab,
+                                  checkDomainStatus=FALSE,
+                                  domainsToCheck=kinaseid)
+
 }

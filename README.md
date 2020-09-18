@@ -1,43 +1,70 @@
 # annoFuse
-Using annoFuse, users can filter out fusions known to be artifactual and retained high-quality fusion calls using support of at least one junction read and remove false calls if there is disproportionate spanning fragment support of more than 10 reads compared to the junction read count. 
-    For prioritization, users can capture known as well as putative driver fusions reported in TCGA, or fusions containing gene partners that are known oncogenes, tumor suppressor genes, or COSMIC genes. 
-    Finally, users can also determine recurrent fusions across the cohort and recurrently-fused genes within each histology. By providing a standardized filtering and annotation method from multiple callers (STAR-Fusion and Arriba) users are able to merge, filter and prioritize putative oncogenic fusions across the PBTA. 
+
+Using annoFuse, users can filter out fusions known to be artifactual and retained high-quality fusion calls using support of at least one junction read and remove false calls if there is disproportionate spanning fragment support of more than 100 reads compared to the junction read count. 
+
+For prioritization, users can capture known as well as putative driver fusions reported in TCGA, or fusions containing gene partners that are known oncogenes, tumor suppressor genes, or COSMIC genes. 
+
+Finally, users can also determine recurrent fusions across the cohort and recurrently-fused genes within each histology. By providing a standardized filtering and annotation method from multiple callers (STAR-Fusion and Arriba) users are able to merge, filter and prioritize putative oncogenic fusions across the PBTA. 
 
 ## Getting Started
+
 These instructions will get you a copy of the package up and running on your local machine. 
 
 ## Install package
-`devtools::install_github("d3b-center/annoFuse")`
+
+```
+devtools::install_github("d3b-center/annoFuse", dependencies = TRUE)
+```
 
 ### Prerequisites for cohort level analysis
- - merge calls from each caller for you cohort and add tumor_id to each file before merging to be able to differentiate between the calls and a column annots with additional annotation (eg from FusionAnnotator or caller specific annotation)
- - reference folder  with a gene [genelistreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/genelistreference.txt) and [fusionreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/fusionreference.txt)
+
+ - merge calls from each caller for you cohort and a column `annots` with additional annotation (eg from FusionAnnotator or caller specific annotation we have used FusionAnnotator in our vignettes)
+
+ - reference folder  with a gene [genelistreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/genelistreference.txt) and [fusionreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/fusionreference.txt) inst/extdata has reference files we've used in our vignettes.
+The fusion reference is a compilation of the annotations listed in the table below.
+ 
+ 
+ 
+ Annotation | File | Source  
+------ | ---------- | --------- 
+| pfamID                        | http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz     | UCSC pfamID Description database |
+| Domain Location               | http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ucscGenePfam.txt.gz | UCSC pfamID Description database |
+| TCGA fusions                  | https://tumorfusions.org/PanCanFusV2/downloads/pancanfus.txt.gz             | TumorFusions: an integrative   resource for cancer-associated transcript fusions PMID: 29099951  |
+| Oncogenes                     | http://www.bushmanlab.org/assets/doc/allOnco_Feb2017.tsv                    | www.bushmanlab.org |
+| Tumor suppressor genes (TSGs) | https://bioinfo.uth.edu/TSGene/Human_TSGs.txt?csrt=5027697123997809089      | Tumor Suppressor Gene Database   2.0 PMIDs: 23066107, 26590405 |
+| Kinases                       | http://kinase.com/human/kinome/tables/Kincat_Hsap.08.02.xls |      The protein kinase complement of the human genome PMID: 12471243 |
+| COSMIC genes                  | https://cancer.sanger.ac.uk/census | Catalogue of Somatic Mutations   in Cancer |
+| Pediatric-specific oncogenes  | _MYBL1, SNCAIP, FOXR2, TTYH1, TERT_ | doi:10.1073/pnas.1300252110,   doi:10.1038/nature11327, doi:10.1016/j.cell.2016.01.015, doi:10.1038/ng.2849,   doi:10.1038/ng.3438, doi:10.1002/gcc.22110, doi:10.1016/j.canlet.2014.11.057,   doi:10.1007/s11910-017-0722-5 |
+| Pediatric-specific TSGs | _BCOR_, _QKI_  | doi:10.1016/j.cell.2016.01.015, doi:10.1038/ng.3500 |
+
+ 
  - expression matrix with GeneSymbol per row and samples as columns
  
 ### Prerequisites for single sample analysis
+
  - [STAR-Fusion star-fusion.fusion_predictions.tsv ](https://github.com/STAR-Fusion/STAR-Fusion/wiki#output-from-star-fusion)
  - [Arriba fusions.tsv](https://arriba.readthedocs.io/en/latest/output-files/)
  - RSEM genes.results.gz
 
+## Overview of package
+
+![](vignettes/Figure_1.png)
+
+
 ## Vignette
-To browse vignette to see example of ** Single Sample run ** 
 
-`devtools::install_github("d3b-center/annoFuse", build_vignettes=TRUE)`
+To browse vignettes
 
-`browseVignettes("annoFuse")`
+```
+devtools::install_github("d3b-center/annoFuse", build_vignettes=TRUE, dependencies = TRUE)
+browseVignettes("annoFuse")
+```
 
-Please find detailed information regarding the functionalities [here](https://github.com/d3b-center/annoFuse/wiki)
+
 
 ## Authors
-Krutika S. Gaonkar, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
+Krutika S. Gaonkar,Federico Marini, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
 
 ## License
 
 This project is licensed under the MIT License 
-
-## Built With
-R version 3.5.1 (2018-07-02) -- "Feather Spray"
-
-## Version 
-0.2
-

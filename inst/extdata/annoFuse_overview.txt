@@ -1,0 +1,31 @@
+element;intro
+#Welcome;Welcome to <code>annoFuse</code>! Here you can explore the results of your standardized fusion calls at best, drilling down in the data at hand and generating plots dynamically. <br><br>In this tour you will get an overview of the user interface. You can always leave the tour by pressing "Skip", or by clicking anywhere outside of the tour box. At any stage, you can access the tour by clicking on the question mark in the top right corner of the app.
+#plot_controls;In the sidebar (which you can open up by clicking on the menu in the main navigation bar), you will find a number of controls to adjust for example the aspect of the plots you can generate in the FusionSummary. 
+#af_filtercols + .selectize-control;Here you can select which columns will be displayed in the interactive table in the FusionExplorer panel. Try adding or removing some, and see how the content changes in the main tab.
+#af_cols + .selectize-control;This widget controls the column from your file which will be used as a grouping variable...
+#af_countcol + .selectize-control;... while this widget will specify the one column used to perform the required counting operations... 
+#af_n_topfusions;... and this one specifies the number of top recurrent fusions to display.
+#plot_filters;You can also perform filtering with this set of widgets. These widgets will be addressed more in detail at a later step in the tour, where we describe the usage of FusionSummary.
+#btn_load_demo;If you did not provide any dataset, you can use this button to load a demo dataset, provided bundled in this package.
+#navbartab;We'll start with FusionExplorer - you can navigate to other tabs as well anytime.
+#table_annofuse;FusionExplorer is an interactive way to explore the putative oncogenic fusion results from annoFuse. In the widgets above the table, you can enter values to filter the rows. You can also export the filtered table using the download button above. You can also use shinyFuse's functionality to view the gene fusions, exons, protein domains, and breakpoints - for this, we're going to need some additional information, also provided with the package, on the exons and on the Pfam protein domains.
+#btn_load_exonsdata;Load the exons and pfam domains by clicking the buttons on the upper right side. This can take a few seconds - click first on the "Load exons" button...
+#btn_load_pfamdata;... and then on the "Load pfam".
+#geneinfo_ui;See how the content on the right side of the table is responsive to the objects loaded in the session. You'll just need to select a line in the main table.
+#table_annofuse;Please select a line in this table...
+#geneinfo_ui;... and see how the info gets propagated to the respective panels, displaying a series of buttons for further exploration and some plots. Plots for the 5' gene, 3' gene, and both genes will be generated to the right of the table.
+#geneplots_ui;Here's the set of buttons for each pair of transcripts involved in the gene fusion event.
+#btn_dl_bpleft;This button can be useful if you want to export to pdf the graphics you are generating in the live session - below each plot you can find one dedicated to the plots just above.
+#export_controls;You can also use this widget to control the size of the exported images (in pdf format). These are the default values, but you can change them to edit the aspect ratio based on the displayed content.
+#navbartab;Time to switch to the content and functionality of FusionSummary, which can e.g. used to analyze recurrent fusions within a cohort of patient samples. Please select now the tab of FusionSummary to proceed with the tour.
+#af_filtercols + .selectize-control;To the left of the table, select a Grouping Column. This will be the column used for analysis of recurrent fusions. For example, if your dataset has multiple histologies and you are interested in recurrent fusions by histology, this value would be histology.
+#af_n_topfusions;Select the number of top fusions to display in the plot.
+#af_countcol + .selectize-control;Select a Counting column. This is usually a patient-level identifier.
+#ui_af_summary;To get an overview on all the fusions results, you can click on the collapsible element of this box and display an info-rich visual summary.
+#af_recurrentfusions;In a similar fashion, you can plot the recurrent fusions...
+#af_recurrentgenes;... and the recurrent genes affected, by the means of this two small panels.
+#navbartab;If you desire to have more information on shinyFuse and annoFuse in general, together with their functionality, make sure to check out the respective tab.
+#plot_filters;You can select any combination of the filters in the sidebar to alter the subset of fusions used to generate the plots. Try for example to remove the low confidence fusions...
+#af_recurrentfusions;... and you can see how the plots will be updated accordingly.
+#bottomline;These were just some examples of how you can use shinyFuse to further explore the set of fusion calls you just created e.g. annotating the output of fusion callers with annoFuse to prioritize biologically and clinically relevant events.
+#goodbye;Thank you for taking the tour of <code>annoFuse</code>!
