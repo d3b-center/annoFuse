@@ -1,17 +1,58 @@
 Package: annoFuse
 Type: Package
-Title: Annotation And Filtering Analysis For Fusion Calls
-Version: 0.2
-Author: Krutika Gaonkark
-Maintainer: Krutika Gaonkark <gaonkark@chop.email.edu>
+Title: annoFuse: an R Package to annotate, prioritize, and interactively explore putative oncogenic RNA fusions
+Version: 0.90.0
+Authors@R: c(person(c("Krutika", "S."), "Gaonkar", role = c("aut", "cre"),
+    email = "gaonkark@chop.email.edu",
+    comment = c(ORCID = "0000-0003-0838-2405")),
+    person("Federico", "Marini", role = "aut",
+    email = "marinif@uni-mainz.de",
+    comment = c(ORCID = "0000-0003-3252-7758")),
+    person(c("Komal", "S."), "Rathi", role = "ctb",
+    email = "rathik@email.chop.edu",
+    comment = c(ORCID = "0000-0001-5534-6904")),
+    person(c("Jaclyn", "N."), "Taroni", role = "ctb",
+    email = "jaclyn.taroni@ccdatalab.org",
+    comment = c(ORCID = "0000-0003-4734-4508")))
 Description: Using annoFuse, users can filter out fusions known to be artifactual and retained high-quality fusion calls using support of at least one junction read and remove false calls if there is disproportionate spanning fragment support of more than 10 reads compared to the junction read count. For prioritization, users can capture known as well as putative driver fusions reported in TCGA, or fusions containing gene partners that are known oncogenes, tumor suppressor genes, or COSMIC genes. 
     Finally, users can also determine recurrent fusions across the cohort and recurrently-fused genes within each histology. By providing a standardized filtering and annotation method from multiple callers (STAR-Fusion and Arriba) users are able to merge, filter and prioritize putative oncogenic fusions across the PBTA. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1.9000
-Imports: reshape2,dplyr,tidyr,ggplot2,qdapRegex,ggpubr,ensembldb,tibble,ggthemes,EnsDb.Hsapiens.v86,grid,tidyverse,readr,grDevices,stats,utils,stringr
-Suggests: knitr, rmarkdown
+RoxygenNote: 7.1.1
+Imports: 
+    reshape2,
+    dplyr,
+    tidyr,
+    purrr,
+    ggplot2,
+    qdapRegex,
+    ggpubr,
+    tibble,
+    ggthemes,
+    ensembldb,
+    EnsDb.Hsapiens.v86,
+    grid,
+    readr,
+    grDevices,
+    stats,
+    utils,
+    stringr,
+    shiny,
+    shinyBS,
+    shinydashboard,
+    shinycssloaders,
+    rintrojs,
+    shinythemes,
+    base64enc,
+    DT,
+    rmarkdown,
+    methods
+Suggests: 
+    knitr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-11-08 19:15:15 UTC; gaonkark
+biocViews:
+    Software, Transcription, Visualization, GeneExpression, Annotation,
+    GeneFusionDetection, GUI, ReportWriting
+    

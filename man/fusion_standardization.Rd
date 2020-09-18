@@ -4,12 +4,18 @@
 \alias{fusion_standardization}
 \title{Standardizes fusion calls}
 \usage{
-fusion_standardization(fusion_calls = fusion_calls, caller = caller)
+fusion_standardization(
+  fusion_calls,
+  caller = c("STARFUSION", "ARRIBA"),
+  tumorID = "tumorID"
+)
 }
 \arguments{
 \item{fusion_calls}{A dataframe from star fusion or arriba (more callers to be added)}
 
-\item{caller}{string options STARfusion/arriba}
+\item{caller}{string options STARFUSION/ARRIBA}
+
+\item{tumorID}{string or character vector of same length as fusion_calls}
 }
 \value{
 Standardized fusion calls ready for filtering
@@ -18,4 +24,18 @@ Standardized fusion calls ready for filtering
 Various fusion callers have different formats that make aggregating and filtering data difficult.
 By standardizing fusion callers output we capture the required columns which we use for downstream
 analysis
+}
+\examples{
+# read in arriba fusion file
+fusionfileArriba <- read_arriba_calls(
+  system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+# read in starfusion file
+fusionfileStarFusion <- read_starfusion_calls(
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+formattedArriba <- fusion_standardization(fusionfileArriba,
+                                          caller = "ARRIBA",
+                                          tumorID = "tumorID")
+formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
+                                              caller = "STARFUSION",
+                                              tumorID = "tumorID")
 }

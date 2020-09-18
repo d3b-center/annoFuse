@@ -4,13 +4,12 @@
 \alias{samplecount_fusion_calls}
 \title{Function to identify fusions called in n samples}
 \usage{
-samplecount_fusion_calls(standardFusioncalls = standardFusioncalls,
-  numSample = numSample, group = group)
+samplecount_fusion_calls(standardFusioncalls, numSample = 1, group)
 }
 \arguments{
 \item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
 
-\item{numSample}{Least number of samples per group that have the fusion}
+\item{numSample}{Least number of samples per group that have the fusion. Defaults to 1.}
 
 \item{group}{column name for grouping variable}
 }
@@ -19,4 +18,9 @@ Fusions found in atleast n samples
 }
 \description{
 Function to identify fusions called in n samples
+}
+\examples{
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+sfc <- read.delim(out_annofuse)
+samplecount_fusion_calls(sfc, group = "Kids_First_Participant_ID")
 }

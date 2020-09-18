@@ -4,19 +4,47 @@
 \alias{aggregate_fusion_calls}
 \title{Function to aggregate Caller and read support per fusions calls}
 \usage{
-aggregate_fusion_calls(standardFusioncalls = standardFusioncalls,
-  removeother = FALSE, filterAnnots = filterAnnots)
+aggregate_fusion_calls(standardFusioncalls, removeother = FALSE, filterAnnots)
 }
 \arguments{
-\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized to run through the filtering steps}
+\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized 
+to run through the filtering steps}
 
-\item{removeother}{TRUE to remove Fusion_Type="other" and keep only in-frame and frameshift Default: FALSE}
+\item{removeother}{TRUE to remove Fusion_Type="other" and keep only in-frame and 
+frameshift Default: FALSE}
 
-\item{filterAnnots}{regex to remove from annots column eg. LOCAL_REARRANGEMENT|LOCAL_INVERSION}
+\item{filterAnnots}{regex to remove from annots column eg. 
+LOCAL_REARRANGEMENT|LOCAL_INVERSION 
+## TODO: should this mentioned above be e.g. the default value?}
 }
 \value{
 Standardized fusion calls with aggregated Caller and read support
 }
 \description{
 Function to aggregate Caller and read support per fusions calls
+}
+\examples{
+# standardize
+fusionfileArriba <- read_arriba_calls(
+  system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+fusionfileStarFusion <- read_starfusion_calls(
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+formattedArriba <- fusion_standardization(fusionfileArriba,
+                                          caller = "ARRIBA",
+                                          tumorID = "tumorID")
+formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
+                                              caller = "STARFUSION",
+                                              tumorID = "tumorID")
+# merge standardized fusion calls
+standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
+fusionQCFiltered <- fusion_filtering_QC(
+  standardFusioncalls = standardFusioncalls, 
+  readingFrameFilter = "in-frame|frameshift|other",
+  artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+  junctionReadCountFilter = 1,
+  spanningFragCountFilter = 10,
+  readthroughFilter = TRUE)
+# aggregate calls 
+aggregate_fusion_calls(fusionQCFiltered)    
+
 }

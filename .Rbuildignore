@@ -1,2 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+<<<<<<< HEAD
+=======
+^LICENSE\.md$
+^doc$
+^\.github$
+>>>>>>> origin/exemplary
