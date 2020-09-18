@@ -2,16 +2,16 @@ Package: annoFuse
 Type: Package
 Title: annoFuse: an R Package to annotate, prioritize, and interactively explore putative oncogenic RNA fusions
 Version: 0.3.0
-Authors@R: c(person("Krutika", "S.", "Gaonkar", role = c("aut", "cre"),
+Authors@R: c(person(c("Krutika", "S."), "Gaonkar", role = c("aut", "cre"),
     email = "gaonkark@chop.email.edu",
     comment = c(ORCID = "0000-0003-0838-2405")),
     person("Federico", "Marini", role = "aut",
     email = "marinif@uni-mainz.de",
     comment = c(ORCID = "0000-0003-3252-7758")),
-    person("Komal", "S.", "Rathi", role = "ctb",
+    person(c("Komal", "S."), "Rathi", role = "ctb",
     email = "rathik@email.chop.edu",
     comment = c(ORCID = "0000-0001-5534-6904")),
-    person("Jaclyn", "N.", "Taroni", role = "ctb",
+    person(c("Jaclyn", "N."), "Taroni", role = "ctb",
     email = "jaclyn.taroni@ccdatalab.org",
     comment = c(ORCID = "0000-0003-4734-4508")))
 Description: Using annoFuse, users can filter out fusions known to be artifactual and retained high-quality fusion calls using support of at least one junction read and remove false calls if there is disproportionate spanning fragment support of more than 10 reads compared to the junction read count. For prioritization, users can capture known as well as putative driver fusions reported in TCGA, or fusions containing gene partners that are known oncogenes, tumor suppressor genes, or COSMIC genes. 
