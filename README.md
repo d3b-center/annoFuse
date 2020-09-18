@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![R build status](https://github.com/d3b-center/annoFuse/workflows/R-CMD-check/badge.svg)](https://github.com/d3b-center/annoFuse/actions)
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4036789.svg)](https://doi.org/10.5281/zenodo.4036789)
 
 <!-- badges: end -->
