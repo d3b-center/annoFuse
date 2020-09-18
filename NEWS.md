@@ -1,4 +1,4 @@
-# annoFuse 0.90
+# annoFuse 0.90 (released 2020-09-18)
 
 ## New features
 
