@@ -4,7 +4,7 @@
 #'
 #' @importFrom dplyr arrange bind_cols case_when count desc distinct filter
 #' group_by inner_join left_join mutate n rename select summarise ungroup %>%
-#' pull
+#' pull full_join
 #' @importFrom ggplot2 aes coord_flip element_blank element_line element_rect
 #' element_text facet_wrap geom_bar geom_col geom_hline geom_line
 #' geom_linerange geom_point geom_segment ggplot ggtitle guides labs
@@ -40,5 +40,7 @@ globalVariables(c(
   "gene_biotype", "Type.ct", "NAME", "Sample", "Domain",
   "Gene1A_DOMAIN_RETAINED_IN_FUSION", "Gene1B_DOMAIN_RETAINED_IN_FUSION",
   "Gene1A_anno", "Gene1B_anno", "Annot", "Annot.ct", "Annotation",
-  "JunctionReadCount", "PROT_FUSION_TYPE" ,"SpanningFragCount"
+  "JunctionReadCount", "PROT_FUSION_TYPE" ,"SpanningFragCount",
+  "pfam_id", "LeftBreakpoint", "LeftBreakpointChr", "RightBreakpoint",
+  "RightBreakpointChr"
 ))
