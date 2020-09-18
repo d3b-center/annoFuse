@@ -2,6 +2,8 @@
 
 <!-- badges: start -->
 [![R build status](https://github.com/d3b-center/annoFuse/workflows/R-CMD-check/badge.svg)](https://github.com/d3b-center/annoFuse/actions)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4036789.svg)](https://doi.org/10.5281/zenodo.4036789)
+
 <!-- badges: end -->
 
 Using annoFuse, users can filter out fusions known to be artifactual and retained high-quality fusion calls using support of at least one junction read and remove false calls if there is disproportionate spanning fragment support of more than 100 reads compared to the junction read count. 
