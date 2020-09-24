@@ -11,7 +11,7 @@ assignees: ''
 
 
 
-#### What release are you using?
+#### What version are you using?
 <!--You may want to check if the issue has been resolved in an updated release-->
 
 
