@@ -55,7 +55,7 @@ Thanks for visiting!
 
 ## News
 
-[Date of Launch]. Welcome to ShinyFuse, an application for exploration of fusion output derived from [annoFuse](https://github.com/d3b-center/annoFuse)! 
+2020-09-18 - Welcome to ShinyFuse, an application for exploration of fusion output derived from [annoFuse](https://github.com/d3b-center/annoFuse)! This feature is available from the package version `0.90.0`.
 
 ## Contact
 
