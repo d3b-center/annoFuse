@@ -2,7 +2,7 @@
 
 ### Purpose/implementation Section
 
-#### What feature is being added ?
+#### What feature is being added or bug is being addressed?
 
 
 #### What was your approach?
