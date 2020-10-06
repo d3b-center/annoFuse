@@ -1,19 +1,19 @@
 ---
-name: Report an issue
+name: Report an issue or bug
 about: Use this to ask a question about or report an issue with annoFuse
-title: 'Report an issue'
-labels: Report an issue
+title: 'Bug:'
+labels: bug
 assignees: ''
 
 ---
 
-#### Provide the command used or report your issue here
+#### Provide the command used or report the bug here
 
 
 #### What version are you using?
 <!--You may want to check if the issue has been resolved in an updated release-->
 
-#### Add error message here
+#### Add error message here (if applicable)
 
 
 #### Add Session info
