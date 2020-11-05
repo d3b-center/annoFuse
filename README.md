@@ -70,7 +70,7 @@ browseVignettes("annoFuse")
 
 
 ## Authors
-Krutika S. Gaonkar,Federico Marini, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
+Krutika S. Gaonkar, Federico Marini, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
 
 ## License
 
