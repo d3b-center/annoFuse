@@ -22,7 +22,7 @@
 #' @importFrom tibble add_column column_to_rownames remove_rownames 
 #' rownames_to_column
 #' @importFrom tidyr gather separate unnest
-#' @importFrom dplyr one_of
+#' @importFrom tidyselect one_of
 #' @importFrom utils head read.delim browseURL
 #' @importFrom EnsDb.Hsapiens.v86 EnsDb.Hsapiens.v86
 #' @importFrom ensembldb genes
