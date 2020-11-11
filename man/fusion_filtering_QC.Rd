@@ -37,9 +37,9 @@ oncogenic drivers of a tumor and in some cases, appropriate therapy
 \examples{
 # standardize
 fusionfileArriba <- read_arriba_calls(
-  system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+  system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
 fusionfileStarFusion <- read_starfusion_calls(
-  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
 formattedArriba <- fusion_standardization(fusionfileArriba,
                                           caller = "ARRIBA",
                                           tumorID = "tumorID")

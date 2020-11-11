@@ -23,7 +23,7 @@ A ggplot object containing a summary of the standardized fusion calls
 Function to annotate fusion calls
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 plot_summary(sfc, groupby = "Fusion_Type")
 }

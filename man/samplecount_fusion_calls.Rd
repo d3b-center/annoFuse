@@ -20,7 +20,7 @@ Fusions found in atleast n samples
 Function to identify fusions called in n samples
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 sfc <- read.delim(out_annofuse)
 samplecount_fusion_calls(sfc, group = "Kids_First_Participant_ID")
 }

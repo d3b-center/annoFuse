@@ -29,9 +29,9 @@ Function to annotate fusion calls
 \examples{
 # standardize
 fusionfileArriba <- read_arriba_calls(
-  system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+  system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
 fusionfileStarFusion <- read_starfusion_calls(
-  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
 formattedArriba <- fusion_standardization(fusionfileArriba,
                                           caller="ARRIBA", 
                                           tumorID = "tumorID")
@@ -49,10 +49,10 @@ fusionQCFiltered <- fusion_filtering_QC(standardFusioncalls = standardFusioncall
 # annotated from gene and fusion refrence list
 # read in gene and fusion reference tab
 geneListReferenceDataTab <- read.delim(
-  system.file("extdata", "genelistreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+  system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
 # column 1 as FusionName 2 source file 3 type; collapse to summarize type
 fusionReferenceDataTab <- read.delim(
- system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+ system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
 
 filteredFusionAnnotated <- annotate_fusion_calls(
  standardFusioncalls = fusionQCFiltered,
