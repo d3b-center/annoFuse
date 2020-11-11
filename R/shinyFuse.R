@@ -21,7 +21,8 @@
 #' @importFrom shinyBS bsTooltip
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", 
+#'   package = "annoFuseData")
 #' if (interactive()) {
 #'   shinyFuse(out_annofuse)
 #' }
@@ -421,7 +422,7 @@ shinyFuse <- function(out_annofuse = NULL) {
     # Load demo data
     observeEvent(input$btn_load_demo, {
       message("Loading demo data...")
-      demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+      demodata_location <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
       values$annofuse_tbl <- 
         .check_annoFuse_calls(read.delim(demodata_location, stringsAsFactors = FALSE))
       values$enhanced_annofuse_tbl <- values$annofuse_tbl
@@ -911,7 +912,7 @@ shinyFuse <- function(out_annofuse = NULL) {
       if (is.null(values$data_pfam)) {
         message("Loading pfam data...")
         showNotification("Loading pfam data...", type = "message")
-        values$data_pfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+        values$data_pfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
         showNotification("Done loading pfam data!", type = "message")
 
         if (!is.null(values$annofuse_tbl)) {
@@ -933,7 +934,7 @@ shinyFuse <- function(out_annofuse = NULL) {
       if (is.null(values$data_exons)) {
         message("Loading exons data...")
         showNotification("Loading exons data...", type = "message", duration = 10)
-        values$data_exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
+        values$data_exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuseData"))
         showNotification("Done loading exons data!", type = "message")
       } else {
         showNotification("exons data already loaded", type = "default")

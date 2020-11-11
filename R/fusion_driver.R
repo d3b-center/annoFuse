@@ -18,14 +18,14 @@
 #' @return Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder.If checkDomainStatus =TRUE and domain retention status for given pfamID is also provided along with the gene location corresponding to the domain retention status
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' sfc <- read.delim(out_annofuse)
 #' geneListReferenceDataTab <- read.delim(
-#'   system.file("extdata", "genelistreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+#'   system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
 #' fusionReferenceDataTab <- read.delim(
-#'   system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+#'   system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
 #'   
-#' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+#' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
 #' kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
 #' fusion_driver_df <- fusion_driver(sfc,
 #'                                   annotated = TRUE,
@@ -47,7 +47,7 @@ fusion_driver <- function(standardFusioncalls,
   
   if(checkDomainStatus){
     # load bioMart Pfam dataframe
-    bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+    bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
     
     if(missing(domainsToCheck)){
       message("domainsToCheck was not provided; Using default kinase pfam ids to checkDomainStatus")

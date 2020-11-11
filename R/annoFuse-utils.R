@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' fusionfileArriba <- read_arriba_calls(
-#'                         system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+#'   system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
 #'                         
 
 read_arriba_calls <- function(arriba_calls){
@@ -68,7 +68,7 @@ read_arriba_calls <- function(arriba_calls){
 #'
 #' @examples
 #' fusionfileStarFusion <- read_starfusion_calls(
-#'                            system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
 #'                            
 read_starfusion_calls <- function(starfusion_calls) {
   # set col types
