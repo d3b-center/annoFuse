@@ -38,7 +38,7 @@
 #'
 #' @examples
 #'
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' \dontrun{
 #' reportFuse(out_annofuse = out_annofuse)
 #' }
@@ -121,10 +121,8 @@ reportFuse <- function(out_annofuse,
 
   # Rmd template
   if (is.null(input_rmd)) {
-    template_rmd <- system.file("extdata",
-      "report_template_annoFuse.Rmd",
-      package = "annoFuse"
-    )
+    template_rmd <- 
+      system.file("extdata", "report_template_annoFuse.Rmd", package = "annoFuse")
   } else {
     template_rmd <- input_rmd
   }
