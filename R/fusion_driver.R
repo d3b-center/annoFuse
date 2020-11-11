@@ -18,14 +18,18 @@
 #' @return Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder.If checkDomainStatus =TRUE and domain retention status for given pfamID is also provided along with the gene location corresponding to the domain retention status
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
+#' out_annofuse <- 
+#'   system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' sfc <- read.delim(out_annofuse)
 #' geneListReferenceDataTab <- read.delim(
-#'   system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
+#'   system.file("extdata", "genelistreference.txt", package = "annoFuseData"), 
+#'   stringsAsFactors = FALSE)
 #' fusionReferenceDataTab <- read.delim(
-#'   system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
+#'   system.file("extdata", "fusionreference.txt", package = "annoFuseData"), 
+#'   stringsAsFactors = FALSE)
 #'   
-#' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
+#' bioMartDataPfam <- 
+#'   readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
 #' kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
 #' fusion_driver_df <- fusion_driver(sfc,
 #'                                   annotated = TRUE,

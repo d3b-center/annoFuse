@@ -49,10 +49,12 @@ fusionQCFiltered <- fusion_filtering_QC(standardFusioncalls = standardFusioncall
 # annotated from gene and fusion refrence list
 # read in gene and fusion reference tab
 geneListReferenceDataTab <- read.delim(
-  system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
+  system.file("extdata", "genelistreference.txt", package = "annoFuseData"), 
+  stringsAsFactors = FALSE)
 # column 1 as FusionName 2 source file 3 type; collapse to summarize type
 fusionReferenceDataTab <- read.delim(
- system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
+ system.file("extdata", "fusionreference.txt", package = "annoFuseData"), 
+ stringsAsFactors = FALSE)
 
 filteredFusionAnnotated <- annotate_fusion_calls(
  standardFusioncalls = fusionQCFiltered,

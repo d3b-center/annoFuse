@@ -24,9 +24,12 @@
 #' standardFusioncalls <- annoFuse::annoFuse_single_sample(
 #'   # Example files are provided in extdata, at-least 1 fusionfile is required along 
 #'   # with its rsem expression file
-#'   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
-#'   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
-#'   expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuseData"),
+#'   fusionfileArriba = system.file(
+#'     "extdata", "arriba_example.tsv", package = "annoFuseData"),
+#'   fusionfileStarFusion = system.file(
+#'     "extdata", "starfusion_example.tsv", package = "annoFuseData"),
+#'   expressionFile = system.file(
+#'     "extdata", "example.rsem.genes.results.gz", package = "annoFuseData"),
 #'   tumorID = "BS_W97QQYKQ",
 #'   # multiple read flag values for filtering using FusionAnnotator values
 #'   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",

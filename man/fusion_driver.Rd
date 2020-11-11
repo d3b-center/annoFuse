@@ -38,14 +38,18 @@ If standardized fusion is not annotated it will be annotated with geneListRefere
 Domain retention status for Gene1A and Gene1B for the given pfamIDs is also annotated; defaults to kinase domain retention status information
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
+out_annofuse <- 
+  system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 sfc <- read.delim(out_annofuse)
 geneListReferenceDataTab <- read.delim(
-  system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
+  system.file("extdata", "genelistreference.txt", package = "annoFuseData"), 
+  stringsAsFactors = FALSE)
 fusionReferenceDataTab <- read.delim(
-  system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
+  system.file("extdata", "fusionreference.txt", package = "annoFuseData"), 
+  stringsAsFactors = FALSE)
   
-bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
+bioMartDataPfam <- 
+  readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
 kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
 fusion_driver_df <- fusion_driver(sfc,
                                   annotated = TRUE,
