@@ -142,15 +142,12 @@ reportFuse <- function(out_annofuse,
     )
   }
 
-  
   # Process the arguments
   args <- list(...)
   args$input <- output_rmd
   args$output_format <- output_format
   args$output_file <- output_file
   args$quiet <- !knitr_show_progress
-
-
 
   # Render the report
   output_file <- do.call("render", args = args)
