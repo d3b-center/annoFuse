@@ -54,6 +54,8 @@ Imports:
 Suggests: 
     knitr,
     testthat
+Remotes:
+    federicomarini/annoFuseData
 VignetteBuilder: knitr
 NeedsCompilation: no
 biocViews:
