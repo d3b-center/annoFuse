@@ -30,7 +30,10 @@ fusion_driver(
 \item{domainsToCheck}{pfamID to check for retention status, the IDs can be found here http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz, defaults to using kinase pfam IDs since the fusions with kinase domain are more relevant for therapy}
 }
 \value{
-Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder.If checkDomainStatus =TRUE and domain retention status for given pfamID is also provided along with the gene location corresponding to the domain retention status
+Putative Driver standardized fusion calls annotated with gene list and 
+fusion list provided in reference folder. If checkDomainStatus == TRUE and 
+domain retention status for given pfamID is also provided along with the gene
+location corresponding to the domain retention status
 }
 \description{
 If standardized fusion calls are annotated using the geneListReferenceDataTab and fusionReferenceDataTab filters out fusion calls where partner genes are not annotated.

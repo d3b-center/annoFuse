@@ -15,7 +15,10 @@
 #'
 #' @export
 #'
-#' @return Putative Driver standardized fusion calls annotated with gene list and fusion list provided in reference folder.If checkDomainStatus =TRUE and domain retention status for given pfamID is also provided along with the gene location corresponding to the domain retention status
+#' @return Putative Driver standardized fusion calls annotated with gene list and 
+#' fusion list provided in reference folder. If checkDomainStatus == TRUE and 
+#' domain retention status for given pfamID is also provided along with the gene
+#' location corresponding to the domain retention status
 #'
 #' @examples
 #' out_annofuse <- 

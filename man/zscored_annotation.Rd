@@ -55,7 +55,7 @@ standardFusioncalls <- annoFuse::annoFuse_single_sample(
 expressionMatrix <- readRDS(system.file("extdata", "expr_collapsed.rds", package = "annoFuseData"))
 normData <- readRDS(system.file("extdata", "gtex_collapsed.rds", package = "annoFuseData"))
 zscoredStandardFusioncalls <- zscored_annotation(standardFusioncalls,
-                                                 zscoreFilter=2,
-                                                 normData=normData,
-                                                 expressionMatrix=expressionMatrix)
+                                                 zscoreFilter = 2,
+                                                 normData = normData,
+                                                 expressionMatrix = expressionMatrix)
 }
