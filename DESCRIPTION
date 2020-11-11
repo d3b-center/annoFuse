@@ -50,7 +50,8 @@ Imports:
     rmarkdown,
     methods
 Suggests: 
-    knitr
+    knitr,
+    testthat
 VignetteBuilder: knitr
 NeedsCompilation: no
 biocViews:
