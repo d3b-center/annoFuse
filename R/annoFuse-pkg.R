@@ -30,6 +30,7 @@
 #' @importFrom rmarkdown render
 #' @importFrom methods is
 #' @importFrom shinycssloaders withSpinner
+#' @import annoFuseData
 #'
 #' @name annoFuse-pkg
 #' @docType package
