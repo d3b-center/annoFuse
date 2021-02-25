@@ -188,7 +188,7 @@ shinyFuse <- function(out_annofuse = NULL) {
     )
   )
 
-
+  #nocov start
   # Server definition -------------------------------------------------------
   shinyfuse_server <- function(input, output, session) {
 
@@ -1020,6 +1020,7 @@ shinyFuse <- function(out_annofuse = NULL) {
     })
     
   }
+  #nocov end
   shinyApp(ui = shinyfuse_ui, server = shinyfuse_server)
 }
 
