@@ -2,7 +2,7 @@
 
 ### Purpose/implementation Section
 
-#### What feature is being added ?
+#### What feature is being added or bug is being addressed?
 
 
 #### What was your approach?
@@ -34,8 +34,8 @@
 
 <!-- Check all those that apply or remove this section if it is not applicable.-->
 
-- [ ] The dependencies required for the function in this pull request  has been added to [DESCRIPTION](https://github.com/d3b-center/annoFuse/blob/master/DESCRIPTION) `Imports` section
-- [ ] The files needed for the function to run are in inst/extdata
-- [ ] The code wa run through styler
+- [ ] The dependencies required for the function in this pull request have been added to [DESCRIPTION](https://github.com/d3b-center/annoFuse/blob/master/DESCRIPTION) `Imports` section, and the corresponding `NAMESPACE` directives have been added/updated
+- [ ] The files needed for the function to run are in `inst/extdata`
+- [ ] The code was run through `styler` 
 
 

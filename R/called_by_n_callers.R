@@ -28,7 +28,7 @@ called_by_n_callers <- function(standardFusioncalls,
   fusion_calls.summary <- fusion_caller.summary %>%
     dplyr::filter(.data$caller_count >= numCaller) %>%
     unique() %>%
-    mutate(note = paste0("Called by", numCaller, "callers")) %>%
+    mutate(note = paste0("Called by ", numCaller, " callers")) %>%
     as.data.frame()
   
   return(fusion_calls.summary)
