@@ -1,6 +1,6 @@
 context("Test fusion driver")
 
-fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
 
 sfc <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileArriba,

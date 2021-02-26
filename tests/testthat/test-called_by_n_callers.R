@@ -1,6 +1,6 @@
 context("Test called by N caller filter")
 
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 sfc <- read.delim(out_annofuse)
 sfc_called <- called_by_n_callers(sfc, numCaller = 2)
 

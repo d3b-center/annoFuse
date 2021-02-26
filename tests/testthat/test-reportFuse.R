@@ -1,7 +1,7 @@
 context("Running report")
 
 test_that("Reporting works as expected, and main errors are checked", {
-  out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+  out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
   report_location <- reportFuse(out_annofuse = out_annofuse, 
                                 knitr_show_progress = TRUE, 
                                 force_overwrite = TRUE, 

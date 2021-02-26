@@ -1,6 +1,6 @@
 context("Test fusion QC filtering")
 
-fusionfileArriba <- read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuse"),check.names = FALSE,stringsAsFactors = F)
+fusionfileArriba <- read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),check.names = FALSE,stringsAsFactors = F)
 
 formattedArriba <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileArriba,
@@ -8,7 +8,7 @@ formattedArriba <-
                                    tumorID = "BS_W97QQYKQ")
 
 
-fusionfileStarfusion <- read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),check.names = FALSE,stringsAsFactors = F)
+fusionfileStarfusion <- read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),check.names = FALSE,stringsAsFactors = F)
 
 formattedStarFusion <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileStarfusion,

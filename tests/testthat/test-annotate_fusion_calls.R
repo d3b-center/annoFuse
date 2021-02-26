@@ -1,6 +1,6 @@
 context("Test fusion annotation")
 
-fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
 
 formattedArriba <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileArriba,
@@ -8,7 +8,7 @@ formattedArriba <-
                                    tumorID = "BS_W97QQYKQ")
 
 
-fusionfileStarfusion <- read_starfusion_calls(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+fusionfileStarfusion <- read_starfusion_calls(system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
 
 formattedStarFusion <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileStarfusion,
@@ -17,10 +17,10 @@ formattedStarFusion <-
 
 standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
 
-geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
 
 fusionReferenceDataTab <- read.delim(
-  system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+  system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
 
 filteredFusionAnnotated <- annotate_fusion_calls(
   standardFusioncalls = standardFusioncalls,

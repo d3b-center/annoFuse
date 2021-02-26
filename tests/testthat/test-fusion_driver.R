@@ -1,15 +1,15 @@
 context("Test fusion driver")
 
-fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
 
 sfc <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileArriba,
                                    caller= "ARRIBA",
                                    tumorID = "BS_W97QQYKQ")
-geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
-fusionReferenceDataTab <- read.delim(system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
+geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
+fusionReferenceDataTab <- read.delim(system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
 
-bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
 kinaseid<-unique(bioMartDataPfam$pfam_id[grep("kinase",bioMartDataPfam$NAME)] )
 fusion_driver_df <- fusion_driver(sfc,
                                    annotated = FALSE,

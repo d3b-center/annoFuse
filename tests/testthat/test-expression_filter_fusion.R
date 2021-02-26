@@ -1,6 +1,6 @@
 context("Test expression filtering")
 
-fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
 
 formattedArriba <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileArriba,
@@ -8,7 +8,7 @@ formattedArriba <-
                                    tumorID = "BS_W97QQYKQ")
 
 
-fusionfileStarfusion <- read_arriba_calls(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+fusionfileStarfusion <- read_arriba_calls(system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
 
 formattedStarFusion <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileStarfusion,
@@ -17,7 +17,7 @@ formattedStarFusion <-
 
 standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
 
-expressionFile <- system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse")
+expressionFile <- system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuseData")
 expressionMatrix <- read_tsv(expressionFile)
 library(reshape2)
 # split gene id and symbol

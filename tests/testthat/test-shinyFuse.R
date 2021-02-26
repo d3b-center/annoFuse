@@ -1,7 +1,7 @@
 context("Testing launch of the shiny app")
 
 test_that("Testing shiny app and info generation elements", {
-  out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+  out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
   
   app_obj <- shinyFuse(out_annofuse)
   expect_is(app_obj, "shiny.appobj")

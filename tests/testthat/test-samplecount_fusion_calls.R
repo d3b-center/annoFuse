@@ -1,6 +1,6 @@
 context("Test counting samples with fusion call in cohort ")
 
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 sfc <- read.delim(out_annofuse)
 sfc_samplecount <- samplecount_fusion_calls(sfc, group = "broad_histology")
 

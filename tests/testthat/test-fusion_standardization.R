@@ -1,6 +1,6 @@
 context("Test fusion standardization")
 
-fusionfileArriba <- read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuse"),check.names = FALSE)
+fusionfileArriba <- read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),check.names = FALSE)
 
 standardFusioncalls <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileArriba,
@@ -14,7 +14,7 @@ test_that("Standardizing arriba calls", {
 })
 
 
-fusionfileStarfusion <- read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),check.names=FALSE)
+fusionfileStarfusion <- read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),check.names=FALSE)
 
 standardFusioncalls <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileStarfusion,
@@ -28,7 +28,7 @@ test_that("Standardizing starfusion calls (with --examine_coding_effect) calls",
 })
 
 
-fusionfileStarfusion <- read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),check.names=FALSE)
+fusionfileStarfusion <- read.delim(system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),check.names=FALSE)
 
 fusionfileStarfusion <- fusionfileStarfusion[,1:15]
 standardFusioncalls <- 
