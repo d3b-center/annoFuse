@@ -1,6 +1,6 @@
 context("Test domain annotation for Gene1A and Gene1B ")
 
-fusionfileArriba <- read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),check.names = FALSE,stringsAsFactors = F)
+fusionfileArriba <- read.delim(system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),check.names = FALSE,stringsAsFactors = FALSE)
 
 sfc <- 
   annoFuse::fusion_standardization(fusion_calls = fusionfileArriba,
