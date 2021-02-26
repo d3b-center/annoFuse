@@ -11,7 +11,7 @@
 #' @return A ggplot object containing a summary of the standardized fusion calls
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 #' plot_summary(sfc, groupby = "Fusion_Type")
 plot_summary <- function(standardFusioncalls,
@@ -122,7 +122,7 @@ plot_summary <- function(standardFusioncalls,
 
 
   # Kinase groups
-  bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+  bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
   annDomain <- get_Pfam_domain(standardFusioncalls = standardFusioncalls, bioMartDataPfam = bioMartDataPfam, keepPartialAnno = TRUE)
   gene1AKinaseDomain <- annDomain$Gene1A %>%
     dplyr::filter(Gene1A_DOMAIN_RETAINED_IN_FUSION == "Yes" & grepl("kinase", NAME)) %>%

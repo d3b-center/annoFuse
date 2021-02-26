@@ -39,11 +39,11 @@ ggplot of gene and breakpoints
 Function to plot breakpoints of a gene in a sample/cohort
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 sfc <- read.delim(out_annofuse)
-exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuse"))
+exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuseData"))
 bioMartDataPfam <- 
-  readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+  readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
 domainDataFrame <- get_Pfam_domain(standardFusioncalls = sfc, 
                                    bioMartDataPfam = bioMartDataPfam, 
                                    keepPartialAnno = TRUE)

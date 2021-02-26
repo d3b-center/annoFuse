@@ -24,9 +24,12 @@
 #' standardFusioncalls <- annoFuse::annoFuse_single_sample(
 #'   # Example files are provided in extdata, at-least 1 fusionfile is required along 
 #'   # with its rsem expression file
-#'   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuse"),
-#'   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuse"),
-#'   expressionFile = system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse"),
+#'   fusionfileArriba = system.file(
+#'     "extdata", "arriba_example.tsv", package = "annoFuseData"),
+#'   fusionfileStarFusion = system.file(
+#'     "extdata", "starfusion_example.tsv", package = "annoFuseData"),
+#'   expressionFile = system.file(
+#'     "extdata", "example.rsem.genes.results.gz", package = "annoFuseData"),
 #'   tumorID = "BS_W97QQYKQ",
 #'   # multiple read flag values for filtering using FusionAnnotator values
 #'   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
@@ -65,10 +68,10 @@ annoFuse_single_sample <- function(fusionfileArriba,
   Arribainputfile <- read_arriba_calls(fusionfileArriba)
 
   # read in gene and fusion reference tab
-  geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+  geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
   
   # column 1 as FusionName 2 source file 3 type; collapse to summarize type
-  fusionReferenceDataTab <- read.delim(system.file("extdata", "fusionreference.txt", package = "annoFuse"), stringsAsFactors = FALSE)
+  fusionReferenceDataTab <- read.delim(system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
   
 
   # if StarFusion and Arriba files empty execution stops

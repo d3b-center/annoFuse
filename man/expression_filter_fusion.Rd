@@ -29,9 +29,9 @@ Expression filtering with user provided expression Matrix and standard fusion ca
 \dontrun{
 # standardize
 fusionfileArriba <- read_arriba_calls(
-  system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+  system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
 fusionfileStarFusion <- read_starfusion_calls(
-  system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
 library(dplyr)
 formattedArriba <- fusion_standardization(fusionfileArriba,
                                           caller = "ARRIBA",
@@ -50,7 +50,7 @@ fusionQCFiltered <- fusion_filtering_QC(
   readthroughFilter = TRUE)
 # expression based filter to capture only fusions where atleast 1 gene is expressed
                     
-expressionFile <- system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuse")
+expressionFile <- system.file("extdata", "example.rsem.genes.results.gz", package = "annoFuseData")
 expressionMatrix <- read_tsv(expressionFile)
 library(reshape2)
 # split gene id and symbol

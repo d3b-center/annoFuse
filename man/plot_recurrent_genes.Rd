@@ -33,7 +33,7 @@ A ggplot object containing an overview on the recurrent fused genes
 Function to plot recurrent fused genes
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 # keep only in-frame and fusions where both breakpoints are within genes
 sfc <- as.data.frame(

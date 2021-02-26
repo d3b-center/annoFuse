@@ -69,7 +69,7 @@ edit and customize.
 }
 \examples{
 
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 \dontrun{
 reportFuse(out_annofuse = out_annofuse)
 }
