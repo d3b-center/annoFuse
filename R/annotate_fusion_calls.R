@@ -54,7 +54,7 @@ annotate_fusion_calls <- function(standardFusioncalls,
   stopifnot(is(fusionReferenceDataTab, "data.frame"))
   stopifnot(is.logical(checkReciprocal))
   
-  if (checkReciprocal){
+  if (checkReciprocal & nrow(standardFusioncalls)>0){
     # check for fusions have reciprocal fusions in the same Sample
     # works only for GeneY -- GeneX ; GeneX -- GeneY matches
     recirpocal_fusion <- function(FusionName,Sample,standardFusioncalls ){
@@ -75,7 +75,9 @@ annotate_fusion_calls <- function(standardFusioncalls,
     standardFusioncalls <- standardFusioncalls %>%
       dplyr::left_join(is_reciprocal,by=c("Sample","FusionName"))
     
-  }
+  } else if(checkReciprocal & nrow(standardFusioncalls)==0){
+    standardFusioncalls$reciprocal_exists <- logical()
+  }  
   
   geneListReferenceDataTab <- geneListReferenceDataTab %>% dplyr::select(-file)
   fusionReferenceDataTab <- fusionReferenceDataTab %>% dplyr::select(-file)

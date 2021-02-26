@@ -76,7 +76,30 @@ annoFuse_single_sample <- function(fusionfileArriba,
 
   # if StarFusion and Arriba files empty execution stops
   if (is_empty(STARFusioninputfile$`#FusionName`) & is_empty(Arribainputfile$`#gene1`)) {
-    stop("StarFusion and Arriba files empty")
+    warning("StarFusion and Arriba files empty")
+    standardFusioncalls<-data.frame("LeftBreakpoint"=character(),
+                                       "RightBreakpoint"=character(),
+                                       "FusionName"= character(),
+                                       "Sample" = character(),
+                                       "Caller" = character(),
+                                       "Fusion_Type" = character(),
+                                       "JunctionReadCount" = numeric(),
+                                       "SpanningFragCount" = numeric(),
+                                       "Confidence" = character(),
+                                       "annots" = character(),
+                                       "Gene1A" = character(),
+                                       "Gene2A" = character(),
+                                       "Gene1B" = character(),
+                                       "Gene2B" = character(),
+                                       "BreakpointLocation" = character(),
+                                       "SpanningDelta" = numeric(),
+                                       "reciprocal_exists" = character(),
+                                       "Gene1A_anno" = character(),
+                                       "Gene1B_anno" = character(),
+                                       "Gene2A_anno" = character(),
+                                       "Gene2B_anno" = character(),
+                                       "Fusion_anno" = character())
+    return(standardFusioncalls)
   }
 
   # if StarFusion and Arriba files are not empty

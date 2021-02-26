@@ -35,6 +35,10 @@ fusion_standardization <- function(fusion_calls,
   # caller <- match.arg(caller, choices = c("STARFUSION", "ARRIBA"))
   
   if (caller == "STARFUSION") {
+    if (!any(grepl("PROT_FUSION_TYPE",colnames(fusion_calls)))){
+      # add NA if --examine_coding_effect was not used while running starfusion
+      fusion_calls$PROT_FUSION_TYPE = NA
+    }
     fusion_calls <- fusion_calls %>%
       # standardize fusion type column name
       dplyr::rename(Fusion_Type = PROT_FUSION_TYPE,
