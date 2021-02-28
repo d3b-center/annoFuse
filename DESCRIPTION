@@ -47,7 +47,12 @@ Imports:
     base64enc,
     DT,
     rmarkdown,
-    methods
+    methods,
+    GenomicRanges,
+    biomaRt,
+    IRanges,
+    GenomeInfoDb,
+    BiocGenerics
 Suggests: 
     knitr,
     testthat (>= 2.1.0)

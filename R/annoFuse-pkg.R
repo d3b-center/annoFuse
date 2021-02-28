@@ -29,6 +29,11 @@
 #' @importFrom rmarkdown render
 #' @importFrom methods is
 #' @importFrom shinycssloaders withSpinner
+#' @importFrom GenomicRanges makeGRangesFromDataFrame
+#' @importFrom biomaRt getBM
+#' @importFrom IRanges mergeByOverlaps ranges
+#' @importFrom GenomeInfoDb seqnames
+#' @importFrom BiocGenerics strand
 #'
 #' @name annoFuse-pkg
 #' @docType package
