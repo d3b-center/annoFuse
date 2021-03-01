@@ -9,12 +9,12 @@
 #'
 #' @examples
 #' library(EnsDb.Hsapiens.v86)
-#' library(tidyverse)
-#' \dontrun{
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' sfc <- read.delim(out_annofuse)
 #' # using hg38 gencode gtf to get exon tracks
 #' download.file("ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_27/gencode.v27.primary_assembly.annotation.gtf.gz","gencode.v27.primary_assembly.annotation.gtf.gz")
 #' exons <- get_exons_tracks_gtf(gtf_path = file.path("gencode.v27.primary_assembly.annotation.gtf.gz"))
-#' 
+#' \dontrun{
 #' ensembl <- biomaRt::useMart(biomart = "ENSEMBL_MART_ENSEMBL",dataset = "hsapiens_gene_ensembl",host="ensembl.org")
 #' download.file("http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz","pfamDesc.txt.gz")
 #' download.file("http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ucscGenePfam.txt.gz","ucscGenePfam.txt.gz")
@@ -28,7 +28,7 @@
 #'                           geneposition = "Right", 
 #'                           fusionname = "ANTXR1--BRAF",
 #'                           rightBreakpoint = "7:140787584")
-#' }                          
+#' }                        
                                   
 get_exons_tracks_gtf <- function(genome="hg38",
                                  gtf_path

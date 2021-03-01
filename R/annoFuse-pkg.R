@@ -32,8 +32,8 @@
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
 #' @importFrom biomaRt getBM
 #' @importFrom IRanges mergeByOverlaps ranges
-#' @importFrom GenomeInfoDb seqnames
-#' @importFrom BiocGenerics strand
+#' @importFrom GenomicRanges seqnames
+#' @importFrom GenomicRanges strand
 #'
 #' @name annoFuse-pkg
 #' @docType package

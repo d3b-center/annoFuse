@@ -1,5 +1,11 @@
 context("Test exons dataframe generation")
 
+fusionfileArriba <- read_arriba_calls(system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
+
+sfc <- 
+  annoFuse::fusion_standardization(fusion_calls = fusionfileArriba,
+                                   caller= "ARRIBA",
+                                   tumorID = "BS_W97QQYKQ")
 library(EnsDb.Hsapiens.v86)
 download.file("ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_27/gencode.v27.primary_assembly.annotation.gtf.gz","gencode.v27.primary_assembly.annotation.gtf.gz")
 
