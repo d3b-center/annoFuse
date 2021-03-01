@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_biomart_pfam_merge.R
 \name{get_biomart_pfam_merge}
 \alias{get_biomart_pfam_merge}
-\title{Given pfam id(s) and an ensembl mart 
+\title{Given pfam id(s) and an ensembl mart
 creates a grange for the pfam domains}
 \usage{
 get_biomart_pfam_merge(
@@ -20,24 +20,26 @@ get_biomart_pfam_merge(
 
 \item{ucscGenePfam_path}{path to ucsc gene pfam genomic location}
 
-\item{pfam_id}{pfam id(s) to filter 
-ensembl}
+\item{pfam_id}{pfam id(s) to filter}
+
+\item{return_pfam_gr}{logical value to return a pfam location granges}
 }
 \value{
 granges for genomic locations of given pfam id(s)
 }
 \description{
-Given pfam id(s) and an ensembl mart 
+Given pfam id(s) and an ensembl mart
 creates a grange for the pfam domains
 }
 \examples{
 \dontrun{
-# hsapiens_gene_ensembl == Human genes (GRCh38.p13) 10th Feb 2021 
-ensembl <- biomaRt::useMart(biomart = "ENSEMBL_MART_ENSEMBL",dataset = "hsapiens_gene_ensembl",host="ensembl.org")
+# hsapiens_gene_ensembl == Human genes (GRCh38.p13) 10th Feb 2021
+ensembl <- biomaRt::useMart(biomart = "ENSEMBL_MART_ENSEMBL", dataset = "hsapiens_gene_ensembl", host = "ensembl.org")
 
-download.file("http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz","pfamDesc.txt.gz")
-download.file("http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ucscGenePfam.txt.gz","ucscGenePfam.txt.gz")
+download.file("http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz", "pfamDesc.txt.gz")
+download.file("http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ucscGenePfam.txt.gz", "ucscGenePfam.txt.gz")
 
-bioMartDataPfam <- get_biomart_pfam_merge(ensembl = ensembl,pfamDesc_path = "pfamDesc.txt.gz",ucscGenePfam_path = "ucscGenePfam.txt.gz")
+bioMartDataPfam <- get_biomart_pfam_merge(ensembl = ensembl, pfamDesc_path = "pfamDesc.txt.gz", ucscGenePfam_path = "ucscGenePfam.txt.gz")
 }
+
 }

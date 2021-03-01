@@ -36,7 +36,7 @@ get_Pfam_domain <- function(standardFusioncalls,
     as.data.frame()
 
   # positive strand gene1A annotation
-  standardFusioncallsGene1APosStrand <- standardFusioncallsGene1A[which(standardFusioncallsGene1A$strand == "1"), ]
+  standardFusioncallsGene1APosStrand <- standardFusioncallsGene1A[which(standardFusioncallsGene1A$strand %in% c("+","1")), ]
   standardFusioncallsGene1APosStrand[, "Gene1A_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain starts after gene start
     standardFusioncallsGene1APosStrand$domain_start > standardFusioncallsGene1APosStrand$gene_start &
@@ -47,7 +47,7 @@ get_Pfam_domain <- function(standardFusioncalls,
     "Yes", "No")
 
   # negative strand gene1A annotation
-  standardFusioncallsGene1ANegStrand <- standardFusioncallsGene1A[which(standardFusioncallsGene1A$strand == "-1"), ]
+  standardFusioncallsGene1ANegStrand <- standardFusioncallsGene1A[which(standardFusioncallsGene1A$strand %in% c("-","-1")), ]
   standardFusioncallsGene1ANegStrand[, "Gene1A_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain starts after breakpoint
     standardFusioncallsGene1ANegStrand$domain_start > standardFusioncallsGene1ANegStrand$LeftBreakpoint &
@@ -60,7 +60,7 @@ get_Pfam_domain <- function(standardFusioncalls,
 
 
   # positive strand gene1B annotation
-  standardFusioncallsGene1BPosStrand <- standardFusioncallsGene1B[which(standardFusioncallsGene1B$strand == "1"), ]
+  standardFusioncallsGene1BPosStrand <- standardFusioncallsGene1B[which(standardFusioncallsGene1B$strand %in% c("+","1")), ]
   standardFusioncallsGene1BPosStrand[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain starts after breakpoint
     standardFusioncallsGene1BPosStrand$domain_start > standardFusioncallsGene1BPosStrand$RightBreakpoint &
@@ -71,7 +71,7 @@ get_Pfam_domain <- function(standardFusioncalls,
     standardFusioncallsGene1BPosStrand$Fusion_Type == "in-frame", "Yes", "No")
 
   # negative strand gene1B annotation
-  standardFusioncallsGene1BNegStrand <- standardFusioncallsGene1B[which(standardFusioncallsGene1B$strand == "-1"), ]
+  standardFusioncallsGene1BNegStrand <- standardFusioncallsGene1B[which(standardFusioncallsGene1B$strand %in% c("-","-1")), ]
   standardFusioncallsGene1BNegStrand[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain end is before breakpoint
     standardFusioncallsGene1BNegStrand$domain_end < standardFusioncallsGene1BNegStrand$RightBreakpoint &

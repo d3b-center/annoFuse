@@ -47,5 +47,7 @@ globalVariables(c(
   "Gene1A_anno", "Gene1B_anno", "Annot", "Annot.ct", "Annotation",
   "JunctionReadCount", "PROT_FUSION_TYPE" ,"SpanningFragCount",
   "pfam_id", "LeftBreakpoint", "LeftBreakpointChr", "RightBreakpoint",
-  "RightBreakpointChr"
+  "RightBreakpointChr","EXONCHROM","EXONEND", "EXONRANK", "EXONSTART",
+  "EXONSTRAND", "EnsDb.Hsapiens.v75", "GENEID", "TXNAME", "domain_chr",
+  "domain_end", "domain_start", "end", "geneID", "start"
 ))
