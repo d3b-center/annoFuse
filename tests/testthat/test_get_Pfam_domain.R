@@ -10,6 +10,8 @@ geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference
 fusionReferenceDataTab <- read.delim(system.file("extdata", "fusionreference.txt", package="annoFuse"), stringsAsFactors = FALSE)
 
 ensembl <- biomaRt::useMart(biomart = "ENSEMBL_MART_ENSEMBL",dataset = "hsapiens_gene_ensembl",host="ensembl.org")
+download.file("http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz","pfamDesc.txt.gz")
+download.file("http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ucscGenePfam.txt.gz","ucscGenePfam.txt.gz")
 
 bioMartDataPfam <- get_biomart_pfam_merge(ensembl = ensembl,pfamDesc_path = "pfamDesc.txt.gz",ucscGenePfam_path = "ucscGenePfam.txt.gz")
 domain_list_df <- get_Pfam_domain(standardFusioncalls = sfc, bioMartDataPfam = bioMartDataPfam)

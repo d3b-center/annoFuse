@@ -23,7 +23,7 @@
 #'
 get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pfam_id, return_pfam_gr = NULL) {
   if (!missing(pfam_id)) {
-    dataBioMart <- getBM(
+    dataBioMart <- biomaRt::getBM(
       attributes = c(
         "hgnc_symbol", "pfam",
         "chromosome_name", "start_position", "end_position",
@@ -35,7 +35,7 @@ get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pf
     ) %>%
       dplyr::mutate(strand = dplyr::if_else(strand == 1, "+", "-"))
   } else {
-    dataBioMart <- getBM(
+    dataBioMart <- biomaRt::getBM(
       attributes = c(
         "hgnc_symbol",
         "chromosome_name", "start_position", "end_position",
@@ -54,7 +54,7 @@ get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pf
 
   # Pfam file downloaded from
   # contains pfam IDs and associated names
-  pfam <- read_tsv(pfamDesc_path, col_names = FALSE) %>% as.data.frame()
+  pfam <- read.delim(pfamDesc_path, header = F) 
   colnames(pfam) <- c("ID", "NAME", "DESC")
 
   # UCSC file downloaded from
@@ -68,7 +68,7 @@ get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pf
 
   # merge using pfam names tp get pfam ID
   pfamDescLoc <- pfam %>%
-    left_join(pfam_location, by = "NAME") %>%
+    dplyr::left_join(pfam_location, by = "NAME") %>%
     dplyr::select("ID", "NAME", "DESC", "CHROM", "CHROM_START", "CHROM_END", "STRAND") %>%
     dplyr::rename(
       "domain_chr" = "CHROM",
@@ -77,13 +77,19 @@ get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pf
       "domain_strand" = "STRAND"
     ) %>%
     dplyr::filter(!is.na(domain_start) & !is.na(domain_end)) %>%
-    dplyr::mutate(domain_chr = gsub("chr", "", domain_chr))
+    dplyr::mutate(
+      # formatting to ensembl
+      domain_chr = gsub("chr", "", domain_chr),
+      domain_chr = dplyr::if_else(domain_chr=="M","MT",domain_chr)) %>%
+    filter(domain_chr %in% c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                             "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                             "21", "22", "X", "Y", "MT"))
 
 
   # granges
-  pfam_gr <- makeGRangesFromDataFrame(df = pfamDescLoc, keep.extra.columns = TRUE, seqnames.field = "domain_chr", start.field = "domain_start", end.field = "domain_end", strand.field = "domain_strand")
+  pfam_gr <- GenomicRanges::makeGRangesFromDataFrame(df = pfamDescLoc, keep.extra.columns = TRUE, seqnames.field = "domain_chr", start.field = "domain_start", end.field = "domain_end", strand.field = "domain_strand")
 
-  gene_gr <- makeGRangesFromDataFrame(df = dataBioMart, keep.extra.columns = TRUE, seqnames.field = "chromosome_name", start.field = "start_position", end.field = "end_position", strand.field = "strand")
+  gene_gr <- GenomicRanges::makeGRangesFromDataFrame(df = dataBioMart, keep.extra.columns = TRUE, seqnames.field = "chromosome_name", start.field = "start_position", end.field = "end_position", strand.field = "strand")
 
   if (!is.null(return_pfam_gr)) {
     # granges
@@ -91,19 +97,19 @@ get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pf
   } else {
     # get overlap gene and pfam location
     # dataframe
-    pfamGene_gr <- mergeByOverlaps(pfam_gr, gene_gr, type = "within")
+    pfamGene_gr <- IRanges::mergeByOverlaps(pfam_gr, gene_gr, type = "within")
     pfamGene <- data.frame(
       "hgnc_symbol" = pfamGene_gr$hgnc_symbol,
       "pfam_id" = pfamGene_gr$ID,
-      "chromosome_name" = unlist(lapply(seqnames(pfamGene_gr$gene_gr), as.character)),
-      "gene_start" = start(pfamGene_gr$gene_gr),
-      "gene_end" = end(pfamGene_gr$gene_gr),
+      "chromosome_name" = unlist(lapply(GenomicRanges::seqnames(pfamGene_gr$gene_gr), as.character)),
+      "gene_start" = GenomicRanges::start(pfamGene_gr$gene_gr),
+      "gene_end" = GenomicRanges::end(pfamGene_gr$gene_gr),
       "strand" = strand(pfamGene_gr$gene_gr),
       "NAME" = pfamGene_gr$NAME,
       "DESC" = pfamGene_gr$DESC,
-      "domain_chr" = unlist(lapply(seqnames(pfamGene_gr$pfam_gr), as.character)),
-      "domain_start" = start(pfamGene_gr$pfam_gr),
-      "domain_end" = end(pfamGene_gr$pfam_gr),
+      "domain_chr" = unlist(lapply(GenomicRanges::seqnames(pfamGene_gr$pfam_gr), as.character)),
+      "domain_start" = GenomicRanges::start(pfamGene_gr$pfam_gr),
+      "domain_end" = GenomicRanges::end(pfamGene_gr$pfam_gr),
       stringsAsFactors = FALSE
     )
 
