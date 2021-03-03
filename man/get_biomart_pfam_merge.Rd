@@ -22,7 +22,7 @@ get_biomart_pfam_merge(
 
 \item{pfam_id}{pfam id(s) to filter}
 
-\item{return_pfam_gr}{logical value to return a pfam location granges}
+\item{return_pfam_gr}{logical value to return a pfam location granges instead of  dataframe}
 }
 \value{
 granges for genomic locations of given pfam id(s)

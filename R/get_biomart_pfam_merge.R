@@ -5,8 +5,9 @@
 #' @param pfamDesc_path path to pfam description file
 #' @param ucscGenePfam_path path to ucsc gene pfam genomic location
 #' @param pfam_id pfam id(s) to filter
-#' @param return_pfam_gr logical value to return a pfam location granges
+#' @param return_pfam_gr logical value to return a pfam location granges instead of  dataframe
 #' 
+#' @export
 #'
 #' @return granges for genomic locations of given pfam id(s)
 #'
