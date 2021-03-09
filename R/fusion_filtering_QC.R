@@ -18,38 +18,43 @@
 #' @examples
 #' # standardize
 #' fusionfileArriba <- read_arriba_calls(
-#'   system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
+#'   system.file("extdata", "arriba_example.tsv", package = "annoFuseData")
+#' )
 #' fusionfileStarFusion <- read_starfusion_calls(
-#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
+#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuseData")
+#' )
 #' formattedArriba <- fusion_standardization(fusionfileArriba,
-#'                                           caller = "ARRIBA",
-#'                                           tumorID = "tumorID")
+#'   caller = "ARRIBA",
+#'   tumorID = "tumorID"
+#' )
 #' formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
-#'                                               caller="STARFUSION",
-#'                                               tumorID = "tumorID")
+#'   caller = "STARFUSION",
+#'   tumorID = "tumorID"
+#' )
 #' # merge standardized fusion calls
 #' standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
 #' fusionQCFiltered <- fusion_filtering_QC(
-#'   standardFusioncalls = standardFusioncalls, 
+#'   standardFusioncalls = standardFusioncalls,
 #'   readingFrameFilter = "in-frame|frameshift|other",
 #'   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
 #'   junctionReadCountFilter = 1,
 #'   spanningFragCountFilter = 100,
-#'   readthroughFilter = TRUE)
+#'   readthroughFilter = TRUE
+#' )
 fusion_filtering_QC <- function(standardFusioncalls,
                                 readingFrameFilter = "in-frame|frameshift|other",
                                 artifactFilter,
                                 junctionReadCountFilter,
                                 spanningFragCountFilter = 100,
                                 readthroughFilter = TRUE) {
-  
+
   ## TODO: will need to double check this one
   # standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is.character(readingFrameFilter))
   stopifnot(is.numeric(junctionReadCountFilter))
   stopifnot(is.numeric(spanningFragCountFilter))
   stopifnot(is.logical(readthroughFilter))
-  
+
   # filter readthroughs
   if (readthroughFilter & any(grepl("read.*through|NEIGHBORS", standardFusioncalls$annots, ignore.case = TRUE))) {
     # Gather read throughs from standardized fusion calls
@@ -69,7 +74,7 @@ fusion_filtering_QC <- function(standardFusioncalls,
     rts <- data.frame("readThroughs" = rts)
     standardFusioncalls <- standardFusioncalls[-which(unlist(lapply(standardFusioncalls$FusionName, function(x) rm_between(x, "(", ")", extract = FALSE))) %in% rts$readThroughs), ]
   }
-  
+
   if (!missing(readingFrameFilter)) {
     # Error handling
     readingFrameTypes <- c("in-frame", "frameshift", "other")
@@ -78,7 +83,7 @@ fusion_filtering_QC <- function(standardFusioncalls,
       warning(paste("No fusion calls with readingframe:", readingFrameTypes[-which(readingFrameTypes %in% standardFusioncalls$Fusion_Type)]))
     }
   }
-  
+
   if (!missing(artifactFilter) & any(grepl(artifactFilter, standardFusioncalls$annots))) {
     # Error handling
     artifactFilterTypes <- unlist(strsplit(artifactFilter, "|", fixed = TRUE))
@@ -88,16 +93,16 @@ fusion_filtering_QC <- function(standardFusioncalls,
     }
     standardFusioncalls <- standardFusioncalls[-grep(artifactFilter, standardFusioncalls$annots), ]
   }
-  
+
   if (!missing(junctionReadCountFilter)) {
     standardFusioncalls <- standardFusioncalls[which(standardFusioncalls$JunctionReadCount >= junctionReadCountFilter), ]
   }
-  
+
   if (!missing(spanningFragCountFilter)) {
     # false positive calls either at the start or end of a transcript will be supported by an uneven majority of support from spanning fragments compared to junction reads
     # to remove these calls we are implementing this condition below
     standardFusioncalls <- standardFusioncalls[which((standardFusioncalls$SpanningFragCount - standardFusioncalls$JunctionReadCount) <= spanningFragCountFilter), ]
   }
-  
+
   return(standardFusioncalls)
 }

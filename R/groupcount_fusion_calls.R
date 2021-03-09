@@ -18,7 +18,7 @@ groupcount_fusion_calls <- function(standardFusioncalls,
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(group %in% colnames(standardFusioncalls))
   stopifnot(is.numeric(numGroup))
-  
+
   # remove fusions that are in > numGroup
   group.count <- standardFusioncalls %>%
     dplyr::select(.data$FusionName, !!as.name(group)) %>%
@@ -28,6 +28,6 @@ groupcount_fusion_calls <- function(standardFusioncalls,
     dplyr::select(-group) %>%
     unique() %>%
     dplyr::filter(.data$group.ct > numGroup)
-  
+
   return(group.count)
 }

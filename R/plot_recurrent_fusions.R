@@ -17,10 +17,12 @@
 #' sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 #' # keep only in-frame and fusions where both breakpoints are within genes
 #' sfc <- as.data.frame(
-#'   sfc[ which(sfc$Fusion_Type == "in-frame" & sfc$BreakpointLocation == "Genic"),])
-#' plot_recurrent_fusions(sfc, 
-#'                        groupby = "broad_histology", 
-#'                        countID = "Kids_First_Participant_ID")
+#'   sfc[which(sfc$Fusion_Type == "in-frame" & sfc$BreakpointLocation == "Genic"), ]
+#' )
+#' plot_recurrent_fusions(sfc,
+#'   groupby = "broad_histology",
+#'   countID = "Kids_First_Participant_ID"
+#' )
 plot_recurrent_fusions <- function(standardFusioncalls,
                                    groupby,
                                    plotn = 20,
@@ -54,10 +56,10 @@ plot_recurrent_fusions <- function(standardFusioncalls,
   # Top n recurrent fusion per group
   rec_fusions <- utils::head(rec_fusions[order(rec_fusions$count, decreasing = TRUE), ], plotn)
 
-  max_count <- rec_fusions %>% 
-    group_by(FusionName) %>% 
-    summarise(max=sum(count)) %>% 
-    pull(max) %>% 
+  max_count <- rec_fusions %>%
+    group_by(FusionName) %>%
+    summarise(max = sum(count)) %>%
+    pull(max) %>%
     max()
 
   if (!is.null(palette_rec)) {
@@ -83,7 +85,7 @@ plot_recurrent_fusions <- function(standardFusioncalls,
     ylab(paste0("Number of ", countID)) +
     xlab(NULL) +
     guides(color = FALSE, alpha = FALSE) +
-    scale_y_continuous(limits=c(0, max_count)) +
+    scale_y_continuous(limits = c(0, max_count)) +
     ggpubr::rotate() +
     scale_fill_manual(name = as.name(groupby), values = palette_1) +
     ggtitle("Recurrent Fusions") +

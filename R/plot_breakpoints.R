@@ -17,23 +17,29 @@
 #' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' sfc <- read.delim(out_annofuse)
 #' exons <- readRDS(system.file("extdata", "exonsToPlot.RDS", package = "annoFuseData"))
-#' bioMartDataPfam <- 
+#' bioMartDataPfam <-
 #'   readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
-#' domainDataFrame <- get_Pfam_domain(standardFusioncalls = sfc, 
-#'                                    bioMartDataPfam = bioMartDataPfam, 
-#'                                    keepPartialAnno = TRUE)
-#' left <- plot_breakpoints(sampleid = "BS_044XZ8ST", 
-#'                          domainDataFrame = domainDataFrame, 
-#'                          exons = exons, 
-#'                          geneposition = "Left", 
-#'                          fusionname = "ANTXR1--BRAF",
-#'                          leftBreakpoint = "2:69193415")
-#' right <- plot_breakpoints(sampleid = "BS_044XZ8ST", 
-#'                           domainDataFrame = domainDataFrame, 
-#'                           exons = exons, 
-#'                           geneposition = "Right", 
-#'                           fusionname = "ANTXR1--BRAF",
-#'                           rightBreakpoint = "7:140787584")
+#' domainDataFrame <- get_Pfam_domain(
+#'   standardFusioncalls = sfc,
+#'   bioMartDataPfam = bioMartDataPfam,
+#'   keepPartialAnno = TRUE
+#' )
+#' left <- plot_breakpoints(
+#'   sampleid = "BS_044XZ8ST",
+#'   domainDataFrame = domainDataFrame,
+#'   exons = exons,
+#'   geneposition = "Left",
+#'   fusionname = "ANTXR1--BRAF",
+#'   leftBreakpoint = "2:69193415"
+#' )
+#' right <- plot_breakpoints(
+#'   sampleid = "BS_044XZ8ST",
+#'   domainDataFrame = domainDataFrame,
+#'   exons = exons,
+#'   geneposition = "Right",
+#'   fusionname = "ANTXR1--BRAF",
+#'   rightBreakpoint = "7:140787584"
+#' )
 #' ggpubr::ggarrange(left, right, align = "h")
 plot_breakpoints <- function(domainDataFrame = NULL,
                              exons,
@@ -43,12 +49,11 @@ plot_breakpoints <- function(domainDataFrame = NULL,
                              leftBreakpoint = NULL,
                              rightBreakpoint = NULL,
                              base_size = 12) {
-  
   geneposition <- match.arg(geneposition, c("Left", "Right"))
   stopifnot(is(exons, "data.frame"))
   # stopifnot(is.character(fusionname))
   stopifnot(is.numeric(base_size))
-  
+
   if (is.null(domainDataFrame)) {
     stop("domainDataFrame not provide; please provide output from get_Pfam_domain() ")
   } else {
@@ -70,11 +75,11 @@ plot_breakpoints <- function(domainDataFrame = NULL,
     }
 
     if (!is.null(leftBreakpoint)) {
-      leftBreakpoint <- gsub(".*:","",leftBreakpoint)
+      leftBreakpoint <- gsub(".*:", "", leftBreakpoint)
       domainDataFrame$Gene1A <- domainDataFrame$Gene1A[which(domainDataFrame$Gene1A$LeftBreakpoint == leftBreakpoint), ]
     }
     if (!is.null(rightBreakpoint)) {
-      rightBreakpoint <- gsub(".*:","",rightBreakpoint)
+      rightBreakpoint <- gsub(".*:", "", rightBreakpoint)
       domainDataFrame$Gene1B <- domainDataFrame$Gene1B[which(domainDataFrame$Gene1B$RightBreakpoint == rightBreakpoint), ]
     }
   }
@@ -137,9 +142,9 @@ plot_breakpoints <- function(domainDataFrame = NULL,
 
   # add domain level information
   if (!all(is.na(geneExons$DESC))) {
-    p1 <- p1 + geom_linerange(ymin = geneExons$domain_start, ymax = geneExons$domain_end, size = 6, aes(col = .data$DESC, x = gene)) + 
-    labs(color = "Domain") + 
-    theme(legend.position = "bottom") +
+    p1 <- p1 + geom_linerange(ymin = geneExons$domain_start, ymax = geneExons$domain_end, size = 6, aes(col = .data$DESC, x = gene)) +
+      labs(color = "Domain") +
+      theme(legend.position = "bottom") +
       ggplot2::scale_colour_discrete(na.translate = FALSE)
   }
 

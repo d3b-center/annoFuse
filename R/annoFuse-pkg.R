@@ -19,7 +19,7 @@
 #' @importFrom reshape2 colsplit dcast melt
 #' @importFrom stats na.omit
 #' @importFrom stringr str_detect str_replace
-#' @importFrom tibble add_column column_to_rownames remove_rownames 
+#' @importFrom tibble add_column column_to_rownames remove_rownames
 #' rownames_to_column
 #' @importFrom tidyr gather separate unnest
 #' @importFrom tidyselect one_of
@@ -42,7 +42,7 @@ globalVariables(c(
   "gene_biotype", "Type.ct", "NAME", "Sample", "Domain",
   "Gene1A_DOMAIN_RETAINED_IN_FUSION", "Gene1B_DOMAIN_RETAINED_IN_FUSION",
   "Gene1A_anno", "Gene1B_anno", "Annot", "Annot.ct", "Annotation",
-  "JunctionReadCount", "PROT_FUSION_TYPE" ,"SpanningFragCount",
+  "JunctionReadCount", "PROT_FUSION_TYPE", "SpanningFragCount",
   "pfam_id", "LeftBreakpoint", "LeftBreakpointChr", "RightBreakpoint",
   "RightBreakpointChr"
 ))

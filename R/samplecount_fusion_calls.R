@@ -15,11 +15,10 @@
 samplecount_fusion_calls <- function(standardFusioncalls,
                                      numSample = 1,
                                      group) {
-  
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is.numeric(numSample))
   stopifnot(is.character(group))
-  
+
   # Found in at least n samples in each group
   sample.count <- standardFusioncalls %>%
     dplyr::select(.data$FusionName, .data$Sample, !!as.name(group), -.data$Fusion_Type) %>%
@@ -30,6 +29,6 @@ samplecount_fusion_calls <- function(standardFusioncalls,
     unique() %>%
     mutate(note = paste0("Found in at least ", numSample, " samples in a group")) %>%
     as.data.frame()
-  
+
   return(sample.count)
 }

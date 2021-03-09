@@ -15,34 +15,40 @@
 #' @examples
 #' # read in arriba fusion file
 #' fusionfileArriba <- read_arriba_calls(
-#'   system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
+#'   system.file("extdata", "arriba_example.tsv", package = "annoFuseData")
+#' )
 #' # read in starfusion file
 #' fusionfileStarFusion <- read_starfusion_calls(
-#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
+#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuseData")
+#' )
 #' formattedArriba <- fusion_standardization(fusionfileArriba,
-#'                                           caller = "ARRIBA",
-#'                                           tumorID = "tumorID")
+#'   caller = "ARRIBA",
+#'   tumorID = "tumorID"
+#' )
 #' formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
-#'                                               caller = "STARFUSION",
-#'                                               tumorID = "tumorID")
+#'   caller = "STARFUSION",
+#'   tumorID = "tumorID"
+#' )
 fusion_standardization <- function(fusion_calls,
                                    caller = c("STARFUSION", "ARRIBA"),
                                    tumorID = "tumorID") {
   stopifnot(is(fusion_calls, "data.frame"))
   stopifnot(is.character(caller))
   stopifnot(is.character(tumorID))
-  
+
   # caller <- match.arg(caller, choices = c("STARFUSION", "ARRIBA"))
-  
+
   if (caller == "STARFUSION") {
-    if (!any(grepl("PROT_FUSION_TYPE",colnames(fusion_calls)))){
+    if (!any(grepl("PROT_FUSION_TYPE", colnames(fusion_calls)))) {
       # add NA if --examine_coding_effect was not used while running starfusion
-      fusion_calls$PROT_FUSION_TYPE = NA
+      fusion_calls$PROT_FUSION_TYPE <- NA
     }
     fusion_calls <- fusion_calls %>%
       # standardize fusion type column name
-      dplyr::rename(Fusion_Type = PROT_FUSION_TYPE,
-                    FusionName = "#FusionName") %>%
+      dplyr::rename(
+        Fusion_Type = PROT_FUSION_TYPE,
+        FusionName = "#FusionName"
+      ) %>%
       dplyr::mutate(
         # remove chr notation from breakpoint columns
         LeftBreakpoint = gsub("^chr", "", .data$LeftBreakpoint),
@@ -63,7 +69,7 @@ fusion_standardization <- function(fusion_calls,
       )
   }
   else if (caller == "ARRIBA") {
-    if (!any(colnames(fusion_calls) =="annots")){
+    if (!any(colnames(fusion_calls) == "annots")) {
       fusion_calls$annots <- ""
     }
     fusion_calls <- fusion_calls %>%
@@ -78,7 +84,7 @@ fusion_standardization <- function(fusion_calls,
         LeftBreakpoint = gsub("^chr", "", .data$breakpoint1),
         RightBreakpoint = gsub("^chr", "", .data$breakpoint2),
         # readthrough information from arriba
-        annots = paste(.data$annots,.data$type, sep = ","),
+        annots = paste(.data$annots, .data$type, sep = ","),
         # Intergenic gene fusion breakpoints in arriba are annotated as
         # "gene1A,gene2A". As comma is used as a common delimiter in files changing
         # it to "/"
@@ -98,21 +104,23 @@ fusion_standardization <- function(fusion_calls,
   } else {
     stop(paste(caller, "is not a supported caller string."))
   }
-  
+
   # Get standard columns for filtering
-  
+
   standard_calls <- fusion_calls %>%
     # select columns for standard fusion format
-    dplyr::select(c("LeftBreakpoint",
-                    "RightBreakpoint",
-                    "FusionName",
-                    "Sample",
-                    "Caller",
-                    "Fusion_Type",
-                    "JunctionReadCount",
-                    "SpanningFragCount",
-                    "Confidence",
-                    "annots")) %>%
+    dplyr::select(c(
+      "LeftBreakpoint",
+      "RightBreakpoint",
+      "FusionName",
+      "Sample",
+      "Caller",
+      "Fusion_Type",
+      "JunctionReadCount",
+      "SpanningFragCount",
+      "Confidence",
+      "annots"
+    )) %>%
     # to obtain geneA and geneB for gene search below
     bind_cols(reshape2::colsplit(fusion_calls$FusionName, pattern = "--", names = c("GeneA", "GeneB"))) %>%
     # Intergenic fusion will have Gene1A,Gene2A,Gene1B,Gene2B
@@ -125,12 +133,13 @@ fusion_standardization <- function(fusion_calls,
       Gene1B = gsub("[(].*", "", .data$Gene1B),
       Gene2B = gsub("[(].*", "", .data$Gene2B),
       BreakpointLocation = case_when(
-        Gene1A==Gene1B & !grepl("/",FusionName) ~ "Intragenic",
-        grepl("/",FusionName) ~ "Intergenic",
-        TRUE ~ "Genic"),
+        Gene1A == Gene1B & !grepl("/", FusionName) ~ "Intragenic",
+        grepl("/", FusionName) ~ "Intergenic",
+        TRUE ~ "Genic"
+      ),
       SpanningDelta = SpanningFragCount - JunctionReadCount
     ) %>%
     as.data.frame()
-  
+
   return(standard_calls)
 }

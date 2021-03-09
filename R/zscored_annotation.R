@@ -17,12 +17,14 @@
 #'
 #' @examples
 #' standardFusioncalls <- annoFuse::annoFuse_single_sample(
-#'   # Example files are provided in extdata, at-least 1 fusionfile is required along 
+#'   # Example files are provided in extdata, at-least 1 fusionfile is required along
 #'   # with its rsem expression file
 #'   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
 #'   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
 #'   expressionFile = system.file(
-#'   "extdata", "example.rsem.genes.results.gz", package = "annoFuseData"),
+#'     "extdata", "example.rsem.genes.results.gz",
+#'     package = "annoFuseData"
+#'   ),
 #'   tumorID = "BS_W97QQYKQ",
 #'   # multiple read flag values for filtering using FusionAnnotator values
 #'   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
@@ -38,38 +40,38 @@
 #' expressionMatrix <- readRDS(system.file("extdata", "expr_collapsed.rds", package = "annoFuseData"))
 #' normData <- readRDS(system.file("extdata", "gtex_collapsed.rds", package = "annoFuseData"))
 #' zscoredStandardFusioncalls <- zscored_annotation(standardFusioncalls,
-#'                                                  zscoreFilter = 2,
-#'                                                  normData = normData,
-#'                                                  expressionMatrix = expressionMatrix)
-
+#'   zscoreFilter = 2,
+#'   normData = normData,
+#'   expressionMatrix = expressionMatrix
+#' )
 zscored_annotation <- function(standardFusioncalls,
                                zscoreFilter,
                                saveZscoredMatrix,
                                normData,
                                expressionMatrix) {
-  
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
-  
+
   stopifnot(is.numeric(zscoreFilter))
-  if (!missing(saveZscoredMatrix)) 
+  if (!missing(saveZscoredMatrix)) {
     stopifnot(is.character(saveZscoredMatrix))
+  }
   # TODO: checks on other params as well
-  
-  # expect unique gene_id expressionMatrix collapsed at gene level 
+
+  # expect unique gene_id expressionMatrix collapsed at gene level
   expressionMatrixMatched <- expressionMatrix %>%
     dplyr::filter(.data$gene_id %in% normData$gene_id) %>%
     tibble::column_to_rownames("gene_id")
   expressionMatrixMatched <- log2(expressionMatrixMatched + 1)
-  
+
   # gene matched
-  # expect unique gene_id normData collapsed at gene level   
+  # expect unique gene_id normData collapsed at gene level
   # get log transformed GTEx/cohort matrix
   normData <- normData %>%
     tibble::column_to_rownames("gene_id") %>%
     as.matrix()
   normData <- normData[rownames(expressionMatrixMatched), ]
   normData <- log2(normData + 1)
-  
+
   # normData mean and sd
   normData_means <- rowMeans(normData, na.rm = TRUE)
   normData_sd <- apply(normData, 1, stats::sd, na.rm = TRUE)
@@ -77,14 +79,14 @@ zscored_annotation <- function(standardFusioncalls,
   expressionMatrixzscored <- sweep(expressionMatrixMatched, 1, normData_means, FUN = "-")
   # divide by SD
   expressionMatrixzscored <- sweep(expressionMatrixzscored, 1, normData_sd, FUN = "/") %>%
-    tibble::rownames_to_column(var="gene_id") %>%
+    tibble::rownames_to_column(var = "gene_id") %>%
     na.omit()
-  
+
   # To save GTEx/cohort scored matrix
   if (!missing(saveZscoredMatrix)) {
     saveRDS(expressionMatrixzscored, saveZscoredMatrix)
   }
-  
+
   # get long format to compare to expression
   expression_long_df <- expressionMatrixzscored %>%
     # Get the data into long format
@@ -92,25 +94,25 @@ zscored_annotation <- function(standardFusioncalls,
       variable.name = "Sample",
       value.name = "zscore_value"
     )
-  
+
   # fusion calls
   fusion_sample_gene_df <- standardFusioncalls %>%
     # We want to keep track of the gene symbols for each sample-fusion pair
     dplyr::select(.data$Sample, .data$FusionName, .data$Gene1A, .data$Gene1B, .data$Gene2A, .data$Gene2B) %>%
     # We want a single column that contains the gene symbols
     tidyr::gather(Gene1A, Gene1B, Gene2A, Gene2B,
-                  key = gene_position, value = gene_id
+      key = gene_position, value = gene_id
     ) %>%
     # Remove columns without gene symbols
     dplyr::filter(.data$gene_id != "") %>%
     dplyr::arrange(.data$Sample, .data$FusionName) %>%
     # Retain only distinct rows
     dplyr::distinct()
-  
+
   # check columns for Gene1A,Gene2A,Gene1B and Gene2B
-  cols <- c("Gene1A" , "Gene1B", "Gene2A" , "Gene2B" )
-  add_cols <- setdiff(cols,unique(fusion_sample_gene_df$gene_position))
-  
+  cols <- c("Gene1A", "Gene1B", "Gene2A", "Gene2B")
+  add_cols <- setdiff(cols, unique(fusion_sample_gene_df$gene_position))
+
   expression_annotated_fusions <- fusion_sample_gene_df %>%
     # join the filtered expression values to the data frame keeping track of symbols
     # for each sample-fusion name pair
@@ -121,7 +123,7 @@ zscored_annotation <- function(standardFusioncalls,
     # cast to keep zscore and gene position
     reshape2::dcast(FusionName + Sample ~ gene_position, value.var = "zscore_value") %>%
     # incase Gene2A/B dont exist like in STARfusion calls
-    add_column( !!as.name(add_cols) := NA) %>%
+    add_column(!!as.name(add_cols) := NA) %>%
     # get annotation from z score
     dplyr::mutate(
       note_expression_Gene1A = ifelse((.data$Gene1A > zscoreFilter | .data$Gene1A < -zscoreFilter), "differentially expressed", "no change"),
@@ -139,6 +141,6 @@ zscored_annotation <- function(standardFusioncalls,
     # use this to filter the QC filtered fusion data frame
     dplyr::inner_join(standardFusioncalls, by = c("FusionName", "Sample")) %>%
     dplyr::distinct()
-  
+
   return(expression_annotated_fusions)
 }

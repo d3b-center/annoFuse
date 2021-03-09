@@ -2,7 +2,7 @@
 
 #' @param standardFusioncalls A dataframe from star fusion or arriba standardized to run through the filtering steps
 #' @param groupby column name with grouping variables
-#' @param outputpdffile Filename to plot image - optional, if not specified, the 
+#' @param outputpdffile Filename to plot image - optional, if not specified, the
 #' plot is simply generated
 #' @param base_size size for text in plots, defalt 20 for pdf outputs
 #'
@@ -17,11 +17,12 @@
 plot_summary <- function(standardFusioncalls,
                          groupby,
                          outputpdffile,
-                         base_size=20) {
+                         base_size = 20) {
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
-  if (!missing(outputpdffile))
+  if (!missing(outputpdffile)) {
     stopifnot(is.character(outputpdffile))
-  
+  }
+
   if (missing(groupby)) {
     # per sample
     groupby <- "Sample"
@@ -204,12 +205,13 @@ plot_summary <- function(standardFusioncalls,
 
 
   if (!missing(outputpdffile)) {
-    ggarrange(p1, p2, p3, p4, p5, 
-              labels = c("A", "B", "C", "D", "E"), 
-              heights = c(5, 4, 6),
-              widths = c(2, 1),
-              nrow = 3, ncol = 2,
-              font.label = list(size = base_size )) %>% ggexport(filename = outputpdffile, width = 20, height = 20)
+    ggarrange(p1, p2, p3, p4, p5,
+      labels = c("A", "B", "C", "D", "E"),
+      heights = c(5, 4, 6),
+      widths = c(2, 1),
+      nrow = 3, ncol = 2,
+      font.label = list(size = base_size)
+    ) %>% ggexport(filename = outputpdffile, width = 20, height = 20)
   } else {
     p1 <- ggplot(fusion_chrom, aes(x = !!as.name(groupby), fill = fusion_chrom$Distance, alpha = 0.75)) +
       geom_bar() +
@@ -268,12 +270,13 @@ plot_summary <- function(standardFusioncalls,
       theme(plot.margin = unit(c(1, 1, 1, 10), "mm")) +
       facet_wrap(~gene_position)
 
-    p <- ggarrange(p1, p2, p3, p4, p5, 
-                   labels = c("A", "B", "C", "D", "E"), 
-                   heights = c(5, 3, 5), 
-                   widths = c(2, 1), 
-                   nrow = 3, ncol = 2, 
-                   font.label = list(size = base_size))
+    p <- ggarrange(p1, p2, p3, p4, p5,
+      labels = c("A", "B", "C", "D", "E"),
+      heights = c(5, 3, 5),
+      widths = c(2, 1),
+      nrow = 3, ncol = 2,
+      font.label = list(size = base_size)
+    )
 
     return(p)
   }

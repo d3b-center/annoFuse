@@ -2,7 +2,7 @@
 #'
 #' Performs artifact filter to remove readthroughs,red flags and performs expression
 #' filtering with user provided expression Matrix and expression threshold
-#' 
+#'
 #' @param fusionfileArriba A dataframe from arriba fusion caller
 #' @param fusionfileStarFusion A dataframe from starfusion caller
 #' @param expressionFile Expression matrix for samples used in cohort for fusion calls
@@ -10,7 +10,7 @@
 #' @param tumorID Sample name to be used
 #' @param readingFrameFilter A regex to capture readingframe (eg. in-frame|frameshift|other)
 #' @param readthroughFilter Boolean for filtering readthroughs
-#' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation 
+#' @param artifactFilter A red flag filter from Annotation ; in OpenPBTA annotation
 #' is from FusionAnnotator column "annots"
 #' @param junctionReadCountFilter An integer threshold for JunctionReadCount
 #' @param spanningFragCountFilter An integer threshold for (SpanningFragCount -
@@ -22,14 +22,20 @@
 #'
 #' @examples
 #' standardFusioncalls <- annoFuse::annoFuse_single_sample(
-#'   # Example files are provided in extdata, at-least 1 fusionfile is required along 
+#'   # Example files are provided in extdata, at-least 1 fusionfile is required along
 #'   # with its rsem expression file
 #'   fusionfileArriba = system.file(
-#'     "extdata", "arriba_example.tsv", package = "annoFuseData"),
+#'     "extdata", "arriba_example.tsv",
+#'     package = "annoFuseData"
+#'   ),
 #'   fusionfileStarFusion = system.file(
-#'     "extdata", "starfusion_example.tsv", package = "annoFuseData"),
+#'     "extdata", "starfusion_example.tsv",
+#'     package = "annoFuseData"
+#'   ),
 #'   expressionFile = system.file(
-#'     "extdata", "example.rsem.genes.results.gz", package = "annoFuseData"),
+#'     "extdata", "example.rsem.genes.results.gz",
+#'     package = "annoFuseData"
+#'   ),
 #'   tumorID = "BS_W97QQYKQ",
 #'   # multiple read flag values for filtering using FusionAnnotator values
 #'   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
@@ -52,7 +58,6 @@ annoFuse_single_sample <- function(fusionfileArriba,
                                    artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
                                    junctionReadCountFilter = 1,
                                    spanningFragCountFilter = 10) {
-  
   stopifnot(is.character(fusionfileArriba))
   stopifnot(is.character(fusionfileStarFusion))
   stopifnot(is.numeric(expressionFilter))
@@ -62,43 +67,45 @@ annoFuse_single_sample <- function(fusionfileArriba,
   stopifnot(is.character(artifactFilter))
   stopifnot(is.numeric(junctionReadCountFilter))
   stopifnot(is.numeric(spanningFragCountFilter))
-  
+
   # read files
   STARFusioninputfile <- read_starfusion_calls(fusionfileStarFusion)
   Arribainputfile <- read_arriba_calls(fusionfileArriba)
 
   # read in gene and fusion reference tab
   geneListReferenceDataTab <- read.delim(system.file("extdata", "genelistreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
-  
+
   # column 1 as FusionName 2 source file 3 type; collapse to summarize type
   fusionReferenceDataTab <- read.delim(system.file("extdata", "fusionreference.txt", package = "annoFuseData"), stringsAsFactors = FALSE)
-  
+
 
   # if StarFusion and Arriba files empty execution stops
   if (is_empty(STARFusioninputfile$`#FusionName`) & is_empty(Arribainputfile$`#gene1`)) {
     warning("StarFusion and Arriba files empty")
-    standardFusioncalls<-data.frame("LeftBreakpoint"=character(),
-                                       "RightBreakpoint"=character(),
-                                       "FusionName"= character(),
-                                       "Sample" = character(),
-                                       "Caller" = character(),
-                                       "Fusion_Type" = character(),
-                                       "JunctionReadCount" = numeric(),
-                                       "SpanningFragCount" = numeric(),
-                                       "Confidence" = character(),
-                                       "annots" = character(),
-                                       "Gene1A" = character(),
-                                       "Gene2A" = character(),
-                                       "Gene1B" = character(),
-                                       "Gene2B" = character(),
-                                       "BreakpointLocation" = character(),
-                                       "SpanningDelta" = numeric(),
-                                       "reciprocal_exists" = character(),
-                                       "Gene1A_anno" = character(),
-                                       "Gene1B_anno" = character(),
-                                       "Gene2A_anno" = character(),
-                                       "Gene2B_anno" = character(),
-                                       "Fusion_anno" = character())
+    standardFusioncalls <- data.frame(
+      "LeftBreakpoint" = character(),
+      "RightBreakpoint" = character(),
+      "FusionName" = character(),
+      "Sample" = character(),
+      "Caller" = character(),
+      "Fusion_Type" = character(),
+      "JunctionReadCount" = numeric(),
+      "SpanningFragCount" = numeric(),
+      "Confidence" = character(),
+      "annots" = character(),
+      "Gene1A" = character(),
+      "Gene2A" = character(),
+      "Gene1B" = character(),
+      "Gene2B" = character(),
+      "BreakpointLocation" = character(),
+      "SpanningDelta" = numeric(),
+      "reciprocal_exists" = character(),
+      "Gene1A_anno" = character(),
+      "Gene1B_anno" = character(),
+      "Gene2A_anno" = character(),
+      "Gene2B_anno" = character(),
+      "Fusion_anno" = character()
+    )
     return(standardFusioncalls)
   }
 
@@ -106,8 +113,8 @@ annoFuse_single_sample <- function(fusionfileArriba,
   if (!is_empty(STARFusioninputfile$`#FusionName`) & !is_empty(Arribainputfile$`#gene1`)) {
 
     # standardized fusion calls
-    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION",tumorID = tumorID)
-    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA",tumorID = tumorID)
+    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION", tumorID = tumorID)
+    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA", tumorID = tumorID)
 
     # merge standardized fusion calls
     standardFusioncalls <- rbind(standardizedSTARFusion, standardizedArriba) %>% as.data.frame()
@@ -119,7 +126,7 @@ annoFuse_single_sample <- function(fusionfileArriba,
 
 
     # standardized fusion calls
-    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA",tumorID = tumorID)
+    standardizedArriba <- fusion_standardization(fusion_calls = Arribainputfile, caller = "ARRIBA", tumorID = tumorID)
 
     # standardized fusion calls
     standardFusioncalls <- standardizedArriba %>% as.data.frame()
@@ -131,7 +138,7 @@ annoFuse_single_sample <- function(fusionfileArriba,
 
 
     # standardized fusion calls
-    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION",tumorID = tumorID)
+    standardizedSTARFusion <- fusion_standardization(fusion_calls = STARFusioninputfile, caller = "STARFUSION", tumorID = tumorID)
 
     # standardized fusion calls
     standardFusioncalls <- standardizedSTARFusion %>% as.data.frame()
