@@ -1,7 +1,7 @@
 context("Test zscore comparison fusion calls")
 
 standardFusioncalls <- standardFusioncalls <- annoFuse::annoFuse_single_sample(
-  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+  # Example files are provided in extdata, at-least 1 fusionfile is required along
   # with its rsem expression file
   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
@@ -19,15 +19,16 @@ standardFusioncalls <- standardFusioncalls <- annoFuse::annoFuse_single_sample(
   readthroughFilter = FALSE
 )
 
-expressionMatrix<-readRDS(system.file("extdata", "expr_collapsed.rds", package = "annoFuseData"))
-normData<-readRDS(system.file("extdata", "gtex_collapsed.rds", package = "annoFuseData"))
-zscoredStandardFusioncalls<-zscored_annotation(standardFusioncalls,
-                                                zscoreFilter=2,
-                                                normData=normData,
-                                                expressionMatrix=expressionMatrix)
-                                                
+expressionMatrix <- readRDS(system.file("extdata", "expr_collapsed.rds", package = "annoFuseData"))
+normData <- readRDS(system.file("extdata", "gtex_collapsed.rds", package = "annoFuseData"))
+zscoredStandardFusioncalls <- zscored_annotation(standardFusioncalls,
+  zscoreFilter = 2,
+  normData = normData,
+  expressionMatrix = expressionMatrix
+)
+
 
 
 test_that("Zscore comparison in standardized fusions", {
-  expect_equal(colnames(zscoredStandardFusioncalls), c("FusionName","Sample","zscore_Gene1A","zscore_Gene1B","zscore_Gene2A","zscore_Gene2B","note_expression_Gene1A","note_expression_Gene1B", "note_expression_Gene2A", "note_expression_Gene2B", "LeftBreakpoint","RightBreakpoint" ,"Caller","Fusion_Type","JunctionReadCount","SpanningFragCount","Confidence","annots","Gene1A","Gene2A","Gene1B","Gene2B","BreakpointLocation","SpanningDelta","reciprocal_exists","Gene1A_anno","Gene1B_anno","Gene2A_anno","Gene2B_anno" ,"Fusion_anno"))
+  expect_equal(colnames(zscoredStandardFusioncalls), c("FusionName", "Sample", "zscore_Gene1A", "zscore_Gene1B", "zscore_Gene2A", "zscore_Gene2B", "note_expression_Gene1A", "note_expression_Gene1B", "note_expression_Gene2A", "note_expression_Gene2B", "LeftBreakpoint", "RightBreakpoint", "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B", "BreakpointLocation", "SpanningDelta", "reciprocal_exists", "Gene1A_anno", "Gene1B_anno", "Gene2A_anno", "Gene2B_anno", "Fusion_anno"))
 })

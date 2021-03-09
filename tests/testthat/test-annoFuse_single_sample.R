@@ -2,7 +2,7 @@ context("Test single sample annoFuse filtering")
 
 
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
-  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+  # Example files are provided in extdata, at-least 1 fusionfile is required along
   # with its rsem expression file
   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
@@ -22,13 +22,13 @@ standardFusioncalls <- annoFuse::annoFuse_single_sample(
 
 
 test_that("Standard fusion single sample output from non-empty arriba and starfusion fusion calls", {
-  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint","RightBreakpoint","FusionName","Sample","Caller","Fusion_Type","JunctionReadCount","SpanningFragCount","Confidence","annots","Gene1A","Gene2A","Gene1B","Gene2B","BreakpointLocation","SpanningDelta","reciprocal_exists","Gene1A_anno","Gene1B_anno","Gene2A_anno","Gene2B_anno" ,"Fusion_anno" ))
+  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample", "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B", "BreakpointLocation", "SpanningDelta", "reciprocal_exists", "Gene1A_anno", "Gene1B_anno", "Gene2A_anno", "Gene2B_anno", "Fusion_anno"))
   expect_equal(nrow(standardFusioncalls), 26)
   expect_equal(unique(standardFusioncalls$Sample), "BS_W97QQYKQ")
 })
 
-standardFusioncalls <-  annoFuse::annoFuse_single_sample(
-  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+standardFusioncalls <- annoFuse::annoFuse_single_sample(
+  # Example files are provided in extdata, at-least 1 fusionfile is required along
   # with its rsem expression file
   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
@@ -47,12 +47,12 @@ standardFusioncalls <-  annoFuse::annoFuse_single_sample(
 )
 
 test_that("Standard fusion single sample run removing read-throughs", {
-  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint","RightBreakpoint","FusionName","Sample","Caller","Fusion_Type","JunctionReadCount","SpanningFragCount","Confidence","annots","Gene1A","Gene2A","Gene1B","Gene2B","BreakpointLocation","SpanningDelta","reciprocal_exists","Gene1A_anno","Gene1B_anno","Gene2A_anno","Gene2B_anno" ,"Fusion_anno" ))
+  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample", "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B", "BreakpointLocation", "SpanningDelta", "reciprocal_exists", "Gene1A_anno", "Gene1B_anno", "Gene2A_anno", "Gene2B_anno", "Fusion_anno"))
   expect_equal(nrow(standardFusioncalls), 16)
 })
 
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
-  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+  # Example files are provided in extdata, at-least 1 fusionfile is required along
   # with its rsem expression file
   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
@@ -71,12 +71,12 @@ standardFusioncalls <- annoFuse::annoFuse_single_sample(
 )
 
 test_that("Standard fusion single sample run junction read count >= 10", {
-  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint","RightBreakpoint","FusionName","Sample","Caller","Fusion_Type","JunctionReadCount","SpanningFragCount","Confidence","annots","Gene1A","Gene2A","Gene1B","Gene2B","BreakpointLocation","SpanningDelta","reciprocal_exists","Gene1A_anno","Gene1B_anno","Gene2A_anno","Gene2B_anno" ,"Fusion_anno" ))
+  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample", "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B", "BreakpointLocation", "SpanningDelta", "reciprocal_exists", "Gene1A_anno", "Gene1B_anno", "Gene2A_anno", "Gene2B_anno", "Fusion_anno"))
   expect_equal(nrow(standardFusioncalls), 5)
 })
 
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
-  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+  # Example files are provided in extdata, at-least 1 fusionfile is required along
   # with its rsem expression file
   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
@@ -95,14 +95,14 @@ standardFusioncalls <- annoFuse::annoFuse_single_sample(
 )
 
 test_that("Standard fusion single sample run to only keep in-frame fusions", {
-  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint","RightBreakpoint","FusionName","Sample","Caller","Fusion_Type","JunctionReadCount","SpanningFragCount","Confidence","annots","Gene1A","Gene2A","Gene1B","Gene2B","BreakpointLocation","SpanningDelta","reciprocal_exists","Gene1A_anno","Gene1B_anno","Gene2A_anno","Gene2B_anno" ,"Fusion_anno" ))
+  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample", "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B", "BreakpointLocation", "SpanningDelta", "reciprocal_exists", "Gene1A_anno", "Gene1B_anno", "Gene2A_anno", "Gene2B_anno", "Fusion_anno"))
   expect_equal(nrow(standardFusioncalls), 7)
 })
 
 
 
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
-  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+  # Example files are provided in extdata, at-least 1 fusionfile is required along
   # with its rsem expression file
   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
@@ -121,7 +121,6 @@ standardFusioncalls <- annoFuse::annoFuse_single_sample(
 )
 
 test_that("Standard fusion single sample run where no fusion passes QC", {
-  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint","RightBreakpoint","FusionName","Sample","Caller","Fusion_Type","JunctionReadCount","SpanningFragCount","Confidence","annots","Gene1A","Gene2A","Gene1B","Gene2B","BreakpointLocation","SpanningDelta","reciprocal_exists","Gene1A_anno","Gene1B_anno","Gene2A_anno","Gene2B_anno" ,"Fusion_anno" ))
+  expect_equal(colnames(standardFusioncalls), c("LeftBreakpoint", "RightBreakpoint", "FusionName", "Sample", "Caller", "Fusion_Type", "JunctionReadCount", "SpanningFragCount", "Confidence", "annots", "Gene1A", "Gene2A", "Gene1B", "Gene2B", "BreakpointLocation", "SpanningDelta", "reciprocal_exists", "Gene1A_anno", "Gene1B_anno", "Gene2A_anno", "Gene2B_anno", "Fusion_anno"))
   expect_equal(nrow(standardFusioncalls), 0)
 })
-
