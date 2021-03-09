@@ -22,7 +22,9 @@ The application can also be started without specifying the location of the data,
 which can be provided (via upload) at runtime.
 }
 \examples{
-out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv",
+  package = "annoFuseData"
+)
 if (interactive()) {
   shinyFuse(out_annofuse)
 }

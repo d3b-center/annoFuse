@@ -17,11 +17,11 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: windows-latest, r: 'release', bioc: '3.11'}
-          - { os: macOS-latest, r: 'release', bioc: '3.11'}
-          - { os: macOS-latest, r: 'release', bioc: 'devel'}
+          - { os: windows-latest, r: 'devel', bioc: 'devel'}
+          - { os: macOS-latest, r: 'release', bioc: '3.12'}
+          - { os: macOS-latest, r: 'devel', bioc: 'devel', curlConfigPath: '/usr/bin/'}
           - { os: ubuntu-latest, r: 'release', image: 'bioconductor/bioconductor_docker:devel'}
-
+          
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       CRAN: ${{ matrix.config.cran }}
@@ -66,6 +66,19 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-${{ hashFiles('depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-bioc-${{ matrix.config.bioc }}-
+          
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install harfbuzz
+          brew install fribidi
+          
+      - name: Set up gfortran symlinks (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          set -x
+          sudo ln -s /usr/local/Cellar/gcc@8/8.4.0_2/lib/gcc/8 /usr/local/gfortran/lib
+          gfortran --version
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
@@ -83,6 +96,7 @@ jobs:
           deps <- remotes::dev_package_deps(dependencies = TRUE, repos = BiocManager::repositories())
           BiocManager::install(local_deps[local_deps %in% deps$package[deps$diff != 0]], Ncpu = 2L)
           remotes::install_cran('rcmdcheck', Ncpu = 2L)
+          BiocManager::install("federicomarini/annoFuseData")
         shell: Rscript {0}
 
       - name: Session info

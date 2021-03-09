@@ -51,7 +51,7 @@ suppressPackageStartupMessages(library("qdapRegex"))
 Here, we present annoFuse, an R package developed to annotate and filter expressed gene fusions, along with highlighting artifact filtered novel fusions.
 
  * Filtered fusion list `FilteredFusionAnnoFuse.tsv` was obtained from Star-Fusion, arriba and rsem expression (fpkm) files from release-v16-20200320 of [OpenPBTA](https://github.com/AlexsLemonade/OpenPBTA-analysis) . 
- We used [FusionAnnotator](https://github.com/FusionAnnotator/FusionAnnotator/tree/v0.2.0) to annotate arriba files to specifically identify “red flag” fusions found in healthy tissues or in gene homology databases saved as column "annots" to match annotation in STAR-Fusion calls. 
+ We used [FusionAnnotator](https://github.com/FusionAnnotator/FusionAnnotator/tree/v0.2.0) to annotate arriba files to specifically identify "red flag" fusions found in healthy tissues or in gene homology databases saved as column "annots" to match annotation in STAR-Fusion calls. 
  The merged dataset was processed using the following steps `fusion_standardization` -> `fusion_filtering_QC` -> `expression_filter_fusion` -> `annotate_fusion_calls` ). 
  Please refer to the filtering criterias available per function below:
 
@@ -67,7 +67,7 @@ Here, we present annoFuse, an R package developed to annotate and filter express
 
 
 ```{r}
-fusion_calls <- read_tsv(system.file("extdata", "FilteredFusionAnnoFuse.tsv", package = "annoFuse"))
+fusion_calls <- read_tsv(system.file("extdata", "FilteredFusionAnnoFuse.tsv", package = "annoFuseData"))
 
 # distance are being removed here to capture all intergenic fusions in count
 # distance within () were making them count as unique instead of the same fusion
@@ -88,13 +88,13 @@ If the fusion has been previously reported in TCGA or if fusions containing gene
 ```{r}
 # Add reference gene list containing known oncogenes, tumor suppressors, kinases, and transcription factors
 geneListReferenceDataTab <- read.delim(
-  system.file("extdata", "genelistreference.txt", package = "annoFuse"),
+  system.file("extdata", "genelistreference.txt", package = "annoFuseData"),
   stringsAsFactors = FALSE
 )
 
 # Add fusion list containing previously reported oncogenic fusions.
 fusionReferenceDataTab <- read.delim(
-  system.file("extdata", "fusionreference.txt", package = "annoFuse"),
+  system.file("extdata", "fusionreference.txt", package = "annoFuseData"),
   stringsAsFactors = FALSE
 )
 

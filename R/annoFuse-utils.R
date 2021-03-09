@@ -3,18 +3,20 @@
 
 .check_annoFuse_calls <- function(standardFusioncalls) {
   stopifnot(is(standardFusioncalls, "data.frame"))
-  
+
   # with a minimal set of columns to be there...
-  cols_fusioncalls <- c("Sample", "LeftBreakpoint", "RightBreakpoint", "FusionName",
-                        "Gene1A", "Gene1B")
-  
+  cols_fusioncalls <- c(
+    "Sample", "LeftBreakpoint", "RightBreakpoint", "FusionName",
+    "Gene1A", "Gene1B"
+  )
+
   stopifnot(all(cols_fusioncalls %in% colnames(standardFusioncalls)))
-  
+
   invisible(standardFusioncalls)
 }
 
 
-#' Read in fusion calls from  Arriba v1.1.0 
+#' Read in fusion calls from  Arriba v1.1.0
 #'
 #' @param arriba_calls Please refer to software documenation [fusions.tsv](https://arriba.readthedocs.io/en/latest/output-files/)
 #'
@@ -23,12 +25,11 @@
 #'
 #' @examples
 #' fusionfileArriba <- read_arriba_calls(
-#'                         system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
-#'                         
-
-read_arriba_calls <- function(arriba_calls){
+#'   system.file("extdata", "arriba_example.tsv", package = "annoFuseData")
+#' )
+read_arriba_calls <- function(arriba_calls) {
   # set col types
-  col_types = readr::cols(
+  col_types <- readr::cols(
     `#gene1` = readr::col_character(),
     gene2 = readr::col_character(),
     `strand1(gene/fusion)` = readr::col_character(),
@@ -54,8 +55,8 @@ read_arriba_calls <- function(arriba_calls){
     peptide_sequence = readr::col_character(),
     read_identifiers = readr::col_character()
   )
-  
-  arriba_calls<-read_tsv(arriba_calls, col_types = col_types)
+
+  arriba_calls <- read_tsv(arriba_calls, col_types = col_types)
   return(arriba_calls)
 }
 
@@ -68,11 +69,11 @@ read_arriba_calls <- function(arriba_calls){
 #'
 #' @examples
 #' fusionfileStarFusion <- read_starfusion_calls(
-#'                            system.file("extdata", "starfusion_example.tsv", package = "annoFuse"))
-#'                            
+#'   system.file("extdata", "starfusion_example.tsv", package = "annoFuseData")
+#' )
 read_starfusion_calls <- function(starfusion_calls) {
   # set col types
-  col_types = readr::cols(
+  col_types <- readr::cols(
     `#FusionName` = readr::col_character(),
     JunctionReadCount = readr::col_integer(),
     SpanningFragCount = readr::col_integer(),
@@ -99,8 +100,8 @@ read_starfusion_calls <- function(starfusion_calls) {
     PFAM_LEFT = readr::col_character(),
     PFAM_RIGHT = readr::col_character()
   )
-  
-  starfusion_calls<- read_tsv(starfusion_calls,col_types = col_types)
+
+  starfusion_calls <- read_tsv(starfusion_calls, col_types = col_types)
   return(starfusion_calls)
 }
 

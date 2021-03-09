@@ -52,9 +52,9 @@ A group of 160 samples were randomly selected from the following cancers: BLCA(1
 
 ```{r }
 # Sample manifest was obtained from CAVATICA Data browser and TCGA files were copied to working project.
-tcga_manifest <- read_tsv(system.file("extdata", "sample_aliquot_tcga.tsv", package = "annoFuse"))
+tcga_manifest <- read_tsv(system.file("extdata", "sample_aliquot_tcga.tsv", package = "annoFuseData"))
 # Load [Final Fusion Call Set tab of Supplemental Table S1 of PMID: 29617662](https://pubmed.ncbi.nlm.nih.gov/29617662/)
-final_fusion <- read_tsv(system.file("extdata", "final_fusion_mmc2.txt", package = "annoFuse")) %>%
+final_fusion <- read_tsv(system.file("extdata", "final_fusion_mmc2.txt", package = "annoFuseData")) %>%
   # subset of final fusions in overlapping samples
   dplyr::filter(
     Sample %in% tcga_manifest$aliquot_id
@@ -70,8 +70,8 @@ We then standardized STAR-Fusion and Arriba fusion calls using `fusion_standardi
 ```{r }
 
 # merged STAR-Fusion and arriba calls
-tcga_arriba_df <- read_tsv(system.file("extdata", "merged_arriba_tcga.tsv", package = "annoFuse"))
-tcga_starfusion_df <- read_tsv(system.file("extdata", "merged_starfusion_tcga.tsv", package = "annoFuse"))
+tcga_arriba_df <- read_tsv(system.file("extdata", "merged_arriba_tcga.tsv", package = "annoFuseData"))
+tcga_starfusion_df <- read_tsv(system.file("extdata", "merged_starfusion_tcga.tsv", package = "annoFuseData"))
 
 # format
 formatted_starfusion <- annoFuse::fusion_standardization(fusion_calls = tcga_starfusion_df, caller = "STARFUSION", tumorID = tcga_starfusion_df$Sample)

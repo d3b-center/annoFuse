@@ -9,17 +9,16 @@
 #' @return Fusions found in atleast n samples
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' sfc <- read.delim(out_annofuse)
 #' samplecount_fusion_calls(sfc, group = "Kids_First_Participant_ID")
 samplecount_fusion_calls <- function(standardFusioncalls,
                                      numSample = 1,
                                      group) {
-  
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is.numeric(numSample))
   stopifnot(is.character(group))
-  
+
   # Found in at least n samples in each group
   sample.count <- standardFusioncalls %>%
     dplyr::select(.data$FusionName, .data$Sample, !!as.name(group), -.data$Fusion_Type) %>%
@@ -30,6 +29,6 @@ samplecount_fusion_calls <- function(standardFusioncalls,
     unique() %>%
     mutate(note = paste0("Found in at least ", numSample, " samples in a group")) %>%
     as.data.frame()
-  
+
   return(sample.count)
 }

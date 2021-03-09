@@ -38,7 +38,7 @@
 #'
 #' @examples
 #'
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' \dontrun{
 #' reportFuse(out_annofuse = out_annofuse)
 #' }
@@ -53,17 +53,17 @@ reportFuse <- function(out_annofuse,
                        open_after_creating = TRUE,
                        ...) {
   # generates a nice number of outputs, plots, and so on, placed in a report. Boom :)
-  
+
   stopifnot(is.character(project_id))
   stopifnot(is.character(output_file))
   stopifnot(is.character(output_dir))
   stopifnot(is.logical(force_overwrite))
   stopifnot(is.logical(knitr_show_progress))
   stopifnot(is.logical(open_after_creating))
-  
+
   # annofuse_tbl is then used in the Rmd report
   annofuse_tbl <- read.delim(normalizePath(out_annofuse))
-  
+
   annofuse_tbl <- .check_annoFuse_calls(annofuse_tbl)
 
   # If possible, set output format based on the extension of output_file, if the output format is not provided
@@ -121,10 +121,8 @@ reportFuse <- function(out_annofuse,
 
   # Rmd template
   if (is.null(input_rmd)) {
-    template_rmd <- system.file("extdata",
-      "report_template_annoFuse.Rmd",
-      package = "annoFuse"
-    )
+    template_rmd <-
+      system.file("extdata", "report_template_annoFuse.Rmd", package = "annoFuse")
   } else {
     template_rmd <- input_rmd
   }
@@ -144,15 +142,12 @@ reportFuse <- function(out_annofuse,
     )
   }
 
-  
   # Process the arguments
   args <- list(...)
   args$input <- output_rmd
   args$output_format <- output_format
   args$output_file <- output_file
   args$quiet <- !knitr_show_progress
-
-
 
   # Render the report
   output_file <- do.call("render", args = args)

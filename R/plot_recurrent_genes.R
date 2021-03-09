@@ -13,11 +13,12 @@
 #' @return A ggplot object containing an overview on the recurrent fused genes
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' sfc <- read.delim(out_annofuse, stringsAsFactors = FALSE)
 #' # keep only in-frame and fusions where both breakpoints are within genes
 #' sfc <- as.data.frame(
-#'   sfc[ which(sfc$Fusion_Type == "in-frame" & sfc$BreakpointLocation == "Genic"),])
+#'   sfc[which(sfc$Fusion_Type == "in-frame" & sfc$BreakpointLocation == "Genic"), ]
+#' )
 #' plot_recurrent_genes(sfc, groupby = "broad_histology", countID = "Kids_First_Participant_ID")
 plot_recurrent_genes <- function(standardFusioncalls,
                                  groupby,
@@ -30,15 +31,15 @@ plot_recurrent_genes <- function(standardFusioncalls,
   stopifnot(is.numeric(plotn))
   stopifnot(is.character(countID))
   stopifnot(is.numeric(base_size))
-  
+
   stopifnot(all(c(groupby, countID) %in% colnames(standardFusioncalls)))
-  
+
   # inframe fusions only
   # standardFusioncalls<-unique(standardFusioncalls) %>% dplyr::filter(.data$Fusion_Type=="in-frame")
-  
+
   # remove geneA==geneB or intergenic
   # standardFusioncalls<-standardFusioncalls[-which(standardFusioncalls$Gene1A==standardFusioncalls$Gene2A|standardFusioncalls$Gene1A==standardFusioncalls$Gene2B|standardFusioncalls$Gene2A==standardFusioncalls$Gene1B|standardFusioncalls$Gene1A==standardFusioncalls$Gene1B|standardFusioncalls$Gene2B==standardFusioncalls$Gene2A),]
-  
+
   # gene1A recurrent
   rec_gene1A <- standardFusioncalls %>%
     dplyr::select("Gene1A", !!as.name(groupby), !!as.name(countID)) %>%
@@ -48,9 +49,9 @@ plot_recurrent_genes <- function(standardFusioncalls,
     mutate(count = n()) %>%
     unique() %>%
     as.data.frame()
-  
+
   colnames(rec_gene1A) <- c("Gene", as.name(groupby), "count")
-  
+
   # gene1B recurrent
   rec_gene1B <- standardFusioncalls %>%
     dplyr::select("Gene1B", !!as.name(groupby), !!as.name(countID)) %>%
@@ -60,19 +61,19 @@ plot_recurrent_genes <- function(standardFusioncalls,
     mutate(count = n()) %>%
     unique() %>%
     as.data.frame()
-  
+
   colnames(rec_gene1B) <- c("Gene", as.name(groupby), "count")
   rec_gene <- rbind(rec_gene1A, rec_gene1B)
-  
+
   rec_gene <- utils::head(rec_gene[order(rec_gene$count, decreasing = TRUE), ], plotn)
   rec_gene$Gene <- factor(rec_gene$Gene, levels = unique(rec_gene$Gene), ordered = TRUE)
-  
-  max_count <- rec_gene %>% 
-    group_by(.data$Gene) %>% 
-    summarise(max=sum(count)) %>% 
-    pull(max) %>% 
+
+  max_count <- rec_gene %>%
+    group_by(.data$Gene) %>%
+    summarise(max = sum(count)) %>%
+    pull(max) %>%
     max()
-  
+
   if (!is.null(palette_rec)) {
     # provided palette is rownames=groupby values and color in column "color"
     palette_2 <- palette_rec
@@ -85,17 +86,17 @@ plot_recurrent_genes <- function(standardFusioncalls,
     # to match with recurrent fusion
     palette_2 <- palette[which(names(palette) %in% rec_gene[, groupby])]
   }
-  
+
   if (base_size != 20) {
     base_size <- base_size
   }
-  
+
   rec_genes <- ggplot(rec_gene) +
     geom_col(aes(x = .data$Gene, y = .data$count, fill = !!as.name(groupby)), alpha = 0.75) +
     ylab(paste0("Number of ", countID)) +
     guides(color = FALSE, alpha = FALSE) +
     xlab(NULL) +
-    scale_y_continuous(limits=c(0, max_count)) +
+    scale_y_continuous(limits = c(0, max_count)) +
     rotate() +
     ggtitle("Genes Recurrently Fused") +
     theme_publication(base_size = base_size) +
@@ -105,6 +106,6 @@ plot_recurrent_genes <- function(standardFusioncalls,
     ) +
     scale_fill_manual(name = as.name(groupby), values = palette_2) +
     scale_x_discrete(limits = rev(levels(rec_gene$Gene)))
-  
+
   return(rec_genes)
 }

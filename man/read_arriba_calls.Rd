@@ -17,6 +17,6 @@ Read in fusion calls from  Arriba v1.1.0
 }
 \examples{
 fusionfileArriba <- read_arriba_calls(
-                        system.file("extdata", "arriba_example.tsv", package = "annoFuse"))
-                        
+  system.file("extdata", "arriba_example.tsv", package = "annoFuseData")
+)
 }

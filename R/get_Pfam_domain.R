@@ -9,9 +9,9 @@
 #' @return Standardized fusion calls as list Gene1A and Gene1B annotated with domain terms and chromosome location; retained and not retained,optionally partially retained
 #'
 #' @examples
-#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuse")
+#' out_annofuse <- system.file("extdata", "PutativeDriverAnnoFuse.tsv", package = "annoFuseData")
 #' sfc <- read.delim(out_annofuse)
-#' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuse"))
+#' bioMartDataPfam <- readRDS(system.file("extdata", "pfamDataBioMart.RDS", package = "annoFuseData"))
 #' domain_list_df <- get_Pfam_domain(standardFusioncalls = sfc, bioMartDataPfam = bioMartDataPfam)
 get_Pfam_domain <- function(standardFusioncalls,
                             bioMartDataPfam,
@@ -19,13 +19,13 @@ get_Pfam_domain <- function(standardFusioncalls,
   standardFusioncalls <- .check_annoFuse_calls(standardFusioncalls)
   stopifnot(is(bioMartDataPfam, "data.frame"))
   stopifnot(is.logical(keepPartialAnno))
-  
+
   # get loci and chromosome as different columns
   standardFusioncalls$RightBreakpointChr <- gsub(":.*$", "", standardFusioncalls$RightBreakpoint)
   standardFusioncalls$RightBreakpoint <- gsub("^.*:", "", standardFusioncalls$RightBreakpoint)
   standardFusioncalls$LeftBreakpointChr <- gsub(":.*$", "", standardFusioncalls$LeftBreakpoint)
   standardFusioncalls$LeftBreakpoint <- gsub("^.*:", "", standardFusioncalls$LeftBreakpoint)
-  
+
 
   # merge fusion and gene + domain information
   standardFusioncallsGene1A <- standardFusioncalls %>%
@@ -40,23 +40,25 @@ get_Pfam_domain <- function(standardFusioncalls,
   standardFusioncallsGene1APosStrand[, "Gene1A_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain starts after gene start
     standardFusioncallsGene1APosStrand$domain_start > standardFusioncallsGene1APosStrand$gene_start &
-    # domain ends before the breakpoint  
-    standardFusioncallsGene1APosStrand$domain_end < standardFusioncallsGene1APosStrand$LeftBreakpoint) &
-    standardFusioncallsGene1APosStrand$chromosome_name == standardFusioncallsGene1APosStrand$domain_chr , 
-    # we dont check from Fusin_Type for Gene1A since the frameshifts only affect Gene1B translation
-    "Yes", "No")
+      # domain ends before the breakpoint
+      standardFusioncallsGene1APosStrand$domain_end < standardFusioncallsGene1APosStrand$LeftBreakpoint) &
+    standardFusioncallsGene1APosStrand$chromosome_name == standardFusioncallsGene1APosStrand$domain_chr,
+  # we dont check from Fusin_Type for Gene1A since the frameshifts only affect Gene1B translation
+  "Yes", "No"
+  )
 
   # negative strand gene1A annotation
   standardFusioncallsGene1ANegStrand <- standardFusioncallsGene1A[which(standardFusioncallsGene1A$strand == "-1"), ]
   standardFusioncallsGene1ANegStrand[, "Gene1A_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain starts after breakpoint
     standardFusioncallsGene1ANegStrand$domain_start > standardFusioncallsGene1ANegStrand$LeftBreakpoint &
-    # domain ends before gene end 
-    standardFusioncallsGene1ANegStrand$domain_end < standardFusioncallsGene1ANegStrand$gene_end) &
-    
-      standardFusioncallsGene1ANegStrand$chromosome_name == standardFusioncallsGene1ANegStrand$domain_chr , 
-    # we dont check from Fusin_Type for Gene1A since the frameshifts only affect Gene1B translation
-    "Yes", "No")
+      # domain ends before gene end
+      standardFusioncallsGene1ANegStrand$domain_end < standardFusioncallsGene1ANegStrand$gene_end) &
+
+    standardFusioncallsGene1ANegStrand$chromosome_name == standardFusioncallsGene1ANegStrand$domain_chr,
+  # we dont check from Fusin_Type for Gene1A since the frameshifts only affect Gene1B translation
+  "Yes", "No"
+  )
 
 
   # positive strand gene1B annotation
@@ -64,10 +66,10 @@ get_Pfam_domain <- function(standardFusioncalls,
   standardFusioncallsGene1BPosStrand[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain starts after breakpoint
     standardFusioncallsGene1BPosStrand$domain_start > standardFusioncallsGene1BPosStrand$RightBreakpoint &
-    # domain ends before gene end  
-    standardFusioncallsGene1BPosStrand$domain_end < standardFusioncallsGene1BPosStrand$gene_end) &
+      # domain ends before gene end
+      standardFusioncallsGene1BPosStrand$domain_end < standardFusioncallsGene1BPosStrand$gene_end) &
     standardFusioncallsGene1BPosStrand$chromosome_name == standardFusioncallsGene1BPosStrand$domain_chr &
-    # we check from Fusin_Type since the frameshifts affect Gene1B translation  
+    # we check from Fusin_Type since the frameshifts affect Gene1B translation
     standardFusioncallsGene1BPosStrand$Fusion_Type == "in-frame", "Yes", "No")
 
   # negative strand gene1B annotation
@@ -75,10 +77,10 @@ get_Pfam_domain <- function(standardFusioncalls,
   standardFusioncallsGene1BNegStrand[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain end is before breakpoint
     standardFusioncallsGene1BNegStrand$domain_end < standardFusioncallsGene1BNegStrand$RightBreakpoint &
-    # domain starts after gene start             
-    standardFusioncallsGene1BNegStrand$domain_start > standardFusioncallsGene1BNegStrand$gene_start) &
+      # domain starts after gene start
+      standardFusioncallsGene1BNegStrand$domain_start > standardFusioncallsGene1BNegStrand$gene_start) &
     standardFusioncallsGene1BNegStrand$chromosome_name == standardFusioncallsGene1BNegStrand$domain_chr &
-    # we check from Fusin_Type since the frameshifts affect Gene1B translation    
+    # we check from Fusin_Type since the frameshifts affect Gene1B translation
     standardFusioncallsGene1BNegStrand$Fusion_Type == "in-frame", "Yes", "No")
 
 
@@ -93,14 +95,14 @@ get_Pfam_domain <- function(standardFusioncalls,
     standardFusioncallsGene1AMappedRetained <- standardFusioncallsGene1AMapped[grep("Yes", standardFusioncallsGene1AMapped$Gene1A_DOMAIN_RETAINED_IN_FUSION), ]
     # domain mapped and lost or not domain found
     standardFusioncallsGene1AMappedLost <- standardFusioncallsGene1AMapped[which(standardFusioncallsGene1AMapped$Gene1A_DOMAIN_RETAINED_IN_FUSION == "No" | is.na(standardFusioncallsGene1AMapped$Gene1A_DOMAIN_RETAINED_IN_FUSION)), ]
-    
+
     # add partial status for in-frame fusions
     standardFusioncallsGene1AMappedLost[, "Gene1A_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
       # breakpoint is within domains
       standardFusioncallsGene1AMappedLost$domain_start < standardFusioncallsGene1AMappedLost$LeftBreakpoint &
-      standardFusioncallsGene1AMappedLost$domain_end > standardFusioncallsGene1AMappedLost$LeftBreakpoint) &
+        standardFusioncallsGene1AMappedLost$domain_end > standardFusioncallsGene1AMappedLost$LeftBreakpoint) &
       standardFusioncallsGene1AMappedLost$chromosome_name == standardFusioncallsGene1AMappedLost$domain_chr &
-      # and in-frame  
+      # and in-frame
       standardFusioncallsGene1AMappedLost$Fusion_Type == "in-frame", "Partial", standardFusioncallsGene1AMappedLost$Gene1A_DOMAIN_RETAINED_IN_FUSION)
 
     # domain mapped and retained
@@ -111,9 +113,9 @@ get_Pfam_domain <- function(standardFusioncalls,
     standardFusioncallsGene1BMappedLost[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
       # breakpoint is within domains
       standardFusioncallsGene1BMappedLost$domain_start < standardFusioncallsGene1BMappedLost$RightBreakpoint &
-      standardFusioncallsGene1BMappedLost$domain_end > standardFusioncallsGene1BMappedLost$RightBreakpoint) &
+        standardFusioncallsGene1BMappedLost$domain_end > standardFusioncallsGene1BMappedLost$RightBreakpoint) &
       standardFusioncallsGene1BMappedLost$chromosome_name == standardFusioncallsGene1BMappedLost$domain_chr &
-      # and in-frame  
+      # and in-frame
       standardFusioncallsGene1BMappedLost$Fusion_Type == "in-frame", "Partial", standardFusioncallsGene1BMappedLost$Gene1B_DOMAIN_RETAINED_IN_FUSION)
 
     standardFusioncallsGene1AMapped <- rbind(standardFusioncallsGene1AMappedRetained, standardFusioncallsGene1AMappedLost)
@@ -129,7 +131,7 @@ get_Pfam_domain <- function(standardFusioncalls,
   } else {
     standardFusioncallsGene1A <- standardFusioncallsGene1AMapped
   }
-  
+
   if (nrow(standardFusioncallsGene1B[is.na(standardFusioncallsGene1B$strand), ]) > 0) {
     standardFusioncallsGene1BNotMapped <- standardFusioncallsGene1B[is.na(standardFusioncallsGene1B$strand), ]
     standardFusioncallsGene1BNotMapped[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- NA
@@ -138,9 +140,9 @@ get_Pfam_domain <- function(standardFusioncalls,
   } else {
     standardFusioncallsGene1B <- standardFusioncallsGene1BMapped
   }
-  
-  
-  
+
+
+
 
   domain <- list("Gene1A" = standardFusioncallsGene1A, "Gene1B" = standardFusioncallsGene1B)
 
