@@ -34,12 +34,14 @@ columns to run through this GTEx/cohort normalization function
 }
 \examples{
 standardFusioncalls <- annoFuse::annoFuse_single_sample(
-  # Example files are provided in extdata, at-least 1 fusionfile is required along 
+  # Example files are provided in extdata, at-least 1 fusionfile is required along
   # with its rsem expression file
   fusionfileArriba = system.file("extdata", "arriba_example.tsv", package = "annoFuseData"),
   fusionfileStarFusion = system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"),
   expressionFile = system.file(
-  "extdata", "example.rsem.genes.results.gz", package = "annoFuseData"),
+    "extdata", "example.rsem.genes.results.gz",
+    package = "annoFuseData"
+  ),
   tumorID = "BS_W97QQYKQ",
   # multiple read flag values for filtering using FusionAnnotator values
   artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
@@ -55,7 +57,8 @@ standardFusioncalls <- annoFuse::annoFuse_single_sample(
 expressionMatrix <- readRDS(system.file("extdata", "expr_collapsed.rds", package = "annoFuseData"))
 normData <- readRDS(system.file("extdata", "gtex_collapsed.rds", package = "annoFuseData"))
 zscoredStandardFusioncalls <- zscored_annotation(standardFusioncalls,
-                                                 zscoreFilter = 2,
-                                                 normData = normData,
-                                                 expressionMatrix = expressionMatrix)
+  zscoreFilter = 2,
+  normData = normData,
+  expressionMatrix = expressionMatrix
+)
 }

@@ -11,7 +11,7 @@ plot_summary(standardFusioncalls, groupby, outputpdffile, base_size = 20)
 
 \item{groupby}{column name with grouping variables}
 
-\item{outputpdffile}{Filename to plot image - optional, if not specified, the 
+\item{outputpdffile}{Filename to plot image - optional, if not specified, the
 plot is simply generated}
 
 \item{base_size}{size for text in plots, defalt 20 for pdf outputs}

@@ -29,36 +29,45 @@ Function to annotate fusion calls
 \examples{
 # standardize
 fusionfileArriba <- read_arriba_calls(
-  system.file("extdata", "arriba_example.tsv", package = "annoFuseData"))
+  system.file("extdata", "arriba_example.tsv", package = "annoFuseData")
+)
 fusionfileStarFusion <- read_starfusion_calls(
-  system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuseData")
+)
 formattedArriba <- fusion_standardization(fusionfileArriba,
-                                          caller="ARRIBA", 
-                                          tumorID = "tumorID")
-formattedStarFusion <- fusion_standardization(fusionfileStarFusion, 
-                                              caller="STARFUSION",
-                                              tumorID = "tumorID")
+  caller = "ARRIBA",
+  tumorID = "tumorID"
+)
+formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
+  caller = "STARFUSION",
+  tumorID = "tumorID"
+)
 # merge standardized fusion calls
 standardFusioncalls <- as.data.frame(rbind(formattedStarFusion, formattedArriba))
-fusionQCFiltered <- fusion_filtering_QC(standardFusioncalls = standardFusioncalls, 
-                    readingFrameFilter = "in-frame|frameshift|other",
-                    artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
-                    junctionReadCountFilter = 1,
-                    spanningFragCountFilter = 10,
-                    readthroughFilter = TRUE)
+fusionQCFiltered <- fusion_filtering_QC(
+  standardFusioncalls = standardFusioncalls,
+  readingFrameFilter = "in-frame|frameshift|other",
+  artifactFilter = "GTEx_Recurrent|DGD_PARALOGS|Normal|BodyMap|ConjoinG",
+  junctionReadCountFilter = 1,
+  spanningFragCountFilter = 10,
+  readthroughFilter = TRUE
+)
 # annotated from gene and fusion refrence list
 # read in gene and fusion reference tab
 geneListReferenceDataTab <- read.delim(
-  system.file("extdata", "genelistreference.txt", package = "annoFuseData"), 
-  stringsAsFactors = FALSE)
+  system.file("extdata", "genelistreference.txt", package = "annoFuseData"),
+  stringsAsFactors = FALSE
+)
 # column 1 as FusionName 2 source file 3 type; collapse to summarize type
 fusionReferenceDataTab <- read.delim(
- system.file("extdata", "fusionreference.txt", package = "annoFuseData"), 
- stringsAsFactors = FALSE)
+  system.file("extdata", "fusionreference.txt", package = "annoFuseData"),
+  stringsAsFactors = FALSE
+)
 
 filteredFusionAnnotated <- annotate_fusion_calls(
- standardFusioncalls = fusionQCFiltered,
- geneListReferenceDataTab = geneListReferenceDataTab, 
- fusionReferenceDataTab = fusionReferenceDataTab,
- checkReciprocal = TRUE)                                   
+  standardFusioncalls = fusionQCFiltered,
+  geneListReferenceDataTab = geneListReferenceDataTab,
+  fusionReferenceDataTab = fusionReferenceDataTab,
+  checkReciprocal = TRUE
+)
 }

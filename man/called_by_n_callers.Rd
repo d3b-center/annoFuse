@@ -7,7 +7,7 @@
 called_by_n_callers(standardFusioncalls, numCaller)
 }
 \arguments{
-\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized 
+\item{standardFusioncalls}{A dataframe from star fusion or arriba standardized
 to run through the filtering steps}
 
 \item{numCaller}{Least number of callers that have the fusion}

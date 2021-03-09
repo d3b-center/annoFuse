@@ -17,6 +17,6 @@ Read in fusion calls from STAR-Fusion 1.5.0
 }
 \examples{
 fusionfileStarFusion <- read_starfusion_calls(
-  system.file("extdata", "starfusion_example.tsv", package = "annoFuseData"))
-                           
+  system.file("extdata", "starfusion_example.tsv", package = "annoFuseData")
+)
 }
