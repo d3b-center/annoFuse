@@ -23,6 +23,7 @@ RoxygenNote: 7.1.1
 Imports: 
     reshape2,
     dplyr,
+    rlang,
     tidyr,
     purrr,
     ggplot2,
