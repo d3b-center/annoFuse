@@ -25,6 +25,7 @@ Depends:
 Imports: 
     reshape2,
     dplyr,
+    rlang,
     tidyr,
     tidyselect,
     purrr,
