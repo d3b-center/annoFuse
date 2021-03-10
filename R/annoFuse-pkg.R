@@ -24,7 +24,7 @@
 #' @importFrom tidyr gather separate unnest one_of
 #' @importFrom utils head read.delim browseURL
 #' @importFrom EnsDb.Hsapiens.v86 EnsDb.Hsapiens.v86
-#' @importFrom ensembldb genes
+#' @importFrom ensembldb genes mapIds
 #' @importFrom purrr is_empty
 #' @importFrom rlang :=
 #' @importFrom rmarkdown render
