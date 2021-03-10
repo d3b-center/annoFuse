@@ -50,6 +50,7 @@ Imports:
     rmarkdown,
     methods,
     GenomicRanges,
+    GenomicFeatures,
     biomaRt,
     IRanges,
     GenomeInfoDb,

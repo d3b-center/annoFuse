@@ -31,6 +31,7 @@
 #' @importFrom methods is
 #' @importFrom shinycssloaders withSpinner
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
+#' @importFrom GenomicFeatures makeTxDbFromGFF
 #' @importFrom biomaRt getBM
 #' @importFrom IRanges mergeByOverlaps ranges
 #' @importFrom GenomicRanges seqnames
