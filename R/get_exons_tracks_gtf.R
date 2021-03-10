@@ -85,7 +85,7 @@ get_exons_tracks_gtf <- function(genome = "hg38",
     exons_to_plot,
     genes_to_plot
   ) %>%
-    # to be match with ids_to_match
+    # to be matched with ids_to_match
     dplyr::mutate(geneID = gsub("\\..*", "", geneID)) %>%
     dplyr::left_join(unique(ids_to_match),
       by = c("geneID")
