@@ -86,11 +86,24 @@ get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pf
                              "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
                              "21", "22", "X", "Y", "MT"))
 
-
   # granges
-  pfam_gr <- GenomicRanges::makeGRangesFromDataFrame(df = pfamDescLoc, keep.extra.columns = TRUE, seqnames.field = "domain_chr", start.field = "domain_start", end.field = "domain_end", strand.field = "domain_strand")
+  pfam_gr <- GenomicRanges::makeGRangesFromDataFrame(
+    df = pfamDescLoc, 
+    keep.extra.columns = TRUE, 
+    seqnames.field = "domain_chr", 
+    start.field = "domain_start", 
+    end.field = "domain_end", 
+    strand.field = "domain_strand"
+  )
 
-  gene_gr <- GenomicRanges::makeGRangesFromDataFrame(df = dataBioMart, keep.extra.columns = TRUE, seqnames.field = "chromosome_name", start.field = "start_position", end.field = "end_position", strand.field = "strand")
+  gene_gr <- GenomicRanges::makeGRangesFromDataFrame(
+    df = dataBioMart, 
+    keep.extra.columns = TRUE, 
+    seqnames.field = "chromosome_name", 
+    start.field = "start_position", 
+    end.field = "end_position", 
+    strand.field = "strand"
+  )
 
   if (!is.null(return_pfam_gr)) {
     # granges
@@ -113,7 +126,6 @@ get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pf
       "domain_end" = GenomicRanges::end(pfamGene_gr$pfam_gr),
       stringsAsFactors = FALSE
     )
-
 
     return(pfamGene)
   }
