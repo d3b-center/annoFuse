@@ -55,12 +55,12 @@ get_biomart_pfam_merge <- function(ensembl, pfamDesc_path, ucscGenePfam_path, pf
 
   # Pfam file downloaded from
   # contains pfam IDs and associated names
-  pfam <- read.delim(pfamDesc_path, header = F) 
+  pfam <- read.delim(pfamDesc_path, header = FALSE) 
   colnames(pfam) <- c("ID", "NAME", "DESC")
 
   # UCSC file downloaded from
   # contains pfam names and chromosome positions
-  pfam_location <- read.delim(ucscGenePfam_path, header = F)
+  pfam_location <- read.delim(ucscGenePfam_path, header = FALSE)
   colnames(pfam_location) <- c(
     "BIN", "CHROM", "CHROM_START", "CHROM_END", "NAME", "SCORE",
     "STRAND", "THICK_START", "THICK_END", "RESERVED", "BLOCK_COUNT",
