@@ -460,7 +460,7 @@ shinyFuse <- function(out_annofuse = NULL) {
       # }
       
       for (i in seq_len(ncol(display_tbl))) {
-        if (class(display_tbl[[i]]) == "character")
+        if (is(display_tbl[[i]], "character"))
           display_tbl[[i]] <- factor(display_tbl[[i]])
       }
         
