@@ -56,7 +56,7 @@ Suggests:
     knitr,
     testthat
 Remotes:
-    federicomarini/annoFuseData
+    d3b-center/annoFuseData
 VignetteBuilder: knitr
 NeedsCompilation: no
 biocViews:

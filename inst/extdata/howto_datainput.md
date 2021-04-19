@@ -4,4 +4,4 @@
 
 Below is a screenshot of a minimal file which will be correctly loaded by `shinyFuse`.
 To take full advantage of all features, we recommend running fusion analysis, annotation, followed by `annoFuse` as noted [here](https://github.com/d3b-center/annoFuse#install-package).
-For a fully annotated input file example, see the [`PutativeDriverAnnoFuse.tsv`](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/PutativeDriverAnnoFuse.tsv) provided bundled with the package.
+For a fully annotated input file example, see the [`PutativeDriverAnnoFuse.tsv`](https://github.com/d3b-center/annoFuseData/blob/master/inst/extdata/PutativeDriverAnnoFuse.tsv) provided bundled with the package.

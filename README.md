@@ -27,7 +27,7 @@ devtools::install_github("d3b-center/annoFuse", dependencies = TRUE)
 
  - merge calls from each caller for you cohort and a column `annots` with additional annotation (eg from FusionAnnotator or caller specific annotation we have used FusionAnnotator in our vignettes)
 
- - reference folder  with a gene [genelistreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/genelistreference.txt) and [fusionreference.txt](https://github.com/d3b-center/annoFuse/blob/master/inst/extdata/fusionreference.txt) inst/extdata has reference files we've used in our vignettes.
+ - reference folder  with a gene [genelistreference.txt](https://github.com/d3b-center/annoFuseData/blob/master/inst/extdata/genelistreference.txt) and [fusionreference.txt](https://github.com/d3b-center/annoFuseData/blob/master/inst/extdata/fusionreference.txt) inst/extdata has reference files we've used in our vignettes.
 The fusion reference is a compilation of the annotations listed in the table below.
  
  
