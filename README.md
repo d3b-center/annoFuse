@@ -72,6 +72,10 @@ browseVignettes("annoFuse")
 ## Authors
 Krutika S. Gaonkar, Federico Marini, Komal S. Rathi, Jaclyn N. Taroni, Jo Lynne Rokita
 
+## How to cite
+
+Krutika S. Gaonkar, Federico Marini, Komal S. Rathi, Payal Jain, Yuankun Zhu, Nicholas A. Chimicles, Miguel A. Brown, Ammar S. Naqvi, Bo Zhang, Phillip B. Storm, John M. Maris, Pichai Raman, Adam C. Resnick, Konstantin Strauch, Jaclyn N. Taroni & Jo Lynne Rokita (2020). annoFuse: an R Package to annotate, prioritize, and interactively explore putative oncogenic RNA fusions. BMC Bioinformatics, 21(1), 577. https://doi.org/10.1186/s12859-020-03922-7
+
 ## License
 
 This project is licensed under the MIT License 
