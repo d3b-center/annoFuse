@@ -208,7 +208,7 @@ fusion_standardization <- function(fusion_calls,
             return(standard_calls)
           }
           else{
-            stop(paste("Provide all the required columns in the config file. Required columns for Custom caller are: Sample FusionName Gene1A Gene1B Gene2A Gene2B Fusion_Type annots."))
+            stop(paste("Provide all the required columns. Required columns for Custom caller are: Sample FusionName Gene1A Gene1B Gene2A Gene2B Fusion_Type annots."))
           }
         }  
        else #if user do not meet input expectations 

@@ -1,0 +1,12 @@
+{
+	"CUSTOM":{
+		"Sample": "Sample",	
+		"FusionName": "FusionName",
+		"Gene1A": "Gene1A",
+		"Gene1B": "Gene1B",
+		"Gene2A": "Gene2A",
+		"Gene2B": "Gene2B",
+		"Fusion_Type":"Fusion_Type",
+		"annots":"annots"
+	} 
+}
