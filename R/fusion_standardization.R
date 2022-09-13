@@ -60,8 +60,6 @@ fusion_standardization <- function(fusion_calls,
   stopifnot(is.character(caller))
   stopifnot(is.character(tumorID))
 
-  # caller <- match.arg(caller, choices = c("STARFUSION", "ARRIBA"))
- #print(input_json_file)
   if (caller == "STARFUSION") {
     if (!any(grepl("PROT_FUSION_TYPE", colnames(fusion_calls)))) {
       # add NA if --examine_coding_effect was not used while running starfusion
