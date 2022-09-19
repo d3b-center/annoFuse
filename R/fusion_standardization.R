@@ -9,7 +9,7 @@
 #' @param tumorID string or character vector of same length as fusion_calls
 #' @param input_json_file (optional) json format config file to provide input and output columns headers required for CUSTOM type and not required for other callers
 #'
-#' @developer Krutika S Gaonkar, Saksham Phul(phuls@chop.edu)
+#' @author Krutika S Gaonkar, Saksham Phul (phuls@chop.edu)
 #' @export
 #'
 #' @return Standardized fusion calls ready for filtering
