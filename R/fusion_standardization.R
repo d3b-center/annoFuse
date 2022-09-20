@@ -1,21 +1,22 @@
 #' Standardizes fusion calls
 #'
-#' Various fusion callers have different formats that make aggregating and filtering data difficult.
-#' By standardizing fusion callers output we capture the required columns which we use for downstream
-#' analysis
+#' Various fusion callers have different formats that make aggregating and filtering
+#' data difficult. By standardizing fusion callers output we capture the required 
+#' columns which we use for downstream analysis
 #'
 #' @param fusion_calls A dataframe from star fusion or arriba (more callers to be added)
 #' @param caller string options STARFUSION/ARRIBA
 #' @param tumorID string or character vector of same length as fusion_calls
-#' @param input_json_file (optional) json format config file to provide input and output columns headers required for CUSTOM type and not required for other callers
+#' @param input_json_file (optional) json format config file to provide input and
+#' output columns headers required for CUSTOM type and not required for other callers
 #'
 #' @author Krutika S Gaonkar, Saksham Phul (phuls@chop.edu)
 #' @export
 #'
 #' @return Standardized fusion calls ready for filtering
 #'
-#  @examples
-#' read in arriba fusion file
+#' @examples
+#' # read in arriba fusion file
 #' fusionfileArriba <- read_arriba_calls(
 #'   system.file("extdata", "arriba_example.tsv", package = "annoFuseData")
 #' )
