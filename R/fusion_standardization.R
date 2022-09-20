@@ -33,7 +33,7 @@
 #'   tumorID = "tumorID"
 #' )
 #' # read in CUSTOM type file
-#' formattedCUSTOM <- fusion_standardization(fusionfileStarFusion,
+#' formattedCUSTOM <- fusion_standardization(fusionfileCustom,
 #'   caller = "CUSTOM",
 #'   tumorID = "All",
 #'   input_json_file = system.file("extdata", "config", package = "annoFuseData")
