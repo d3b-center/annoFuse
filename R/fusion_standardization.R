@@ -136,11 +136,11 @@ fusion_standardization <- function(fusion_calls,
         any(colnames(fusion_calls) == "Gene2B") &&
         any(colnames(fusion_calls) == "Fusion_Type") &&
         any(colnames(fusion_calls) == "annots")) {
-      print("All required columns exists! ")
+      message("All required columns exists! ")
       return(fusion_calls)
     } else if (file.exists(input_json_file)) # if config file is provided
     {
-      print("Annotating based on config file")
+      message("Annotating based on config file")
       
       json_data_frame <- as.data.frame(rjson::fromJSON(file = input_json_file)) # Get data from json file
       json_cols <- colnames(json_data_frame) # extract cols from json data frame
@@ -161,7 +161,7 @@ fusion_standardization <- function(fusion_calls,
           "Fusion_Type" %in% input_columns &&
           "annots" %in% input_columns) # check if required column exists in config file else throw an exception
       {
-        print("All required columns exists!")
+        message("All required columns exists!")
         for (i in 1:ncol(json_data_frame)) { # for-loop over columns
           output_columns <- append(output_columns, json_data_frame[, i])
         }
