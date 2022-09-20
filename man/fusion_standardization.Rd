@@ -18,15 +18,16 @@ fusion_standardization(
 
 \item{tumorID}{string or character vector of same length as fusion_calls}
 
-\item{input_json_file}{(optional) json format config file to provide input and output columns headers required for CUSTOM type and not required for other callers}
+\item{input_json_file}{(optional) json format config file to provide input and
+output columns headers required for CUSTOM type and not required for other callers}
 }
 \value{
 Standardized fusion calls ready for filtering
 }
 \description{
-Various fusion callers have different formats that make aggregating and filtering data difficult.
-By standardizing fusion callers output we capture the required columns which we use for downstream
-analysis
+Various fusion callers have different formats that make aggregating and filtering
+data difficult. By standardizing fusion callers output we capture the required 
+columns which we use for downstream analysis
 }
 \examples{
 # read in arriba fusion file
@@ -49,7 +50,7 @@ formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
 formattedCUSTOM <- fusion_standardization(fusionfileStarFusion,
   caller = "CUSTOM",
   tumorID = "All",
-  input_json_file = "config"
+  input_json_file = system.file("extdata", "config", package = "annoFuseData")
 )
 # format of the input_json_file ("Input_header" : "Output_header")
 #  {
