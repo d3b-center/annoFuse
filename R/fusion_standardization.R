@@ -31,26 +31,25 @@
 #'   caller = "STARFUSION",
 #'   tumorID = "tumorID"
 #' )
-#'  read in CUSTOM type file
+#' # read in CUSTOM type file
 #' formattedCUSTOM <- fusion_standardization(fusionfileStarFusion,
 #'   caller = "CUSTOM",
 #'   tumorID = "All",
-#'   input_json_file = "config"
+#'   input_json_file = system.file("extdata", "config", package = "annoFuseData")
 #' )
-#' format of the input_json_file ("Input_header" : "Output_header")
-#'  {
-#'  "CUSTOM":{
-#' 	  	"Sample": "Sample_output",
-#' 		  "FusionName": "FusionName_output",
-#' 		  "Gene1A": "Gene1A_output",
-#' 		  "Gene1B": "Gene1B_output",
-#' 		  "Gene2A": "Gene2A_output",
-#' 		  "Gene2B": "Gene2B_output",
-#' 		  "Fusion_Type":"Fusion_Type_output",
-#' 		  "annots":"annots_output"
-#' 	    }
-#'  }
-
+#' # format of the input_json_file ("Input_header" : "Output_header")
+#' #  {
+#' #  "CUSTOM":{
+#' # 	  	"Sample": "Sample_output",
+#' # 		  "FusionName": "FusionName_output",
+#' # 		  "Gene1A": "Gene1A_output",
+#' # 		  "Gene1B": "Gene1B_output",
+#' # 		  "Gene2A": "Gene2A_output",
+#' # 		  "Gene2B": "Gene2B_output",
+#' # 		  "Fusion_Type":"Fusion_Type_output",
+#' # 		  "annots":"annots_output"
+#' # 	    }
+#' #  }
 fusion_standardization <- function(fusion_calls,
                                    caller = c("STARFUSION", "ARRIBA", "CUSTOM"),
                                    tumorID = "tumorID",
