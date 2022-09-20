@@ -58,7 +58,7 @@ fusion_standardization <- function(fusion_calls,
   stopifnot(is(fusion_calls, "data.frame"))
   stopifnot(is.character(caller))
   stopifnot(is.character(tumorID))
-
+  
   if (caller == "STARFUSION") {
     if (!any(grepl("PROT_FUSION_TYPE", colnames(fusion_calls)))) {
       # add NA if --examine_coding_effect was not used while running starfusion
@@ -128,31 +128,31 @@ fusion_standardization <- function(fusion_calls,
   } else if (caller == "CUSTOM") {
     # Condition to check if required columns exists in the input and config file not provided by the user
     if (!file.exists(input_json_file) &&
-      any(colnames(fusion_calls) == "Sample") &&
-      any(colnames(fusion_calls) == "FusionName") &&
-      any(colnames(fusion_calls) == "Gene1A") &&
-      any(colnames(fusion_calls) == "Gene1B") &&
-      any(colnames(fusion_calls) == "Gene2A") &&
-      any(colnames(fusion_calls) == "Gene2B") &&
-      any(colnames(fusion_calls) == "Fusion_Type") &&
-      any(colnames(fusion_calls) == "annots")) {
+        any(colnames(fusion_calls) == "Sample") &&
+        any(colnames(fusion_calls) == "FusionName") &&
+        any(colnames(fusion_calls) == "Gene1A") &&
+        any(colnames(fusion_calls) == "Gene1B") &&
+        any(colnames(fusion_calls) == "Gene2A") &&
+        any(colnames(fusion_calls) == "Gene2B") &&
+        any(colnames(fusion_calls) == "Fusion_Type") &&
+        any(colnames(fusion_calls) == "annots")) {
       print("All required columns exists! ")
       return(fusion_calls)
     } else if (file.exists(input_json_file)) # if config file is provided
-      {
-        print("Annotating based on config file")
-
-        json_data_frame <- as.data.frame(rjson::fromJSON(file = input_json_file)) # Get data from json file
-        json_cols <- colnames(json_data_frame) # extract cols from json data frame
-        caller <- strsplit(json_cols, split = "[.]")[[1]][1] # Get the caller from json file
-
-        input_columns <- list() # define list to store input columns from json file
-        output_columns <- list() # define list to store output columns from json file
-        for (i in json_cols) {
-          input_columns <- append(input_columns, strsplit(i, split = "[.]")[[1]][2]) # extract input columns
-        }
-
-        if ("Sample" %in% input_columns &&
+    {
+      print("Annotating based on config file")
+      
+      json_data_frame <- as.data.frame(rjson::fromJSON(file = input_json_file)) # Get data from json file
+      json_cols <- colnames(json_data_frame) # extract cols from json data frame
+      caller <- strsplit(json_cols, split = "[.]")[[1]][1] # Get the caller from json file
+      
+      input_columns <- list() # define list to store input columns from json file
+      output_columns <- list() # define list to store output columns from json file
+      for (i in json_cols) {
+        input_columns <- append(input_columns, strsplit(i, split = "[.]")[[1]][2]) # extract input columns
+      }
+      
+      if ("Sample" %in% input_columns &&
           "FusionName" %in% input_columns &&
           "Gene1A" %in% input_columns &&
           "Gene1B" %in% input_columns &&
@@ -160,47 +160,47 @@ fusion_standardization <- function(fusion_calls,
           "Gene2B" %in% input_columns &&
           "Fusion_Type" %in% input_columns &&
           "annots" %in% input_columns) # check if required column exists in config file else throw an exception
-          {
-            print("All required columns exists!")
-            for (i in 1:ncol(json_data_frame)) { # for-loop over columns
-              output_columns <- append(output_columns, json_data_frame[, i])
-            }
-            # json_dataframe <- do.call(rbind, Map(data.frame, input_name=input_columns, output_name=output_columns))
-
-            input_columns_without_None <- input_columns
-            output_columns_without_None <- output_columns
-            output_columns_with_None <- list()
-            index_none <- list()
-
-            for (i in 1:length(input_columns)) { # loop to extract None from input json
-              if (input_columns[i] == "None") {
-                output_columns_with_None <- append(output_columns_with_None, output_columns[i])
-                index_none <- append(index_none, i)
-              }
-            }
-
-            if (length(index_none > 0)) { # check if none exist as an input in the config file
-              input_columns_without_None <- input_columns[-unlist(index_none)]
-              output_columns_without_None <- output_columns[-unlist(index_none)]
-            }
-
-            standard_calls <- fusion_calls %>% dplyr::select(unlist(input_columns_without_None))
-            standard_calls <- gdata::rename.vars(standard_calls, from = unlist(input_columns_without_None), to = unlist(output_columns_without_None))
-            for (i in output_columns_with_None)
-            {
-              if (i != "Caller") { # set caller for all the rows if json has None::Caller
-                standard_calls[i] <- NA
-              } else {
-                standard_calls[i] <- caller
-              }
-            }
-            standard_calls <- standard_calls[, unlist(output_columns)]
-            # print(standard_calls)
-            return(standard_calls)
-          } else {
-          stop(paste("Provide all the required columns. Required columns for Custom caller are: Sample FusionName Gene1A Gene1B Gene2A Gene2B Fusion_Type annots."))
+      {
+        print("All required columns exists!")
+        for (i in 1:ncol(json_data_frame)) { # for-loop over columns
+          output_columns <- append(output_columns, json_data_frame[, i])
         }
-      } else # if user do not meet input expectations
+        # json_dataframe <- do.call(rbind, Map(data.frame, input_name=input_columns, output_name=output_columns))
+        
+        input_columns_without_None <- input_columns
+        output_columns_without_None <- output_columns
+        output_columns_with_None <- list()
+        index_none <- list()
+        
+        for (i in 1:length(input_columns)) { # loop to extract None from input json
+          if (input_columns[i] == "None") {
+            output_columns_with_None <- append(output_columns_with_None, output_columns[i])
+            index_none <- append(index_none, i)
+          }
+        }
+        
+        if (length(index_none > 0)) { # check if none exist as an input in the config file
+          input_columns_without_None <- input_columns[-unlist(index_none)]
+          output_columns_without_None <- output_columns[-unlist(index_none)]
+        }
+        
+        standard_calls <- fusion_calls %>% dplyr::select(unlist(input_columns_without_None))
+        standard_calls <- gdata::rename.vars(standard_calls, from = unlist(input_columns_without_None), to = unlist(output_columns_without_None))
+        for (i in output_columns_with_None)
+        {
+          if (i != "Caller") { # set caller for all the rows if json has None::Caller
+            standard_calls[i] <- NA
+          } else {
+            standard_calls[i] <- caller
+          }
+        }
+        standard_calls <- standard_calls[, unlist(output_columns)]
+        # print(standard_calls)
+        return(standard_calls)
+      } else {
+        stop(paste("Provide all the required columns. Required columns for Custom caller are: Sample FusionName Gene1A Gene1B Gene2A Gene2B Fusion_Type annots."))
+      }
+    } else # if user do not meet input expectations
     {
       stop(paste(caller, " caller requires specific columns or config file do not exists. Required columns are: Sample FusionName Gene1A Gene1B Gene2A Gene2B Fusion_Type annots."))
     }
@@ -212,7 +212,7 @@ fusion_standardization <- function(fusion_calls,
 # function used by STARFUSION and ARRIBA to shape the final output columns as required
 shape_output <- function(fusion_calls) {
   # Get standard columns for filtering
-
+  
   standard_calls <- fusion_calls %>%
     # select columns for standard fusion format
     dplyr::select(c(
@@ -246,6 +246,6 @@ shape_output <- function(fusion_calls) {
       SpanningDelta = SpanningFragCount - JunctionReadCount
     ) %>%
     as.data.frame()
-
+  
   return(standard_calls)
 }
