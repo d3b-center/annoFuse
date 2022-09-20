@@ -33,6 +33,13 @@
 #'   tumorID = "tumorID"
 #' )
 #' # read in CUSTOM type file
+#' # Placeholder_TODO
+#' fusionfileCustom <- data.frame(
+#'   col1_you_need = c(,,,,),
+#'   col2_you_need = c(,,,,),
+#'   col3_you_need = c(,,,,),
+#'   ...
+#' )
 #' formattedCUSTOM <- fusion_standardization(fusionfileCustom,
 #'   caller = "CUSTOM",
 #'   tumorID = "All",
