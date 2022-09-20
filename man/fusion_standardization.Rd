@@ -6,8 +6,9 @@
 \usage{
 fusion_standardization(
   fusion_calls,
-  caller = c("STARFUSION", "ARRIBA"),
-  tumorID = "tumorID"
+  caller = c("STARFUSION", "ARRIBA", "CUSTOM"),
+  tumorID = "tumorID",
+  input_json_file = "No file exists"
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ fusion_standardization(
 \item{caller}{string options STARFUSION/ARRIBA}
 
 \item{tumorID}{string or character vector of same length as fusion_calls}
+
+\item{input_json_file}{(optional) json format config file to provide input and output columns headers required for CUSTOM type and not required for other callers}
 }
 \value{
 Standardized fusion calls ready for filtering
@@ -42,4 +45,26 @@ formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
   caller = "STARFUSION",
   tumorID = "tumorID"
 )
+# read in CUSTOM type file
+formattedCUSTOM <- fusion_standardization(fusionfileStarFusion,
+  caller = "CUSTOM",
+  tumorID = "All",
+  input_json_file = "config"
+)
+# format of the input_json_file ("Input_header" : "Output_header")
+#  {
+#  "CUSTOM":{
+# 	  	"Sample": "Sample_output",
+# 		  "FusionName": "FusionName_output",
+# 		  "Gene1A": "Gene1A_output",
+# 		  "Gene1B": "Gene1B_output",
+# 		  "Gene2A": "Gene2A_output",
+# 		  "Gene2B": "Gene2B_output",
+# 		  "Fusion_Type":"Fusion_Type_output",
+# 		  "annots":"annots_output"
+# 	    }
+#  }
+}
+\author{
+Krutika S Gaonkar, Saksham Phul (phuls@chop.edu)
 }
