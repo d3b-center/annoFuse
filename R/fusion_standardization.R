@@ -221,8 +221,13 @@ fusion_standardization <- function(fusion_calls,
     stop(paste(caller, "is not a supported caller string."))
   }
 }
-
-# function used by STARFUSION and ARRIBA to shape the final output columns as required
+#' function used by STARFUSION and ARRIBA to shape the final output columns as required
+#' @param fusion_calls A dataframe used for star fusion or arriba method  (more callers to be added)
+#'
+#' @author Saksham Phul (phuls@chop.edu)
+#' @export
+#'
+#' @return processed dataframe in the final desired format
 shape_output <- function(fusion_calls) {
   # Get standard columns for filtering
   
