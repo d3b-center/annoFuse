@@ -26,7 +26,7 @@ Standardized fusion calls ready for filtering
 }
 \description{
 Various fusion callers have different formats that make aggregating and filtering
-data difficult. By standardizing fusion callers output we capture the required 
+data difficult. By standardizing fusion callers output we capture the required
 columns which we use for downstream analysis
 }
 \examples{
@@ -47,7 +47,17 @@ formattedStarFusion <- fusion_standardization(fusionfileStarFusion,
   tumorID = "tumorID"
 )
 # read in CUSTOM type file
-formattedCUSTOM <- fusion_standardization(fusionfileStarFusion,
+fusionfileCustom <- data.frame(
+  Sample = c("BS_WDC88K6G", "BS_6J9HGSSB", "BS_K62F9BCS"),
+  FusionName = c("KIAA1549--BRAF", "TFG--GPR128", "SPECC1L--NTRK2"),
+  Gene1A = c("KIAA1549", "TFG", "SPECC1L"),
+  Gene1B = c("BRAF", "GPR128", "NTRK2"),
+  Gene2A = c("", "", ""),
+  Gene2B = c("", "", ""),
+  Fusion_Type = c("", "", ""),
+  annots = c("[Cosmic,ChimerPub,ChimerSeq,chimerdb_pubmed,ChimerKB,INTRACHROMOSOMAL[chr7:1.74Mb]]", "[ChimerPub,GTEx,ChimerKB,Greger_Normal,ChimerSeq]", "[INTERCHROMOSOMAL[chr22--chr9]]")
+)
+formattedCUSTOM <- fusion_standardization(fusionfileCustom,
   caller = "CUSTOM",
   tumorID = "All",
   input_json_file = system.file("extdata", "config", package = "annoFuseData")
