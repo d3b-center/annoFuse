@@ -264,6 +264,5 @@ shape_output <- function(fusion_calls) {
       SpanningDelta = SpanningFragCount - JunctionReadCount
     ) %>%
     as.data.frame()
-  
   return(standard_calls)
 }
