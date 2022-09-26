@@ -1,9 +1,12 @@
 # annoFuse v0.91.0 (released 2022-09-26)
 
 ## New features
+* Add capability for annotation of custom fusion input file with minimal required columns
 * Add custom type annotation that checks for required columns and maps input columns to output columns using config file
-* Fusion standardization function has the ability to accept custom type input that checks for few required columns. Config file has been made optionally and can be use to map input columns with output columns
-* Custom type was built on top of existing starfusion and arriba fusion framework. This version will continue to support both of these caller types with same implementation
+* Update fusion standardization function to accept custom fusion input that checks for few required columns 
+* Config file is optional and can be use to map input columns with output columns
+* Custom fusion input type was built on top of existing STAR-Fusion and Arriba fusion framework. 
+* This version will continue to support both existing caller types with same implementation
 
 # annoFuse v0.90.0 (released 2020-09-18)
 
