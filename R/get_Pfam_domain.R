@@ -56,21 +56,22 @@ get_Pfam_domain <- function(standardFusioncalls,
       standardFusioncallsGene1ANegStrand$domain_end < standardFusioncallsGene1ANegStrand$gene_end) &
 
     standardFusioncallsGene1ANegStrand$chromosome_name == standardFusioncallsGene1ANegStrand$domain_chr,
-  # we dont check from Fusin_Type for Gene1A since the frameshifts only affect Gene1B translation
+  # we don't check from Fusion_Type for Gene1A 
   "Yes", "No"
   )
 
 
   # positive strand gene1B annotation
+  # ignore whether gene1B is in-frame or has frame shift
   standardFusioncallsGene1BPosStrand <- standardFusioncallsGene1B[which(standardFusioncallsGene1B$strand == "1"), ]
   standardFusioncallsGene1BPosStrand[, "Gene1B_DOMAIN_RETAINED_IN_FUSION"] <- ifelse((
     # domain starts after breakpoint
     standardFusioncallsGene1BPosStrand$domain_start > standardFusioncallsGene1BPosStrand$RightBreakpoint &
       # domain ends before gene end
       standardFusioncallsGene1BPosStrand$domain_end < standardFusioncallsGene1BPosStrand$gene_end) &
-    standardFusioncallsGene1BPosStrand$chromosome_name == standardFusioncallsGene1BPosStrand$domain_chr &
-    # we check from Fusin_Type since the frameshifts affect Gene1B translation
-    standardFusioncallsGene1BPosStrand$Fusion_Type == "in-frame", "Yes", "No")
+    standardFusioncallsGene1BPosStrand$chromosome_name == standardFusioncallsGene1BPosStrand$domain_chr, 
+    "Yes", "No"
+    )
 
   # negative strand gene1B annotation
   standardFusioncallsGene1BNegStrand <- standardFusioncallsGene1B[which(standardFusioncallsGene1B$strand == "-1"), ]
@@ -79,9 +80,9 @@ get_Pfam_domain <- function(standardFusioncalls,
     standardFusioncallsGene1BNegStrand$domain_end < standardFusioncallsGene1BNegStrand$RightBreakpoint &
       # domain starts after gene start
       standardFusioncallsGene1BNegStrand$domain_start > standardFusioncallsGene1BNegStrand$gene_start) &
-    standardFusioncallsGene1BNegStrand$chromosome_name == standardFusioncallsGene1BNegStrand$domain_chr &
-    # we check from Fusin_Type since the frameshifts affect Gene1B translation
-    standardFusioncallsGene1BNegStrand$Fusion_Type == "in-frame", "Yes", "No")
+    standardFusioncallsGene1BNegStrand$chromosome_name == standardFusioncallsGene1BNegStrand$domain_chr , 
+    "Yes", "No"
+    )
 
 
 
