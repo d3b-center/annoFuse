@@ -253,8 +253,7 @@ shinyFuse <- function(out_annofuse = NULL) {
           "Sample", "FusionName",
           "Gene1A", "Gene1B",
           "LeftBreakpoint", "RightBreakpoint",
-          "Fusion_Type", "JunctionReadCount", "SpanningFragCount",
-          "Confidence", "CalledBy"
+          "Fusion_Type", "CalledBy"
         )
         minset_cols <- minset_cols[minset_cols %in% all_cols]
 
@@ -324,17 +323,6 @@ shinyFuse <- function(out_annofuse = NULL) {
             } else {
               ""
             },
-            if ("Confidence" %in% colnames(values$annofuse_tbl)) {
-              selectInput(
-                inputId = "filter_confidence",
-                label = "Filter for confidence",
-                choices = c("", unique(values$annofuse_tbl$Confidence)),
-                selectize = TRUE, multiple = TRUE,
-                selected = unique(values$annofuse_tbl$Confidence)
-              )
-            } else {
-              ""
-            },
             if ("BreakpointLocation" %in% colnames(values$annofuse_tbl)) {
               selectInput(
                 inputId = "filter_bplocation",
@@ -342,26 +330,6 @@ shinyFuse <- function(out_annofuse = NULL) {
                 choices = c("", unique(values$annofuse_tbl$BreakpointLocation)),
                 selectize = TRUE, multiple = TRUE,
                 selected = unique(values$annofuse_tbl$BreakpointLocation)
-              )
-            } else {
-              ""
-            },
-            if ("SpanningFragCount" %in% colnames(values$annofuse_tbl)) {
-              numericInput(
-                inputId = "filter_spanningfragcount",
-                label = "Filter for spanning frag count",
-                value = 0,
-                min = 0, max = max(values$annofuse_tbl$SpanningFragCount)
-              )
-            } else {
-              ""
-            },
-            if ("JunctionReadCount" %in% colnames(values$annofuse_tbl)) {
-              numericInput(
-                inputId = "filter_junctionreadcount",
-                label = "Filter for junction read count",
-                value = 0,
-                min = 0, max = max(values$annofuse_tbl$JunctionReadCount)
               )
             } else {
               ""
