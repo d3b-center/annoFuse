@@ -253,8 +253,7 @@ shinyFuse <- function(out_annofuse = NULL) {
           "Sample", "FusionName",
           "Gene1A", "Gene1B",
           "LeftBreakpoint", "RightBreakpoint",
-          "Fusion_Type", "JunctionReadCount", "SpanningFragCount",
-          "Confidence", "CalledBy"
+          "Fusion_Type", "CalledBy"
         )
         minset_cols <- minset_cols[minset_cols %in% all_cols]
 
