@@ -1,4 +1,5 @@
-# annoFuse
+# annoFuse: an R Package to annotate, prioritize, and interactively explore putative oncogenic RNA fusions
+Gaonkar KS, Marini F, Rathi KS, Jain P, Zhu Y, Chimicles NA, Brown MA, Naqvi AS, Zhang B, Storm PB, Maris JM, Raman P, Resnick AC, Strauch K, Taroni JN, Rokita JL. annoFuse: an R Package to annotate, prioritize, and interactively explore putative oncogenic RNA fusions. BMC Bioinformatics. 2020 Dec 14;21(1):577. doi: 10.1186/s12859-020-03922-7. PMID: 33317447; PMCID: PMC7737294.
 
 <!-- badges: start -->
 [![R build status](https://github.com/d3b-center/annoFuse/workflows/R-CMD-check/badge.svg)](https://github.com/d3b-center/annoFuse/actions)
