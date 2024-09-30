@@ -38,7 +38,8 @@ The fusion reference is a compilation of the annotations listed in the table bel
 | pfamID                        | http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/pfamDesc.txt.gz     | UCSC pfamID Description database |
 | Domain Location               | http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ucscGenePfam.txt.gz | UCSC pfamID Description database |
 | TCGA fusions                  | https://tumorfusions.org/PanCanFusV2/downloads/pancanfus.txt.gz             | TumorFusions: an integrative   resource for cancer-associated transcript fusions PMID: 29099951  |
-| Oncogenes                     | http://www.bushmanlab.org/assets/doc/allOnco_Feb2017.tsv                    | www.bushmanlab.org |
+| Oncogenes                     | OncoKB - last updated 20240704                  | https://www.oncokb.org/cancer-genes |
+| Tumor suppressor genes (TSGs) | OncoKB - last updated 20240704                  | https://www.oncokb.org/cancer-genes |
 | Tumor suppressor genes (TSGs) | https://bioinfo.uth.edu/TSGene/Human_TSGs.txt?csrt=5027697123997809089      | Tumor Suppressor Gene Database   2.0 PMIDs: 23066107, 26590405 |
 | Kinases                       | http://kinase.com/human/kinome/tables/Kincat_Hsap.08.02.xls |      The protein kinase complement of the human genome PMID: 12471243 |
 | COSMIC genes                  | https://cancer.sanger.ac.uk/census | Catalogue of Somatic Mutations   in Cancer |
